@@ -46,6 +46,7 @@ namespace InvoiceApi.Controllers
         {
             if (ModelState.IsValid)
             {
+               
                 var response = _userService.GenerateJwtToken(new User { UserId= "a9d1c6db-5cb1-4f95-93fd-aecb2d9e955f",UserName="Sudhakaran",Email=loginRequest.Email });
                 return Ok(response);
             }

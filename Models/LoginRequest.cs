@@ -10,7 +10,7 @@ namespace InvoiceApi.Models
     [DataContract]
     public class LoginRequest
     {
-        [DataMember,Required]
+        [DataMember,Required, RegularExpression(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*",ErrorMessage ="Invalid Email")]
         public string Email { get; set; }
         [DataMember,Required]
         public string Password { get; set; }

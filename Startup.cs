@@ -76,6 +76,7 @@ namespace InvoiceApi
                 app.UseDeveloperExceptionPage();
             }
             app.UseMiddleware<JwtMiddleware>();
+            app.UseExceptionHandlerMiddleware();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("CorsPolicy");
