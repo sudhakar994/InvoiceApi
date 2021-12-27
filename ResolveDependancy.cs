@@ -16,6 +16,7 @@ namespace InvoiceApi
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserReposiotry, UserRepository>();
             services.AddHttpContextAccessor();
+            services.AddSingleton<ISqlService, SqlService>();
         }
     }
 }
