@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InvoiceApi.Constants;
 using InvoiceApi.IServices;
+using InvoiceApi.Models;
 using InvoiceApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -30,8 +32,8 @@ namespace InvoiceApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
-           
+
+
             var secret = Configuration.GetSection("AppSettings").GetSection("SecretKey").Value;
             var key = Encoding.ASCII.GetBytes(secret);
             services.AddAuthentication(x =>
@@ -62,6 +64,11 @@ namespace InvoiceApi
                                       .AllowAnyHeader());
             });
             services.AddControllers();
+
+            services.AddSingleton<IConfiguration>(Configuration);
+            SqlHelper.ConnectionString = Configuration.GetConnectionString("InvoiceApiDB");
+            services.Configure<SMTPConfig>(Configuration.GetSection("SMTPConfig"));
+
             //Resolve Dependancy Injection
 
             ResolveDependancy.RegisterServices(services);
@@ -86,7 +93,7 @@ namespace InvoiceApi
             {
                 endpoints.MapControllers();
             });
-         
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
