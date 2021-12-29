@@ -39,6 +39,8 @@ namespace InvoiceApi
                 StatusCode = context.Response.StatusCode,
                 Message = exception.Message
             }.ToString());
+
+            
         }
     }
 }
