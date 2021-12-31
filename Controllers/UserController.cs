@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using InvoiceApi.IServices;
 using InvoiceApi.Models;
+using InvoiceApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -48,6 +51,7 @@ namespace InvoiceApi.Controllers
             {
                
                 var response = _userService.GenerateJwtToken(new User { UserId= "a9d1c6db-5cb1-4f95-93fd-aecb2d9e955f",UserName="Sudhakaran",Email=loginRequest.Email });
+
                 return Ok(response);
             }
 
@@ -60,7 +64,19 @@ namespace InvoiceApi.Controllers
 
         #endregion
 
-        #region
+        #region Download Pdf
+        [HttpGet] 
+        [Route("DownloadPdf")]
+        public IActionResult DownloadPdf()
+        {
+            string fileName = "testFile.pdf";
+            var html = @"<h1>Hello World</h1>";
+            var pdfBytes = PdfService.GeneratePdf(html);
+            if (pdfBytes != null)
+                return File(pdfBytes, "application/pdf", fileName);
+            else
+                return BadRequest("Error occured");
+        }
 
         #endregion
     }
