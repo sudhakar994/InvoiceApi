@@ -21,10 +21,12 @@ namespace InvoiceApi.Controllers
     {
         private readonly IUserService _userService;
         private readonly IJwtService _jwtService;
-        public UserController(IUserService userService, IJwtService jwtService)
+        private readonly IHtmlReaderService _htmlReaderService;
+        public UserController(IUserService userService, IJwtService jwtService, IHtmlReaderService htmlReaderService)
         {
             _userService = userService;
             _jwtService = jwtService;
+            _htmlReaderService = htmlReaderService;
         }
 
         [HttpGet]
@@ -67,13 +69,14 @@ namespace InvoiceApi.Controllers
         #region Download Pdf
         [HttpGet] 
         [Route("DownloadPdf")]
-        public IActionResult DownloadPdf()
+        public  IActionResult DownloadPdf()
         {
             string fileName = "testFile.pdf";
-            var html = @"<h1>Hello World</h1>";
+            var invoice = new Invoice { InvoiceNo = "009898" };
+            var html =  _htmlReaderService.ReadHtmlFileAndConvert("InvoiceTemplates/BlueInvoice.cshtml", invoice).ToString();
             var pdfBytes = PdfService.GeneratePdf(html);
             if (pdfBytes != null)
-                return File(pdfBytes, "application/pdf", fileName);
+                return  File(pdfBytes, "application/pdf", fileName);
             else
                 return BadRequest("Error occured");
         }

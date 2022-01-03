@@ -8,7 +8,7 @@ namespace InvoiceApi.Services
 {
     public static class PdfService
     {
-        public static Byte[] GeneratePdf(string html)
+        public  static Byte[] GeneratePdf(string html)
         {
             Byte[] res = null;
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -16,10 +16,12 @@ namespace InvoiceApi.Services
             {
                 var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(html, PdfSharp.PageSize.A4);
                 pdf.Save(ms);
-                res = ms.ToArray();
+                res =  ms.ToArray();
             }
             return res;
         }
+
+
 
         
     }

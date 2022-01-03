@@ -13,6 +13,7 @@ namespace InvoiceApi
         {
             services.AddHttpContextAccessor();
             services.AddTransient<IJwtService, JwtService>();
+            services.AddTransient<IHtmlReaderService, HtmlReaderService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserReposiotry, UserRepository>();
             services.AddHttpContextAccessor();
