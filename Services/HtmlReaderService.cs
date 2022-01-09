@@ -31,7 +31,7 @@ namespace InvoiceApi.Services
             _serviceProvider = serviceProvider;
         }
 
-        public string ReadHtmlFileAndConvert(string viewName, object model)
+        public async Task<string> ReadHtmlFileAndConvert(string viewName, object model)
         {
             var viewContext = new ViewContext();
             var httpContext = new DefaultHttpContext { RequestServices = _serviceProvider };
@@ -59,10 +59,11 @@ namespace InvoiceApi.Services
                    sw,
                    new HtmlHelperOptions()
                );
-                viewResult.View.RenderAsync(viewContext);
+              await  viewResult.View.RenderAsync(viewContext);
+                return sw.ToString();
             }
 
-            return viewContext.Writer.ToString();
+           
         }
     }
 }

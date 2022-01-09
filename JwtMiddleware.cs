@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
@@ -12,10 +11,9 @@ using System.Threading.Tasks;
 namespace InvoiceApi
 {
     public class JwtMiddleware
-    {
+	{
 		private readonly RequestDelegate _next;
 		private readonly IConfiguration _configuration;
-
 		public JwtMiddleware(RequestDelegate next, IConfiguration configuration)
 		{
 			_next = next;
@@ -24,8 +22,8 @@ namespace InvoiceApi
 
 		public async Task Invoke(HttpContext context)
 		{
+			
 			bool isValidTaken = false;
-
 			var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 			var path = context.Request.Path.Value != null ? context.Request.Path.Value:string.Empty;
 			if (path.Contains("authenticate") || path.Contains("swagger"))
@@ -59,6 +57,8 @@ namespace InvoiceApi
 			//if token present in header validate token
 
 		}
+
+
 
 		public bool ValidateCurrentToken(string token)
 		{

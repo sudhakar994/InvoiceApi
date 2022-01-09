@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using InvoiceApi.IServices;
 using InvoiceApi.Models;
 using InvoiceApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +17,6 @@ namespace InvoiceApi.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -69,11 +69,11 @@ namespace InvoiceApi.Controllers
         #region Download Pdf
         [HttpGet] 
         [Route("DownloadPdf")]
-        public  IActionResult DownloadPdf()
+        public async Task<IActionResult>  DownloadPdf()
         {
             string fileName = "testFile.pdf";
             var invoice = new Invoice { InvoiceNo = "009898" };
-            var html =  _htmlReaderService.ReadHtmlFileAndConvert("InvoiceTemplates/BlueInvoice.cshtml", invoice).ToString();
+            var html = await _htmlReaderService.ReadHtmlFileAndConvert("InvoiceTemplates/BlueInvoice.cshtml", invoice);
             var pdfBytes = PdfService.GeneratePdf(html);
             if (pdfBytes != null)
                 return  File(pdfBytes, "application/pdf", fileName);

@@ -7,6 +7,6 @@ namespace InvoiceApi.IServices
 {
    public interface IHtmlReaderService
     {
-        string ReadHtmlFileAndConvert(string viewName, object model);
+         Task<string> ReadHtmlFileAndConvert(string viewName, object model);
     }
 }
