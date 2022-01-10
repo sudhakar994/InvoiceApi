@@ -16,5 +16,8 @@ namespace InvoiceApi.IServices
         IDataReader GetDataTable(string storeProcedure, object inputParameter);
         IEnumerable<T> GetData_Query<T>(string query, object inputParameter);
         IEnumerable<T> GetData_Query<T>(string query);
+        Task<dynamic> ExecuteQueryasync(string query, object inputParameter);
+        
+       
     }
 }

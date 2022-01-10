@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using InvoiceApi.Constants;
 using InvoiceApi.IServices;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,12 +16,17 @@ namespace InvoiceApi.Services
         #region  Variable Declaration
 
         private readonly IDbConnection dbConnection;
-
+        private IConfiguration _configuration;
+       
         #endregion
 
-        public SqlService()
+        public SqlService(IConfiguration configuration)
         {
-            dbConnection = new SqlConnection(SqlHelper.ConnectionString);
+            _configuration = configuration;
+
+            string connString = Utility.GetConnectionString("EformsBuddyApiDB");
+            //convert string to sqlconnection
+            dbConnection = new SqlConnection(connString);
         }
         #region Execute Insert Update using Stored Procedure
         /// <summary>
@@ -162,7 +168,10 @@ namespace InvoiceApi.Services
         {
             return dbConnection.ExecuteScalar<object>(storedProcedure, commandType: CommandType.StoredProcedure);
         }
-
+        public async Task<dynamic> ExecuteQueryasync(string query, object inputParameter)
+        {
+            return await dbConnection.ExecuteAsync(query, param: inputParameter, commandType: CommandType.Text);
+        }
         SqlMapper.GridReader ISqlService.GetMultipleResultSet(string storedProcedure, object InputParameter)
         {
             throw new NotImplementedException();

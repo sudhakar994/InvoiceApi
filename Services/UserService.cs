@@ -9,14 +9,17 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using InvoiceApi.Constants;
+using InvoiceApi.Repository;
+using InvoiceApi.IRepository;
 
 namespace InvoiceApi.Services
 {
     public class UserService:IUserService
     {
-        public void Test()
+        private readonly IUserReposiotry _userReposiotry;
+        public UserService(IUserReposiotry userRepository)
         {
-
+            _userReposiotry = userRepository;
         }
 
         public string GenerateJwtToken(User user)
@@ -39,5 +42,9 @@ namespace InvoiceApi.Services
             return tokenHandler.WriteToken(token);
         }
 
+        public async  Task<User> Register(User user)
+        {
+            return await _userReposiotry.Register(user);
+        }
     }
 }

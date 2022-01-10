@@ -4,8 +4,9 @@ using InvoiceApi.Repository;
 using InvoiceApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using System.Configuration;
 
 namespace InvoiceApi
 {
@@ -20,6 +21,7 @@ namespace InvoiceApi
             services.AddTransient<IUserReposiotry, UserRepository>();
             services.AddHttpContextAccessor();
             services.AddSingleton<ISqlService, SqlService>();
+           
 
         }
     }

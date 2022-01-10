@@ -25,8 +25,8 @@ namespace InvoiceApi
 			
 			bool isValidTaken = false;
 			var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-			var path = context.Request.Path.Value != null ? context.Request.Path.Value:string.Empty;
-			if (path.Contains("authenticate") || path.Contains("swagger"))
+			var path = context.Request.Path.Value != null ? context.Request.Path.Value.ToLower():string.Empty;
+			if (path.Contains("authenticate") || path.Contains("swagger") || path.Contains("register"))
 			{
 
 				await _next(context);

@@ -34,6 +34,12 @@ namespace InvoiceApi
             return config["AppSettings:" + key] != null ? config["AppSettings:" + key] : string.Empty;
         }
 
-        
+        public static string GetConnectionString(string key)
+        {
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            return config["ConnectionString:" + key] != null ? config["ConnectionString:" + key] : string.Empty;
+        }
+
+
     }
 }

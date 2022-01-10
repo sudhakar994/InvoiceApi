@@ -82,5 +82,38 @@ namespace InvoiceApi.Controllers
         }
 
         #endregion
+
+        #region User Register
+        /// <summary>
+        /// Register
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult>  Register(User user)
+        {
+            if (ModelState.IsValid)
+            {
+              var response =    await _userService.Register(user);
+                if(response != null && !string.IsNullOrEmpty(response.JwtToken))
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest("Registration Failed Please Try Again");
+                }
+               
+                
+            }
+            else
+            {
+                return BadRequest();
+            }
+          
+        }
+
+        #endregion
     }
 }
