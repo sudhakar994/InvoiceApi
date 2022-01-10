@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.Constants
 {
-    public class SqlQuery
+    public static class SqlQuery
     {
+        public const  string EmailCountCheck = "Select COUNT(Email) From tbl_UserDetails Where Email=@Email And Is_Deleted=0";
+        public const string TestQuery = "Select Email From tbl_UserDetails Where Email=@Email And Is_Deleted=0";
+
     }
 }

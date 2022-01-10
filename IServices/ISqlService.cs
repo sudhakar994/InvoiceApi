@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,8 +17,7 @@ namespace InvoiceApi.IServices
         IDataReader GetDataTable(string storeProcedure, object inputParameter);
         IEnumerable<T> GetData_Query<T>(string query, object inputParameter);
         IEnumerable<T> GetData_Query<T>(string query);
-        Task<dynamic> ExecuteQueryasync(string query, object inputParameter);
-        
-       
+        Task<T> GetSingleExecuteQueryasync<T>(string query, DynamicParameters parameters, CommandType commandType = CommandType.Text);
+        Task<IEnumerable<T>> GetListExecuteQueryasync<T>(string sp, DynamicParameters parameters, CommandType commandType = CommandType.Text);
     }
 }

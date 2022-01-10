@@ -17,14 +17,18 @@ namespace InvoiceApi.Services
 
         private readonly IDbConnection dbConnection;
         private IConfiguration _configuration;
-       
+        public void Dispose()
+        {
+
+        }
         #endregion
 
         public SqlService(IConfiguration configuration)
         {
             _configuration = configuration;
 
-            string connString = Utility.GetConnectionString("EformsBuddyApiDB");
+            string connString = Utility.GetConnectionString
+                ("EformsBuddyApiDB");
             //convert string to sqlconnection
             dbConnection = new SqlConnection(connString);
         }
@@ -168,14 +172,31 @@ namespace InvoiceApi.Services
         {
             return dbConnection.ExecuteScalar<object>(storedProcedure, commandType: CommandType.StoredProcedure);
         }
-        public async Task<dynamic> ExecuteQueryasync(string query, object inputParameter)
+       
+
+        public async Task<T>  GetSingleExecuteQueryasync<T>(string query, DynamicParameters param = null, CommandType commandType = CommandType.Text)
         {
-            return await dbConnection.ExecuteAsync(query, param: inputParameter, commandType: CommandType.Text);
+            using (var dbConn = dbConnection)
+            {
+                return await dbConn.QueryFirstOrDefaultAsync<T>(query, param, commandType: commandType);
+            }
         }
+
+        public async Task<IEnumerable<T>> GetListExecuteQueryasync<T>(string sp, DynamicParameters param = null, CommandType commandType = CommandType.Text)
+        {
+            using (var dbConn = dbConnection)
+            {
+              var results =   await dbConn.QueryAsync<T>(sp, param, commandType: commandType);
+                return results.ToList();
+            }
+        }
+
         SqlMapper.GridReader ISqlService.GetMultipleResultSet(string storedProcedure, object InputParameter)
         {
             throw new NotImplementedException();
         }
+
+
         #endregion
 
         #endregion
