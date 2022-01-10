@@ -15,22 +15,14 @@ namespace InvoiceApi.Services
     {
         #region  Variable Declaration
 
-        private readonly IDbConnection dbConnection;
         private IConfiguration _configuration;
-        public void Dispose()
-        {
-
-        }
+        private IDbConnection dbConnection => new SqlConnection(Utility.GetConnectionString
+                ("EformsBuddyApiDB"));
         #endregion
 
         public SqlService(IConfiguration configuration)
         {
             _configuration = configuration;
-
-            string connString = Utility.GetConnectionString
-                ("EformsBuddyApiDB");
-            //convert string to sqlconnection
-            dbConnection = new SqlConnection(connString);
         }
         #region Execute Insert Update using Stored Procedure
         /// <summary>
@@ -176,10 +168,11 @@ namespace InvoiceApi.Services
 
         public async Task<T>  GetSingleExecuteQueryasync<T>(string query, DynamicParameters param = null, CommandType commandType = CommandType.Text)
         {
-            using (var dbConn = dbConnection)
+            using (var dbConn=dbConnection)
             {
-                return await dbConn.QueryFirstOrDefaultAsync<T>(query, param, commandType: commandType);
+               return await dbConn.QueryFirstOrDefaultAsync<T>(query, param, commandType: commandType);
             }
+           
         }
 
         public async Task<IEnumerable<T>> GetListExecuteQueryasync<T>(string sp, DynamicParameters param = null, CommandType commandType = CommandType.Text)

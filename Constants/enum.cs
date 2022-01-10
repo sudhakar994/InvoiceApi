@@ -11,5 +11,11 @@ namespace InvoiceApi.Constants
             InProgress,
             Verified,
         }
+
+    public enum UserRole
+    {
+        admin=1,
+        user=2
+    }
     
 }

@@ -22,11 +22,14 @@ namespace InvoiceApi.Controllers
         private readonly IUserService _userService;
         private readonly IJwtService _jwtService;
         private readonly IHtmlReaderService _htmlReaderService;
-        public UserController(IUserService userService, IJwtService jwtService, IHtmlReaderService htmlReaderService)
+        private readonly IEmailService _emailService;
+        public UserController(IUserService userService, IJwtService jwtService, IHtmlReaderService htmlReaderService, IEmailService emailService)
         {
             _userService = userService;
             _jwtService = jwtService;
             _htmlReaderService = htmlReaderService;
+            _emailService = emailService;
+
         }
 
         [HttpGet]
@@ -52,7 +55,7 @@ namespace InvoiceApi.Controllers
             if (ModelState.IsValid)
             {
                
-                var response = _userService.GenerateJwtToken(new User { UserId= "a9d1c6db-5cb1-4f95-93fd-aecb2d9e955f",UserName="Sudhakaran",Email=loginRequest.Email });
+                var response = _userService.GenerateJwtToken(new User { UserId= "",UserName="Sudhakaran",Email=loginRequest.Email });
 
                 return Ok(response);
             }
@@ -95,14 +98,24 @@ namespace InvoiceApi.Controllers
         {
             if (ModelState.IsValid)
             {
+                
               var response =    await _userService.Register(user);
-                if(response != null && !string.IsNullOrEmpty(response.JwtToken))
+                if(response != null && !string.IsNullOrEmpty(response.UserId) && !string.IsNullOrEmpty(response.VerificationCode))
                 {
+                    //generate Jwt Token
+                    user.UserId = response.UserId;
+                    user.VerificationCode = response.VerificationCode;
+                    response.JwtToken = _userService.GenerateJwtToken(user);
+                    //send email
+                    if (!string.IsNullOrEmpty(response.JwtToken))
+                    {
+                      await  _emailService.SendEmailVerificationCode(user);
+                    }
                     return Ok(response);
                 }
                 else
                 {
-                    return BadRequest("Registration Failed Please Try Again");
+                    return BadRequest("Email Is Already Register With Us");
                 }
                
                 

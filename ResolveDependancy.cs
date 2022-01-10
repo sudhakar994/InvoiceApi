@@ -19,6 +19,7 @@ namespace InvoiceApi
             services.AddTransient<IHtmlReaderService, HtmlReaderService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserReposiotry, UserRepository>();
+            services.AddTransient<IEmailService, EmailService>();
             services.AddHttpContextAccessor();
             services.AddSingleton<ISqlService, SqlService>();
            

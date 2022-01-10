@@ -33,7 +33,7 @@ namespace InvoiceApi.Services
                 {
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim("UserId", user.UserId),
+                    new Claim("UserId", user.UserId.ToString()),
                 }),
                 Expires = DateTime.Now.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -134,7 +134,7 @@ namespace InvoiceApi.Services
                 PlaceHolders = new List<KeyValuePair<string, string>>()
                 {
                     new KeyValuePair<string, string>("{{UserName}}", user.UserName),
-                    new KeyValuePair<string, string>("{{VerificationCode}}",user.Email),
+                    new KeyValuePair<string, string>("{{VerificationCode}}",user.VerificationCode),
                 }
             };
             return options;
