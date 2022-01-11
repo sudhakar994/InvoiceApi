@@ -100,7 +100,7 @@ namespace InvoiceApi.Controllers
             {
                 
               var response =    await _userService.Register(user);
-                if(response != null && !string.IsNullOrEmpty(response.UserId) && !string.IsNullOrEmpty(response.VerificationCode))
+                if(response != null && !string.IsNullOrEmpty(response.UserId) && !string.IsNullOrEmpty(response.VerificationCode) && response?.Status.ToLower() =="success")
                 {
                     //generate Jwt Token
                     user.UserId = response.UserId;
@@ -109,10 +109,12 @@ namespace InvoiceApi.Controllers
                     //send email
                     if (!string.IsNullOrEmpty(response.JwtToken))
                     {
-                      await  _emailService.SendEmailVerificationCode(user);
+                      await
+                            _emailService.SendEmailVerificationCode(user);
                     }
                     return Ok(response);
-                }
+                } 
+
                 else
                 {
                     return BadRequest("Email Is Already Register With Us");
@@ -123,7 +125,8 @@ namespace InvoiceApi.Controllers
             else
             {
                 return BadRequest();
-            }
+            } 
+
           
         }
 

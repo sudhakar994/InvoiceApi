@@ -166,7 +166,7 @@ namespace InvoiceApi.Services
         }
        
 
-        public async Task<T>  GetSingleExecuteQueryasync<T>(string query, DynamicParameters param = null, CommandType commandType = CommandType.Text)
+        public async Task<T>  GetSingleExecuteQueryasync<T>(string query, object param = null, CommandType commandType = CommandType.Text)
         {
             using (var dbConn=dbConnection)
             {
@@ -175,7 +175,7 @@ namespace InvoiceApi.Services
            
         }
 
-        public async Task<IEnumerable<T>> GetListExecuteQueryasync<T>(string sp, DynamicParameters param = null, CommandType commandType = CommandType.Text)
+        public async Task<IEnumerable<T>> GetListExecuteQueryasync<T>(string sp, object param = null, CommandType commandType = CommandType.Text)
         {
             using (var dbConn = dbConnection)
             {

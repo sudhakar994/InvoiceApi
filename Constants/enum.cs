@@ -17,5 +17,12 @@ namespace InvoiceApi.Constants
         admin=1,
         user=2
     }
+
+    public enum RegistrationStatus
+    {
+        Verified,
+        Failure,
+        InProgress
+    }
     
 }
