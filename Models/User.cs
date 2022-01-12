@@ -25,5 +25,9 @@ namespace InvoiceApi.Models
         public string JwtToken { get; set; }
         [DataMember]
         public string VerificationCode { get; set; }
+        [DataMember]
+        public string Status { get; set; }
+        [DataMember]
+        public int RoleId { get; set; }
     }
 }
