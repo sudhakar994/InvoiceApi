@@ -86,9 +86,12 @@ namespace InvoiceApi.Services
         /// <typeparam name="T"></typeparam>
         /// <param name="query"></param>
         /// <returns></returns>
-        public IEnumerable<T> GetData_Query<T>(string query)
+        public  IEnumerable<T> GetData_Query<T>(string query)
         {
-            return dbConnection.Query<T>(query, commandType: CommandType.Text);
+            using (var dbConn = dbConnection)
+            {
+                return dbConn.Query<T>(query, commandType: CommandType.Text);
+            }
         }
         #endregion
 
@@ -175,14 +178,19 @@ namespace InvoiceApi.Services
            
         }
 
-        public async Task<IEnumerable<T>> GetListExecuteQueryasync<T>(string sp, object param = null, CommandType commandType = CommandType.Text)
+       
+
+        public async Task<List<T>> GetListExecuteQueryasync<T>(string query, object param = null, CommandType commandType = CommandType.Text)
         {
             using (var dbConn = dbConnection)
             {
-              var results =   await dbConn.QueryAsync<T>(sp, param, commandType: commandType);
-                return results.ToList();
+                var result = await dbConn.QueryAsync<T>(query,param, commandType: CommandType.Text);
+                
+                return result.ToList();
             }
         }
+
+
 
         SqlMapper.GridReader ISqlService.GetMultipleResultSet(string storedProcedure, object InputParameter)
         {

@@ -25,10 +25,9 @@ namespace InvoiceApi.Repository
             var response = new User();
             // check user is already registered
             var emailCount =await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.EmailCountCheck, user) ;
-
-            if(emailCount > 0)
+            if (emailCount > 0)
             {
-                 var status = await _sqlService.GetSingleExecuteQueryasync<string>(SqlQuery.CheckStatusOfUser, user);
+                 var status = await _sqlService.GetSingleExecuteQueryasync<string>(SqlQuery.CheckStatusOfUser, user) ?? string.Empty;
                 if (!string.IsNullOrEmpty(status) && status == RegistrationStatus.InProgress.ToString())
                 {
                     response.VerificationCode = Utility.GenerateVerificationCode();

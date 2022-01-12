@@ -18,6 +18,6 @@ namespace InvoiceApi.IServices
         IEnumerable<T> GetData_Query<T>(string query, object inputParameter);
         IEnumerable<T> GetData_Query<T>(string query);
         Task<T> GetSingleExecuteQueryasync<T>(string query, object parameters, CommandType commandType = CommandType.Text);
-        Task<IEnumerable<T>> GetListExecuteQueryasync<T>(string sp, object parameters, CommandType commandType = CommandType.Text);
+        Task<List<T>> GetListExecuteQueryasync<T>(string query, object param = null, CommandType commandType = CommandType.Text);
     }
 }
