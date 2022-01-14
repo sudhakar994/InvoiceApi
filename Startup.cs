@@ -22,6 +22,11 @@ namespace InvoiceApi
 {
     public class Startup
     {
+        #region  Variable Declaration
+
+        private static readonly string CipherKey = "xafmg2H0bLk2kZc0PvklMQ==";
+        private static readonly string CipherIV = "VcCvRGkh9Z3NyN/09/Cspg==";
+        #endregion
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -66,6 +71,9 @@ namespace InvoiceApi
             services.AddControllers();
 
             services.AddSingleton<IConfiguration>(Configuration);
+
+            // Encrypted Conncetion String
+
             SqlHelper.ConnectionString = Configuration.GetConnectionString("InvoiceApiDB");
             services.Configure<SMTPConfig>(Configuration.GetSection("SMTPConfig"));
             //Resolve Dependancy Injection
