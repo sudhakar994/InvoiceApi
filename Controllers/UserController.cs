@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InvoiceApi.Constants;
 using InvoiceApi.IServices;
 using InvoiceApi.Models;
 using InvoiceApi.Services;
@@ -93,7 +94,7 @@ namespace InvoiceApi.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("Register")]
+        [Route("register")]
         public async Task<IActionResult>  Register(User user)
         {
             if (ModelState.IsValid)
@@ -109,15 +110,23 @@ namespace InvoiceApi.Controllers
                     //send email
                     if (!string.IsNullOrEmpty(response.JwtToken))
                     {
-                      await
-                            _emailService.SendEmailVerificationCode(user);
+
+                        //  await _emailService.SendEmailVerificationCode(user);
+
+                        response.VerificationCode = string.Empty;
                     }
                     return Ok(response);
                 } 
 
+                else if (response != null && response?.Status.ToLower() == "verified")
+                {
+                    return Ok(response);
+                }
+
                 else
                 {
-                    return BadRequest("Email Is Already Register With Us");
+                    response.Status = "Failure";
+                    return Ok(response);
                 }
                
                 
