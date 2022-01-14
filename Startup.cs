@@ -68,7 +68,6 @@ namespace InvoiceApi
             services.AddSingleton<IConfiguration>(Configuration);
             SqlHelper.ConnectionString = Configuration.GetConnectionString("InvoiceApiDB");
             services.Configure<SMTPConfig>(Configuration.GetSection("SMTPConfig"));
-
             //Resolve Dependancy Injection
 
             ResolveDependancy.RegisterServices(services);
@@ -97,7 +96,7 @@ namespace InvoiceApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Invoice Expo Api v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Eforms Buddy Api v1");
             });
         }
     }
