@@ -10,6 +10,7 @@ using InvoiceApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -24,8 +25,8 @@ namespace InvoiceApi
     {
         #region  Variable Declaration
 
-        private static readonly string CipherKey = "xafmg2H0bLk2kZc0PvklMQ==";
-        private static readonly string CipherIV = "VcCvRGkh9Z3NyN/09/Cspg==";
+        private  readonly string CipherKey = "xafmg2H0bLk2kZc0PvklMQ==";
+        private  readonly string CipherIV = "VcCvRGkh9Z3NyN/09/Cspg==";
         #endregion
         public Startup(IConfiguration configuration)
         {
@@ -68,6 +69,8 @@ namespace InvoiceApi
                                       .AllowAnyMethod()
                                       .AllowAnyHeader());
             });
+
+
             services.AddControllers();
 
             services.AddSingleton<IConfiguration>(Configuration);
@@ -80,6 +83,7 @@ namespace InvoiceApi
 
             ResolveDependancy.RegisterServices(services);
             services.AddSwaggerGen();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,7 +97,12 @@ namespace InvoiceApi
             app.UseExceptionHandlerMiddleware();
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseCors("CorsPolicy");
+
+            app.UseCors(x => x
+         .SetIsOriginAllowed(origin => true)
+         .AllowAnyMethod()
+         .AllowAnyHeader()
+         .AllowCredentials());
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
@@ -106,6 +115,7 @@ namespace InvoiceApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Eforms Buddy Api v1");
             });
+
         }
     }
 }

@@ -22,15 +22,18 @@ namespace InvoiceApi
 
 		public async Task Invoke(HttpContext context)
 		{
-			
+			//var url = context.Request.Headers["Referer"].ToString();
 			bool isValidTaken = false;
 			var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 			var path = context.Request.Path.Value != null ? context.Request.Path.Value.ToLower():string.Empty;
+			//not validate register and log in method
 			if (path.Contains("authenticate") || path.Contains("swagger") || path.Contains("register"))
 			{
 
 				await _next(context);
-			}
+			} 
+
+
 
 			else
 			{
@@ -51,7 +54,18 @@ namespace InvoiceApi
 
 				else
 				{
-					context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+					//handle preflighted request
+					if (context.Request.Method == "OPTIONS")
+					{
+						await _next.Invoke(context);
+					}
+					else
+					{
+						context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+					}
+					
+					
+						
 				}
 			}
 			//if token present in header validate token
@@ -59,7 +73,7 @@ namespace InvoiceApi
 		}
 
 
-
+	
 		public bool ValidateCurrentToken(string token)
 		{
 			var secretKey = Utility.GetAppSettings(UserConstants.SecretKey);
