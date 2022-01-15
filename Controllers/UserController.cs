@@ -107,6 +107,8 @@ namespace InvoiceApi.Controllers
                     user.UserId = response.UserId;
                     user.VerificationCode = response.VerificationCode;
                     response.JwtToken = _userService.GenerateJwtToken(user);
+                    response.Email = user.Email;
+                    response.UserName = user.UserName;
                     //send email
                     if (!string.IsNullOrEmpty(response.JwtToken))
                     {
