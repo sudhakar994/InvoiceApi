@@ -49,7 +49,7 @@ namespace InvoiceApi.Services
             Email userEmail = new Email();
             userEmail = PlaceHolderEmailContent(userModel);
             userEmail.ToEmail = userModel.Email;
-            userEmail.Subject = "Welcome to Invoice Expo";
+            userEmail.Subject = "Welcome to EFormsBuddy";
             userEmail.Body = UpdatePlaceHolders(GetEmailBody("\\SendVerificationCode.html"), userEmail.PlaceHolders);
 
             await SendEmail(userEmail);
