@@ -11,5 +11,6 @@ namespace InvoiceApi.IServices
     {
         string GenerateJwtToken(User user);
          Task<User> Register(User user);
+        Task<LoginResponse> ValidateUser(LoginRequest loginRequest);
     }
 }

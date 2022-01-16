@@ -51,19 +51,31 @@ namespace InvoiceApi.Controllers
         [HttpPost]
         [Route("authenticate")]
         [AllowAnonymous]
-        public IActionResult Authenticate(LoginRequest loginRequest)
+        public async Task<IActionResult> Authenticate(LoginRequest loginRequest)
         {
+            var response = new LoginResponse();
             if (ModelState.IsValid)
             {
-               
-                var response = _userService.GenerateJwtToken(new User { UserId= "",UserName="Sudhakaran",Email=loginRequest.Email });
+                response = await _userService.ValidateUser(loginRequest);
+                if(response.Status== StatusType.Success.ToString())
+                {
+                    //if user name and password is correct then generate jwt token
+                    response.JwtToken = _userService.GenerateJwtToken(new User { UserId = response.UserId,Email= loginRequest.Email,UserName= response.UserName});
+                    return Ok(response);
+                }
 
-                return Ok(response);
+                else
+                {
+                    response.Message = "Invalid credentials";
+                    return Ok(response);
+                }
+
+                
             }
 
             else
             {
-                return BadRequest();
+                return BadRequest(response);
             }
            
         }
@@ -125,6 +137,7 @@ namespace InvoiceApi.Controllers
                     return Ok(response);
                 }
 
+
                 else
                 {
                     response.Status = "Failure";
@@ -142,5 +155,8 @@ namespace InvoiceApi.Controllers
         }
 
         #endregion
+
+
+       
     }
 }

@@ -9,5 +9,6 @@ namespace InvoiceApi.IRepository
    public interface IUserReposiotry
     {
          Task<User> Register(User user);
+        Task<LoginResponse> ValidateUser(LoginRequest loginRequest);
     }
 }

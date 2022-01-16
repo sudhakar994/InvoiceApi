@@ -24,5 +24,11 @@ namespace InvoiceApi.Constants
         Failure,
         InProgress
     }
+
+    public enum StatusType
+    {
+        Success,
+        Failure
+    }
     
 }

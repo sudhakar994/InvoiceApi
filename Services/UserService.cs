@@ -44,7 +44,13 @@ namespace InvoiceApi.Services
 
         public async  Task<User> Register(User user)
         {
-            return await _userReposiotry.Register(user);
+           return await _userReposiotry.Register(user);
+           
+        }
+
+        public async Task<LoginResponse> ValidateUser(LoginRequest loginRequest)
+        {
+            return await _userReposiotry.ValidateUser(loginRequest);
         }
     }
 }

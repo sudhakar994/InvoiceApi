@@ -66,5 +66,24 @@ namespace InvoiceApi.Repository
 
             return response;
         }
+
+        public async Task<LoginResponse> ValidateUser(LoginRequest loginRequest)
+        {
+            var loginResponse = new LoginResponse { Status = StatusType.Failure.ToString() };
+            var userDetail = new UserDetail();
+            userDetail = await _sqlService.GetSingleExecuteQueryasync<UserDetail>(SqlQuery.GetUserDetailsByEmail, loginRequest);
+            if(userDetail != null && !string.IsNullOrEmpty(userDetail.Password) && !string.IsNullOrEmpty(userDetail.PasswordSalt))
+            {
+                loginRequest.Password= Utility.EncryptPassword(loginRequest.Password, userDetail.PasswordSalt);
+
+                if (userDetail.Password.Equals(loginRequest.Password))
+                {
+                    loginResponse.Status = StatusType.Success.ToString();
+                    loginResponse.UserId = userDetail.UserId.ToString();
+                    loginResponse.UserName = userDetail.UserName;
+                }
+            }
+            return loginResponse;
+        }
     }
 }
