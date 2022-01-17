@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InvoiceApi.Constants;
+using InvoiceApi.IRepository;
 using InvoiceApi.IServices;
 using InvoiceApi.Models;
 using InvoiceApi.Services;
@@ -18,30 +19,24 @@ namespace InvoiceApi.Controllers
 {
     [Route("api/user")]
     [ApiController]
+    [Produces("application/json")]
     public class UserController : ControllerBase
     {
+        #region Variable Declaration
+
         private readonly IUserService _userService;
         private readonly IJwtService _jwtService;
         private readonly IHtmlReaderService _htmlReaderService;
         private readonly IEmailService _emailService;
+        #endregion
         public UserController(IUserService userService, IJwtService jwtService, IHtmlReaderService htmlReaderService, IEmailService emailService)
         {
             _userService = userService;
             _jwtService = jwtService;
             _htmlReaderService = htmlReaderService;
-            _emailService = emailService;
+            _emailService = emailService;            
 
         }
-
-        [HttpGet]
-        [Route("getuser")]
-        public IActionResult GetUser(string name)
-        {
-            Guid userId = _jwtService.GetUserIdFromJwt();
-            string obj = "Hi" + name;
-            return Ok(obj);
-        }
-
 
         #region Login
         /// <summary>
@@ -55,8 +50,8 @@ namespace InvoiceApi.Controllers
         {
             if (ModelState.IsValid)
             {
-               
-                var response = _userService.GenerateJwtToken(new User { UserId= "",UserName="Sudhakaran",Email=loginRequest.Email });
+
+                var response = _userService.GenerateJwtToken(new User { UserId = "", UserName = "Sudhakaran", Email = loginRequest.Email });
 
                 return Ok(response);
             }
@@ -65,22 +60,22 @@ namespace InvoiceApi.Controllers
             {
                 return BadRequest();
             }
-           
+
         }
 
         #endregion
 
         #region Download Pdf
-        [HttpGet] 
+        [HttpGet]
         [Route("DownloadPdf")]
-        public async Task<IActionResult>  DownloadPdf()
+        public async Task<IActionResult> DownloadPdf()
         {
             string fileName = "testFile.pdf";
             var invoice = new Invoice { InvoiceNo = "009898" };
             var html = await _htmlReaderService.ReadHtmlFileAndConvert("InvoiceTemplates/BlueInvoice.cshtml", invoice);
             var pdfBytes = PdfService.GeneratePdf(html);
             if (pdfBytes != null)
-                return  File(pdfBytes, "application/pdf", fileName);
+                return File(pdfBytes, "application/pdf", fileName);
             else
                 return BadRequest("Error occured");
         }
@@ -95,13 +90,13 @@ namespace InvoiceApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult>  Register(User user)
+        public async Task<IActionResult> Register(User user)
         {
             if (ModelState.IsValid)
             {
-                
-              var response =    await _userService.Register(user);
-                if(response != null && !string.IsNullOrEmpty(response.UserId) && !string.IsNullOrEmpty(response.VerificationCode) && response?.Status.ToLower() =="success")
+
+                var response = await _userService.Register(user);
+                if (response != null && !string.IsNullOrEmpty(response.UserId) && !string.IsNullOrEmpty(response.VerificationCode) && response?.Status.ToLower() == "success")
                 {
                     //generate Jwt Token
                     user.UserId = response.UserId;
@@ -113,12 +108,12 @@ namespace InvoiceApi.Controllers
                     if (!string.IsNullOrEmpty(response.JwtToken))
                     {
 
-                          //await _emailService.SendEmailVerificationCode(user);
+                        //await _emailService.SendEmailVerificationCode(user);
 
                         response.VerificationCode = string.Empty;
                     }
                     return Ok(response);
-                } 
+                }
 
                 else if (response != null && response?.Status.ToLower() == "verified")
                 {
@@ -130,15 +125,51 @@ namespace InvoiceApi.Controllers
                     response.Status = "Failure";
                     return Ok(response);
                 }
-               
-                
+
+
             }
             else
             {
                 return BadRequest();
-            } 
+            }
 
-          
+
+        }
+
+        #endregion
+
+        #region Validation Verification Code to Email
+
+        [HttpPost]
+        [Route("validateverficationcode")]
+        public async Task<IActionResult> ValidateVerficationCode(VerificationRequest verificationRequest)
+        {
+            verificationRequest.UserId = _jwtService.GetUserIdFromJwt().ToString();
+
+            if (!string.IsNullOrEmpty(verificationRequest.UserId) && !string.IsNullOrWhiteSpace(verificationRequest.VerificationCode))
+            {
+                var response = await _userService.ValidateVerficationCode(verificationRequest);
+                return Ok(response);
+            }
+
+            return BadRequest();
+
+        }
+        #endregion
+
+        #region Resend Verification Code to Email
+        [HttpPost]
+        [Route("resendcode")]
+        public async Task<IActionResult> ResendVerificationCode(VerificationRequest verificationRequest)
+        {
+            verificationRequest.UserId = _jwtService.GetUserIdFromJwt().ToString();
+            if (verificationRequest.UserId != null)
+            {
+                var response = await _userService.ResendCode(verificationRequest);
+                return Ok(response);
+            }
+            return BadRequest();
+
         }
 
         #endregion

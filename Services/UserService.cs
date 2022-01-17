@@ -14,7 +14,7 @@ using InvoiceApi.IRepository;
 
 namespace InvoiceApi.Services
 {
-    public class UserService:IUserService
+    public class UserService : IUserService
     {
         private readonly IUserReposiotry _userReposiotry;
         public UserService(IUserReposiotry userRepository)
@@ -42,9 +42,19 @@ namespace InvoiceApi.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public async  Task<User> Register(User user)
+        public async Task<User> Register(User user)
         {
             return await _userReposiotry.Register(user);
+        }
+
+        public async Task<string> ValidateVerficationCode(VerificationRequest verificationRequest)
+        {
+            return await _userReposiotry.ValidateVerficationCode(verificationRequest);
+        }
+
+        public async Task<string> ResendCode(VerificationRequest verificationRequest)
+        {
+            return await _userReposiotry.ResendCode(verificationRequest);
         }
     }
 }

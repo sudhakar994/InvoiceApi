@@ -11,28 +11,27 @@ using System.Threading.Tasks;
 using Dapper;
 namespace InvoiceApi.Repository
 {
-    public class UserRepository: IUserReposiotry
+    public class UserRepository : IUserReposiotry
     {
         private readonly ISqlService _sqlService;
 
         public UserRepository(ISqlService sqlService)
         {
             _sqlService = sqlService;
-         
         }
         public async Task<User> Register(User user)
         {
             var response = new User();
             // check user is already registered
-            var emailCount =await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.EmailCountCheck, user) ;
+            var emailCount = await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.EmailCountCheck, user);
             if (emailCount > 0)
             {
-                 var status = await _sqlService.GetSingleExecuteQueryasync<string>(SqlQuery.CheckStatusOfUser, user) ?? string.Empty;
+                var status = await _sqlService.GetSingleExecuteQueryasync<string>(SqlQuery.CheckStatusOfUser, user) ?? string.Empty;
                 if (!string.IsNullOrEmpty(status) && status == RegistrationStatus.InProgress.ToString())
                 {
                     response.VerificationCode = Utility.GenerateVerificationCode();
-                   Guid alreadyregisteredUserId= await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.GetUserId, user);
-                    if(alreadyregisteredUserId != Guid.Empty)
+                    Guid alreadyregisteredUserId = await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.GetUserId, user);
+                    if (alreadyregisteredUserId != Guid.Empty)
                     {
                         response.UserId = alreadyregisteredUserId.ToString();
                         await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.UpdateVerficationCode, response);
@@ -43,10 +42,9 @@ namespace InvoiceApi.Repository
                 {
                     response.Status = status;
                 }
-               
 
             }
-            else 
+            else
             {
                 //encrypt password
                 user.PasswordSalt = Utility.CreateSalt(8);
@@ -56,13 +54,38 @@ namespace InvoiceApi.Repository
                 user.RoleId = Convert.ToInt32(UserRole.user);
                 var query = @"Insert Into tbl_UserDetails(UserName,Email,Password,Password_Salt,Verification_Code,Status,Role_Id) OUTPUT INSERTED.User_Id values (@UserName,@Email,@Password,@PasswordSalt,@VerificationCode,@Status,@RoleId)";
                 Guid userId = await _sqlService.GetSingleExecuteQueryasync<Guid>(query, user);
-                if(userId != Guid.Empty)
+                if (userId != Guid.Empty)
                 {
                     response.UserId = userId.ToString();
                     response.VerificationCode = user.VerificationCode;
-                    response.Status ="Success";
+                    response.Status = "Success";
                 }
             }
+
+            return response;
+        }
+
+        #region User Verification Status Update
+        /// <summary>
+        /// Update verified User Status
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="verificationCode"></param>
+        /// <returns></returns>
+        public async Task<string> ValidateVerficationCode(VerificationRequest verificationRequest)
+        {
+
+            int affectedRow = _sqlService.Execute_Query(SqlQuery.UpdateVerifiedStatus, verificationRequest);
+            var response = affectedRow > 0 ? Messages.Success : Messages.Failed;
+
+            return response;
+        }
+        #endregion
+        public async Task<string> ResendCode(VerificationRequest verificationRequest)
+        {
+            verificationRequest.VerificationCode = Utility.GenerateVerificationCode();
+            int affectedRow = _sqlService.Execute_Query(SqlQuery.ResendVerificationCode, verificationRequest);
+            var response = affectedRow > 0 ? Messages.Success : Messages.Failed;
 
             return response;
         }

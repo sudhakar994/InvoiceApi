@@ -17,5 +17,7 @@ namespace InvoiceApi.Constants
         public const string RecordNotAvaiable = "No Records Found !";
         public const string BadRequestMsg = "Invalid Request!";
         public const string InvalidData = "Invalid Input!";
+        public const string Success = "Success";
+        public const string Failed = "Failed";
     }
 }

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.IRepository
 {
-   public interface IUserReposiotry
+    public interface IUserReposiotry
     {
-         Task<User> Register(User user);
+        Task<User> Register(User user);
+        Task<string> ValidateVerficationCode(VerificationRequest verificationRequest);
+        Task<string> ResendCode(VerificationRequest verificationRequest);
     }
 }

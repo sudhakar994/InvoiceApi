@@ -12,6 +12,7 @@ namespace InvoiceApi.IServices
     {
         IEnumerable<T> GetDataProcedure<T>(string storedProcedure, object inputParameter);
         int Execute(string storedProcedure, object inputParameter);
+        int Execute_Query(string query,object inputParameter);
         SqlMapper.GridReader GetMultipleResultSet(string storedProcedure, object InputParameter);
         IEnumerable<T> GetDataTableQuery<T>(string query, object inputParameter);
         IDataReader GetDataTable(string storeProcedure, object inputParameter);

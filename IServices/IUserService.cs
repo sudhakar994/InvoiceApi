@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.IServices
 {
-     public interface IUserService
+    public interface IUserService
     {
         string GenerateJwtToken(User user);
-         Task<User> Register(User user);
+        Task<User> Register(User user);
+        Task<string> ValidateVerficationCode(VerificationRequest user);
+        Task<string> ResendCode(VerificationRequest verificationRequest);
+
     }
 }
