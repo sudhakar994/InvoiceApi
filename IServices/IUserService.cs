@@ -14,7 +14,6 @@ namespace InvoiceApi.IServices
         Task<string> ValidateVerficationCode(VerificationRequest user);
         Task<string> ResendCode(VerificationRequest verificationRequest);
 
-         Task<User> Register(User user);
         Task<LoginResponse> ValidateUser(LoginRequest loginRequest);
     }
 }

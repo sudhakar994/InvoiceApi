@@ -52,9 +52,6 @@ namespace InvoiceApi.Controllers
             if (ModelState.IsValid)
             {
 
-                var response = _userService.GenerateJwtToken(new User { UserId = "", UserName = "Sudhakaran", Email = loginRequest.Email });
-
-                return Ok(response);
                 response = await _userService.ValidateUser(loginRequest);
                 if(response.Status== StatusType.Success.ToString())
                 {

@@ -11,7 +11,6 @@ namespace InvoiceApi.IRepository
         Task<User> Register(User user);
         Task<string> ValidateVerficationCode(VerificationRequest verificationRequest);
         Task<string> ResendCode(VerificationRequest verificationRequest);
-         Task<User> Register(User user);
         Task<LoginResponse> ValidateUser(LoginRequest loginRequest);
     }
 }
