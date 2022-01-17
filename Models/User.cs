@@ -10,7 +10,7 @@ namespace InvoiceApi.Models
     public class User
     {
         [DataMember,Required, RegularExpression(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", ErrorMessage = "Invalid Email")]
-        [StringLength(120, ErrorMessage = "Maximum 120 characters for email")]
+        [StringLength(120, ErrorMessage = "Maximum 120 characters for email is allowed")]
         public string Email { get; set; }
         [DataMember, Required]
         public string UserName { get; set; }

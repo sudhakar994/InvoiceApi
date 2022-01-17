@@ -11,6 +11,7 @@ namespace InvoiceApi.Models
     public class LoginRequest
     {
         [DataMember,Required, RegularExpression(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*",ErrorMessage ="Invalid Email")]
+        [StringLength(120, ErrorMessage = "Maximum 120 characters for email is allowed")]
         public string Email { get; set; }
         [DataMember,Required]
         public string Password { get; set; }
