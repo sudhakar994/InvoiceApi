@@ -158,13 +158,21 @@ namespace InvoiceApi.Controllers
         [Route("validateverficationcode")]
         public async Task<IActionResult> ValidateVerficationCode(VerificationRequest verificationRequest)
         {
-            verificationRequest.UserId = _jwtService.GetUserIdFromJwt().ToString();
-
-            if (!string.IsNullOrEmpty(verificationRequest.UserId) && !string.IsNullOrWhiteSpace(verificationRequest.VerificationCode))
+            if (ModelState.IsValid)
             {
-                var response = await _userService.ValidateVerficationCode(verificationRequest);
-                return Ok(response);
+                verificationRequest.UserId = _jwtService.GetUserIdFromJwt().ToString();
+
+                if (!string.IsNullOrEmpty(verificationRequest.UserId) && !string.IsNullOrWhiteSpace(verificationRequest.VerificationCode))
+                {
+                    var response = await _userService.ValidateVerficationCode(verificationRequest);
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
+           
 
             return BadRequest();
 
@@ -176,11 +184,14 @@ namespace InvoiceApi.Controllers
         [Route("resendcode")]
         public async Task<IActionResult> ResendVerificationCode(VerificationRequest verificationRequest)
         {
-            verificationRequest.UserId = _jwtService.GetUserIdFromJwt().ToString();
-            if (verificationRequest.UserId != null)
+            if (ModelState.IsValid)
             {
-                var response = await _userService.ResendCode(verificationRequest);
-                return Ok(response);
+                verificationRequest.UserId = _jwtService.GetUserIdFromJwt().ToString();
+                if (verificationRequest.UserId != null)
+                {
+                    var response = await _userService.ResendCode(verificationRequest);
+                    return Ok(response);
+                }
             }
             return BadRequest();
 
