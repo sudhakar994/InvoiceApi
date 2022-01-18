@@ -13,7 +13,7 @@ namespace InvoiceApi.IServices
         Task<User> Register(User user);
         Task<string> ValidateVerficationCode(VerificationRequest user);
         Task<string> ResendCode(VerificationRequest verificationRequest);
-
+        Task<ResendEmail> ResendEmail(string userId);
         Task<LoginResponse> ValidateUser(LoginRequest loginRequest);
     }
 }

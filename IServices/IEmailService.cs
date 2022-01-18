@@ -9,6 +9,6 @@ namespace InvoiceApi.IServices
     public interface IEmailService
     {
         Task SendVerificationCode(User user);
-         Task SendEmailVerificationCode(User userModel);
+        Task WelcomeEmail(User user);
     }
 }

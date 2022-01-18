@@ -44,8 +44,8 @@ namespace InvoiceApi.Services
 
         public async Task<User> Register(User user)
         {
-           return await _userReposiotry.Register(user);
-           
+            return await _userReposiotry.Register(user);
+
         }
 
         public async Task<LoginResponse> ValidateUser(LoginRequest loginRequest)
@@ -61,6 +61,10 @@ namespace InvoiceApi.Services
         public async Task<string> ResendCode(VerificationRequest verificationRequest)
         {
             return await _userReposiotry.ResendCode(verificationRequest);
+        }
+        public async Task<ResendEmail> ResendEmail(string userId)
+        {
+            return await _userReposiotry.ResendEmail(userId);
         }
     }
 }

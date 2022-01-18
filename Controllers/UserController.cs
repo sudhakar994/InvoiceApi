@@ -34,7 +34,7 @@ namespace InvoiceApi.Controllers
             _userService = userService;
             _jwtService = jwtService;
             _htmlReaderService = htmlReaderService;
-            _emailService = emailService;            
+            _emailService = emailService;
 
         }
 
@@ -53,10 +53,10 @@ namespace InvoiceApi.Controllers
             {
 
                 response = await _userService.ValidateUser(loginRequest);
-                if(response.Status== StatusType.Success.ToString())
+                if (response.Status == StatusType.Success.ToString())
                 {
                     //if user name and password is correct then generate jwt token
-                    response.JwtToken = _userService.GenerateJwtToken(new User { UserId = response.UserId,Email= loginRequest.Email,UserName= response.UserName});
+                    response.JwtToken = _userService.GenerateJwtToken(new User { UserId = response.UserId, Email = loginRequest.Email, UserName = response.UserName });
                     return Ok(response);
                 }
 
@@ -66,7 +66,7 @@ namespace InvoiceApi.Controllers
                     return Ok(response);
                 }
 
-                
+
             }
 
             else
@@ -107,7 +107,6 @@ namespace InvoiceApi.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var response = await _userService.Register(user);
                 if (response != null && !string.IsNullOrEmpty(response.UserId) && !string.IsNullOrEmpty(response.VerificationCode) && response?.Status.ToLower() == "success")
                 {
@@ -120,9 +119,7 @@ namespace InvoiceApi.Controllers
                     //send email
                     if (!string.IsNullOrEmpty(response.JwtToken))
                     {
-
-                        await _emailService.SendEmailVerificationCode(user);
-
+                        await _emailService.SendVerificationCode(user);
                         response.VerificationCode = string.Empty;
                     }
                     return Ok(response);
@@ -132,22 +129,16 @@ namespace InvoiceApi.Controllers
                 {
                     return Ok(response);
                 }
-
-
                 else
                 {
                     response.Status = "Failure";
                     return Ok(response);
                 }
-
-
             }
             else
             {
                 return BadRequest();
             }
-
-
         }
 
         #endregion
@@ -165,6 +156,17 @@ namespace InvoiceApi.Controllers
                 if (!string.IsNullOrEmpty(verificationRequest.UserId) && !string.IsNullOrWhiteSpace(verificationRequest.VerificationCode))
                 {
                     var response = await _userService.ValidateVerficationCode(verificationRequest);
+
+                    if (response == Messages.Success)
+                    {
+                        //Send Welcome Email
+                        var user = new User();
+                        var sendresponse = await _userService.ResendEmail(verificationRequest.UserId);
+
+                        user.Email = sendresponse.Email;
+                        user.UserName = sendresponse.UserName;
+                        await _emailService.WelcomeEmail(user);
+                    }
                     return Ok(response);
                 }
                 else
@@ -172,8 +174,6 @@ namespace InvoiceApi.Controllers
                     return BadRequest();
                 }
             }
-           
-
             return BadRequest();
 
         }
@@ -184,12 +184,23 @@ namespace InvoiceApi.Controllers
         [Route("resendcode")]
         public async Task<IActionResult> ResendVerificationCode(VerificationRequest verificationRequest)
         {
+            var user = new User();
             if (ModelState.IsValid)
             {
                 verificationRequest.UserId = _jwtService.GetUserIdFromJwt().ToString();
                 if (verificationRequest.UserId != null)
                 {
                     var response = await _userService.ResendCode(verificationRequest);
+
+                    //Get Resend Email detail
+                    var resendresponse = await _userService.ResendEmail(verificationRequest.UserId);
+
+                    //Email Service
+                    user.UserName = resendresponse.UserName;
+                    user.Email = resendresponse.Email;
+                    user.VerificationCode = resendresponse.VerificationCode;
+                    await _emailService.SendVerificationCode(user);
+
                     return Ok(response);
                 }
             }
@@ -199,7 +210,15 @@ namespace InvoiceApi.Controllers
 
         #endregion
 
+        //#region
+        //public async Task<User> SendEmailUserDetails(string userId)
+        //{
+        //    var verificationRequest = new User();
+        //    //Get Resend Email detail
+        //    verificationRequest = await _userService.ResendEmail(userId);
+        //    return verificationRequest;
+        //}
+        //#endregion
 
-       
     }
 }

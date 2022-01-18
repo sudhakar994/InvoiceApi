@@ -90,14 +90,24 @@ namespace InvoiceApi.Repository
             return response;
         }
 
+        # region Resend Email
+        public async Task<ResendEmail> ResendEmail(string userId)
+        {
+            var resendResponse = new ResendEmail();
+            resendResponse = await _sqlService.GetSingleExecuteQueryasync<ResendEmail>(SqlQuery.GetResendEmail, new { UserId = userId });
+            return resendResponse;
+        }
+
+        #endregion
+
         public async Task<LoginResponse> ValidateUser(LoginRequest loginRequest)
         {
             var loginResponse = new LoginResponse { Status = StatusType.Failure.ToString() };
             var userDetail = new UserDetail();
             userDetail = await _sqlService.GetSingleExecuteQueryasync<UserDetail>(SqlQuery.GetUserDetailsByEmail, loginRequest);
-            if(userDetail != null && !string.IsNullOrEmpty(userDetail.Password) && !string.IsNullOrEmpty(userDetail.PasswordSalt))
+            if (userDetail != null && !string.IsNullOrEmpty(userDetail.Password) && !string.IsNullOrEmpty(userDetail.PasswordSalt))
             {
-                loginRequest.Password= Utility.EncryptPassword(loginRequest.Password, userDetail.PasswordSalt);
+                loginRequest.Password = Utility.EncryptPassword(loginRequest.Password, userDetail.PasswordSalt);
 
                 if (userDetail.Password.Equals(loginRequest.Password))
                 {
