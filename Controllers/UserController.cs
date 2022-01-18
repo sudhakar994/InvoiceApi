@@ -121,7 +121,7 @@ namespace InvoiceApi.Controllers
                     if (!string.IsNullOrEmpty(response.JwtToken))
                     {
 
-                        //await _emailService.SendEmailVerificationCode(user);
+                        await _emailService.SendEmailVerificationCode(user);
 
                         response.VerificationCode = string.Empty;
                     }
