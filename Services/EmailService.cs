@@ -24,19 +24,7 @@ namespace InvoiceApi.Services
         {
             _smtpConfig = smtpConfig.Value;
         }
-        #endregion
-
-        #region Send Verification Code  to Email
-        /// <summary>
-        /// Send Verication Code to Email
-        /// </summary>
-        /// <param name="user"></param> 
-        /// <returns></returns>
-        public Task SendVerificationCode(User user)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
+        #endregion       
 
         #region  Send Email Verification Code 
         /// <summary>
@@ -44,16 +32,29 @@ namespace InvoiceApi.Services
         /// </summary>
         /// <param name="userModel"></param>
         /// <returns></returns>
-        public async Task SendEmailVerificationCode(User userModel)
+        public async Task SendVerificationCode(User user)
         {
             Email userEmail = new Email();
-            userEmail = PlaceHolderEmailContent(userModel);
-            userEmail.ToEmail = userModel.Email;
+            userEmail = PlaceHolderEmailContent(user);
+            userEmail.ToEmail = user.Email;
             userEmail.Subject = "Welcome to EFormsBuddy";
             userEmail.Body = UpdatePlaceHolders(GetEmailBody("\\SendVerificationCode.html"), userEmail.PlaceHolders);
 
             await SendEmail(userEmail);
             //return msg; 
+        }
+        #endregion
+
+        #region After user account verify  to send  welcome email 
+        public async Task WelcomeEmail(User user)
+        {
+            Email userEmail = new Email();
+            userEmail = PlaceHolderEmailContent(user);
+            userEmail.ToEmail = user.Email;
+            userEmail.Subject = "Account Verified";
+            userEmail.Body = UpdatePlaceHolders(GetEmailBody("\\WelcomeEmail.html"), userEmail.PlaceHolders);
+
+            await SendEmail(userEmail);
         }
         #endregion
 
@@ -89,6 +90,7 @@ namespace InvoiceApi.Services
             await smtpClient.SendMailAsync(mail);
         }
         #endregion
+
         #region Mail Template and PlaceHolder Dynamic value
         /// <summary>
         /// UpdatePlaceHolders
