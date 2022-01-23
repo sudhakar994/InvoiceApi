@@ -52,10 +52,10 @@ namespace InvoiceApi.Repository
                 user.VerificationCode = Utility.GenerateVerificationCode();
                 user.Status = Status.InProgress.ToString();
                 user.RoleId = Convert.ToInt32(UserRole.user);
-                var query = @"Insert Into tbl_UserDetails(UserName,Email,Password,Password_Salt,Verification_Code,Status,Role_Id) OUTPUT INSERTED.User_Id values (@UserName,@Email,@Password,@PasswordSalt,@VerificationCode,@Status,@RoleId)";
-                Guid userId = await _sqlService.GetSingleExecuteQueryasync<Guid>(query, user);
+                Guid userId = await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.SaveUser, user);
                 if (userId != Guid.Empty)
                 {
+                    await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.SaveUserSettings,new { UserId=userId });
                     response.UserId = userId.ToString();
                     response.VerificationCode = user.VerificationCode;
                     response.Status = "Success";
@@ -107,6 +107,53 @@ namespace InvoiceApi.Repository
                 }
             }
             return loginResponse;
+        }
+
+
+        public async Task<PasswordResetResponse> ResetPassword(ResetPasswordRequest resetPasswordRequest)
+        {
+            var response = new PasswordResetResponse { Status = StatusType.Failure.ToString() };
+
+            var emailCount = await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.CheckPasswordResetEmail, resetPasswordRequest);
+            
+            if(emailCount > 0)
+            {
+
+
+              Guid userId= await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.GetUserId, resetPasswordRequest);
+                var paaswordAttempCount = await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.GetPasswordResetAttemptCount, new { UserId= userId });
+                if (userId != Guid.Empty && paaswordAttempCount < 5)
+                {
+                      await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.UpdatePasswordResetCount, new { UserId= userId });
+                    await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.UpdatePasswordResetStatus, new { UserId = userId });
+                    response.UserId = userId.ToString();
+                    response.Status = StatusType.Success.ToString();
+                }
+                else
+                {
+                    response.Status = "Multiple Attempt";
+                    response.Messages = "You tried multiple times please contact support";
+                }
+            }
+            return response;
+            
+        }
+
+        
+        public async  Task<ValidateResetPasswordLinkResponse> ValidateResetPasswordLink(ValidateResetPasswordLinkRequest validateResetPasswordLinkRequest)
+        {
+            var response = new ValidateResetPasswordLinkResponse { Status = StatusType.Failure.ToString() };
+            if (!string.IsNullOrEmpty(validateResetPasswordLinkRequest.UserId))
+            {
+                var userId = Guid.Parse(validateResetPasswordLinkRequest.UserId);
+                var userExistCount = await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.GetUserIdCount, new { UserId = userId });
+                if (userExistCount > 0)
+                {
+                    response.Status = StatusType.Success.ToString();
+                }
+            }
+
+            return response;
         }
     }
 }

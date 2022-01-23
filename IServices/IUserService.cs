@@ -15,5 +15,7 @@ namespace InvoiceApi.IServices
         Task<string> ResendCode(VerificationRequest verificationRequest);
 
         Task<LoginResponse> ValidateUser(LoginRequest loginRequest);
+        Task<PasswordResetResponse> ResetPassword(ResetPasswordRequest resetPasswordRequest);
+        Task<ValidateResetPasswordLinkResponse> ValidateResetPasswordLink(ValidateResetPasswordLinkRequest validateResetPasswordLinkRequest);
     }
 }

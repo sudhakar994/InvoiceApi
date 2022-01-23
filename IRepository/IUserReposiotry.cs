@@ -12,5 +12,7 @@ namespace InvoiceApi.IRepository
         Task<string> ValidateVerficationCode(VerificationRequest verificationRequest);
         Task<string> ResendCode(VerificationRequest verificationRequest);
         Task<LoginResponse> ValidateUser(LoginRequest loginRequest);
+        Task<PasswordResetResponse> ResetPassword(ResetPasswordRequest resetPasswordRequest);
+        Task<ValidateResetPasswordLinkResponse> ValidateResetPasswordLink(ValidateResetPasswordLinkRequest validateResetPasswordLinkRequest);
     }
 }
