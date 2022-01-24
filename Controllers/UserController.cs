@@ -253,5 +253,26 @@ namespace InvoiceApi.Controllers
         }
         #endregion
 
+        #region Update Password
+        /// <summary>
+        /// UpdatePassword
+        /// </summary>
+        /// <param name="updatePasswordRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("updatepassword")]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _userService.UpdatePassword(updatePasswordRequest);
+
+                return Ok(response);
+            }
+
+            return BadRequest();
+        }
+        #endregion
+
     }
 }

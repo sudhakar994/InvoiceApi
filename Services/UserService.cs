@@ -118,6 +118,14 @@ namespace InvoiceApi.Services
             return response;
         }
 
-        
+       public async Task<Base> UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
+        {
+            return await _userReposiotry.UpdatePassword(updatePasswordRequest);
+        }
+
+        public Task<ResendEmail> ResendEmail(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

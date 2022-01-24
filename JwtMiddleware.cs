@@ -27,7 +27,7 @@ namespace InvoiceApi
 			var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 			var path = context.Request.Path.Value != null ? context.Request.Path.Value.ToLower():string.Empty;
 			//not validate register and log in method
-			if (path.Contains("authenticate") || path.Contains("swagger") || path.Contains("register") || path.Contains("resetpassword"))
+			if (path.Contains("authenticate") || path.Contains("swagger") || path.Contains("register") || path.Contains("resetpassword") ||path.Contains("updatepassword"))
 			{
 
 				await _next(context);

@@ -164,6 +164,11 @@ namespace InvoiceApi.Services
             await SendEmail(userEmail);
             //return msg; 
         }
+
+        public Task SendEmailVerificationCode(User userModel)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
     }

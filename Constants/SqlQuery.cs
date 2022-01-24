@@ -26,7 +26,7 @@ namespace InvoiceApi.Constants
         public const string SaveUser = @"Insert Into tbl_UserDetails(UserName,Email,Password,Password_Salt,Verification_Code,Status,Role_Id) OUTPUT INSERTED.User_Id values (@UserName,@Email,@Password,@PasswordSalt,@VerificationCode,@Status,@RoleId)";
         public const string GetUserIdCount = @"Select COUNT(User_Id) From tbl_UserDetails Where User_Id=@UserId And Is_Deleted=0";
         public const string GetResendEmail = "Select [User_Id],UserName,Email,Verification_Code AS VerificationCode From tbl_UserDetails WHERE [User_Id]=@UserId And Is_Deleted=0";
-
-
+        public const string UpdateResetAttempCount = @"Update tbl_User_Settings set Reset_Code_Attempt=0 OUTPUT INSERTED.User_Id WHERE User_Id=@UserId  and Is_Deleted=0";
+        public const string UpdatePassword = @"Update tbl_UserDetails set Password_Reset_Status='Verified', Password=@Password,Password_Salt=@PasswordSalt OUTPUT INSERTED.User_Id WHERE User_Id=@UserId and Password_Reset_Status='InProgress' and Is_Deleted=0";
     }
 }

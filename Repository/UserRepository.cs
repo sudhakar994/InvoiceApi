@@ -165,5 +165,22 @@ namespace InvoiceApi.Repository
 
             return response;
         }
+
+        public async Task<Base> UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
+        {
+            var response = new Base { Status = StatusType.Failure.ToString() };
+            var decryptedUrl = Utility.DecryptString(updatePasswordRequest.Url);
+            updatePasswordRequest.UserId= decryptedUrl?.Split(new Char[] { ',' })[0];
+            updatePasswordRequest.PasswordSalt = Utility.CreateSalt(8);
+            updatePasswordRequest.Password = Utility.EncryptPassword(updatePasswordRequest.Password, updatePasswordRequest.PasswordSalt);
+            Guid affectedRowId = await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.UpdatePassword, updatePasswordRequest);
+            if(affectedRowId != Guid.Empty)
+            {
+                await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.UpdateResetAttempCount, updatePasswordRequest);
+                response.Status = StatusType.Success.ToString();
+            }
+            return response;
+        }
+        
     }
 }

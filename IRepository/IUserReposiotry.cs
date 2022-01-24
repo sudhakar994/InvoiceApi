@@ -15,5 +15,6 @@ namespace InvoiceApi.IRepository
         Task<LoginResponse> ValidateUser(LoginRequest loginRequest);
         Task<PasswordResetResponse> ResetPassword(ResetPasswordRequest resetPasswordRequest);
         Task<ValidateResetPasswordLinkResponse> ValidateResetPasswordLink(ValidateResetPasswordLinkRequest validateResetPasswordLinkRequest);
+        Task<Base> UpdatePassword(UpdatePasswordRequest updatePasswordRequest);
     }
 }
