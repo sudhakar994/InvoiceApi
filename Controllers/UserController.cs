@@ -48,14 +48,16 @@ namespace InvoiceApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate(LoginRequest loginRequest)
         {
+            
             var response = new LoginResponse();
             if (ModelState.IsValid)
             {
-
+                
                 response = await _userService.ValidateUser(loginRequest);
                 if (response.Status == StatusType.Success.ToString())
                 {
                     //if user name and password is correct then generate jwt token
+                    response.Email = loginRequest.Email;
                     response.JwtToken = _userService.GenerateJwtToken(new User { UserId = response.UserId, Email = loginRequest.Email, UserName = response.UserName });
                     return Ok(response);
                 }

@@ -8,5 +8,6 @@ namespace InvoiceApi.Models
     public class LoginResponse:User
     {
        public string Message { get; set; }
+
     }
 }
