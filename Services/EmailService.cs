@@ -129,5 +129,34 @@ namespace InvoiceApi.Services
             return options;
         }
         #endregion
+
+        #region  Send Email Verification Code 
+        /// <summary>
+        /// Send Email Verification Code 
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
+        public async Task ForgotPasswordEmail(User userModel, string url)
+        {
+            List<KeyValuePair<string, string>> placeholders = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("{{PasswordResetUrl}}", url),
+                };
+
+            Email userEmail = new Email();
+            userEmail.ToEmail = userModel.Email;
+            userEmail.Subject = "Reset Your Password !";
+            userEmail.Body = UpdatePlaceHolders(GetEmailBody("\\ForgotPassword.html"), placeholders);
+
+            await SendEmail(userEmail);
+            //return msg; 
+        }
+
+        public Task SendEmailVerificationCode(User userModel)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
     }
 }

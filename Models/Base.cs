@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.Models
 {
-    public class LoginResponse:User
+    public class Base
     {
-       public string Message { get; set; }
+        public string Status { get; set; }
+        public string Messages { get; set; }
 
+        
     }
 }

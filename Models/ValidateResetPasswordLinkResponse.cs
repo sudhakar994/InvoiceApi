@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.Models
 {
-    public class LoginResponse:User
+    public class ValidateResetPasswordLinkResponse:Base
     {
-       public string Message { get; set; }
-
+        public bool IsExpired { get; set; }
     }
 }

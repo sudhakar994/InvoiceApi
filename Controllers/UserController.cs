@@ -48,14 +48,16 @@ namespace InvoiceApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate(LoginRequest loginRequest)
         {
+            
             var response = new LoginResponse();
             if (ModelState.IsValid)
             {
-
+                
                 response = await _userService.ValidateUser(loginRequest);
                 if (response.Status == StatusType.Success.ToString())
                 {
                     //if user name and password is correct then generate jwt token
+                    response.Email = loginRequest.Email;
                     response.JwtToken = _userService.GenerateJwtToken(new User { UserId = response.UserId, Email = loginRequest.Email, UserName = response.UserName });
                     return Ok(response);
                 }
@@ -219,5 +221,70 @@ namespace InvoiceApi.Controllers
         }
 
         #endregion
+
+        #region  Reset Password
+        /// <summary>
+        /// Reset Password
+        /// </summary>
+        /// <param name="resetPasswordRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("resetpassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequest resetPasswordRequest)
+        {
+            var response = new PasswordResetResponse();
+            if (ModelState.IsValid)
+            {
+                response = await _userService.ResetPassword(resetPasswordRequest);
+
+                return Ok(response);
+            }
+
+            return BadRequest();
+        }
+        #endregion
+
+        #region ValidateResetPasswordLink
+        /// <summary>
+        /// ValidateResetPasswordLink
+        /// </summary>
+        /// <param name="validateResetPasswordLinkRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("validateResetpasswordlink")]
+        public async Task<IActionResult> ValidateResetPasswordLink(ValidateResetPasswordLinkRequest validateResetPasswordLinkRequest)
+        {
+            if (ModelState.IsValid)
+            {
+              var  response = await _userService.ValidateResetPasswordLink(validateResetPasswordLinkRequest);
+
+                return Ok(response);
+            }
+
+            return BadRequest();
+        }
+        #endregion
+
+        #region Update Password
+        /// <summary>
+        /// UpdatePassword
+        /// </summary>
+        /// <param name="updatePasswordRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("updatepassword")]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _userService.UpdatePassword(updatePasswordRequest);
+
+                return Ok(response);
+            }
+
+            return BadRequest();
+        }
+        #endregion
+
     }
 }
