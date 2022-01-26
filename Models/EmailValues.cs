@@ -12,5 +12,6 @@ namespace InvoiceApi.Models
         public string VerificationCode { get; set; }
         public string Subject { get; set; }
         public string TemplateName { get; set; }
+        public string Url { get; set; }
     }
 }

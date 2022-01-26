@@ -73,20 +73,26 @@ namespace InvoiceApi.Services
             if (response != null && response.Status == StatusType.Success.ToString() && !string.IsNullOrEmpty(response.UserId))
             {
                 var url = Utility.GetAppSettings("WebAppUrl") + "resetpassword?id=" + Utility.EnryptString(response.UserId + "," + DateTime.Now.AddMinutes(10));
-                var user = new User();
-                user.Email = resetPasswordRequest.Email;
-                await _emailService.ForgotPasswordEmail(user, url);
+
+                //Send Reset Password link to mail
+                var emailValues = new EmailValues();
+                emailValues.Email = resetPasswordRequest.Email;
+                emailValues.Url = url;
+                emailValues.Subject = EmailConstant.EmailSubject.ResetPasswordSubject;
+                emailValues.TemplateName = EmailConstant.EmailTemplate.ResetPasswordTemplate;
+                await _emailService.EmailSend(emailValues);
+
                 response.Messages = "We've sent a password reset link to email";
             }
             return response;
         }
 
-        public async  Task<ValidateResetPasswordLinkResponse> ValidateResetPasswordLink(ValidateResetPasswordLinkRequest validateResetPasswordLinkRequest)
+        public async Task<ValidateResetPasswordLinkResponse> ValidateResetPasswordLink(ValidateResetPasswordLinkRequest validateResetPasswordLinkRequest)
         {
-           
+
             var decryptedUrl = Utility.DecryptString(validateResetPasswordLinkRequest.Url);
-            var userId= decryptedUrl?.Split(new Char[] { ',' })[0];
-            validateResetPasswordLinkRequest.UserId = !string.IsNullOrEmpty(userId) ? userId:string.Empty ;
+            var userId = decryptedUrl?.Split(new Char[] { ',' })[0];
+            validateResetPasswordLinkRequest.UserId = !string.IsNullOrEmpty(userId) ? userId : string.Empty;
             var response = await _userReposiotry.ValidateResetPasswordLink(validateResetPasswordLinkRequest);
             if (response.Status == StatusType.Success.ToString())
             {
@@ -101,24 +107,18 @@ namespace InvoiceApi.Services
                         response.Status = StatusType.Success.ToString();
                         response.IsExpired = false;
                     }
-
                     else
                     {
                         response.Status = StatusType.Failure.ToString();
                         response.Messages = "Link expired!";
                         response.IsExpired = true;
                     }
-
-                  
-
                 }
-
             }
-        
             return response;
         }
 
-       public async Task<Base> UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
+        public async Task<Base> UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
         {
             return await _userReposiotry.UpdatePassword(updatePasswordRequest);
         }

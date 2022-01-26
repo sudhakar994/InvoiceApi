@@ -48,11 +48,11 @@ namespace InvoiceApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate(LoginRequest loginRequest)
         {
-            
+
             var response = new LoginResponse();
             if (ModelState.IsValid)
             {
-                
+
                 response = await _userService.ValidateUser(loginRequest);
                 if (response.Status == StatusType.Success.ToString())
                 {
@@ -125,7 +125,7 @@ namespace InvoiceApi.Controllers
                         emailValues.Email = user.Email;
                         emailValues.UserName = user.UserName;
                         emailValues.VerificationCode = user.VerificationCode;
-                        emailValues.Subject = EmailConstant.EmailSubject.SendVerificationcode;
+                        emailValues.Subject = EmailConstant.EmailSubject.SendVerificationcodeSubject;
                         emailValues.TemplateName = EmailConstant.EmailTemplate.VerficationCodeTemplate;
                         await _emailService.EmailSend(emailValues);
                         response.VerificationCode = string.Empty;
@@ -209,7 +209,7 @@ namespace InvoiceApi.Controllers
                     emailValues.UserName = resendresponse.UserName;
                     emailValues.Email = resendresponse.Email;
                     emailValues.VerificationCode = resendresponse.VerificationCode;
-                    emailValues.Subject = EmailConstant.EmailSubject.SendVerificationcode;
+                    emailValues.Subject = EmailConstant.EmailSubject.SendVerificationcodeSubject;
                     emailValues.TemplateName = EmailConstant.EmailTemplate.VerficationCodeTemplate;
                     await _emailService.EmailSend(emailValues);
 
@@ -256,7 +256,7 @@ namespace InvoiceApi.Controllers
         {
             if (ModelState.IsValid)
             {
-              var  response = await _userService.ValidateResetPasswordLink(validateResetPasswordLinkRequest);
+                var response = await _userService.ValidateResetPasswordLink(validateResetPasswordLinkRequest);
 
                 return Ok(response);
             }
