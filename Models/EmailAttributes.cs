@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.Models
 {
-    public class Email
+    public class EmailAttributes
     {
         public string ToEmail { get; set; }
         public string Subject { get; set; }

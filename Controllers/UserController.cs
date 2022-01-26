@@ -119,7 +119,13 @@ namespace InvoiceApi.Controllers
                     //send email
                     if (!string.IsNullOrEmpty(response.JwtToken))
                     {
-                        await _emailService.SendVerificationCode(user);
+                        var emailValues = new EmailValues();
+                        emailValues.Email = user.Email;
+                        emailValues.UserName = user.UserName;
+                        emailValues.VerificationCode = user.VerificationCode;
+                        emailValues.Subject = EmailConstant.EmailSubject.SendVerificationcode;
+                        emailValues.TemplateName = EmailConstant.EmailTemplate.VerficationCodeTemplate;
+                        await _emailService.EmailSend(emailValues);
                         response.VerificationCode = string.Empty;
                     }
                     return Ok(response);
@@ -160,12 +166,14 @@ namespace InvoiceApi.Controllers
                     if (response == Messages.Success)
                     {
                         //Send Welcome Email
-                        var user = new User();
+                        var emailValues = new EmailValues();
                         var sendresponse = await _userService.ResendEmail(verificationRequest.UserId);
 
-                        user.Email = sendresponse.Email;
-                        user.UserName = sendresponse.UserName;
-                        await _emailService.WelcomeEmail(user);
+                        emailValues.Email = sendresponse.Email;
+                        emailValues.UserName = sendresponse.UserName;
+                        emailValues.Subject = EmailConstant.EmailSubject.WelcomeSubject;
+                        emailValues.TemplateName = EmailConstant.EmailTemplate.WelcomeEmailTemplate;
+                        await _emailService.EmailSend(emailValues);
                     }
                     return Ok(response);
                 }
@@ -184,7 +192,7 @@ namespace InvoiceApi.Controllers
         [Route("resendcode")]
         public async Task<IActionResult> ResendVerificationCode(VerificationRequest verificationRequest)
         {
-            var user = new User();
+            var emailValues = new EmailValues();
             if (ModelState.IsValid)
             {
                 verificationRequest.UserId = _jwtService.GetUserIdFromJwt().ToString();
@@ -192,14 +200,16 @@ namespace InvoiceApi.Controllers
                 {
                     var response = await _userService.ResendCode(verificationRequest);
 
-                    //Get Resend Email detail
+                    //Fetch Resend Email detail
                     var resendresponse = await _userService.ResendEmail(verificationRequest.UserId);
 
                     //Email Service
-                    user.UserName = resendresponse.UserName;
-                    user.Email = resendresponse.Email;
-                    user.VerificationCode = resendresponse.VerificationCode;
-                    await _emailService.SendVerificationCode(user);
+                    emailValues.UserName = resendresponse.UserName;
+                    emailValues.Email = resendresponse.Email;
+                    emailValues.VerificationCode = resendresponse.VerificationCode;
+                    emailValues.Subject = EmailConstant.EmailSubject.SendVerificationcode;
+                    emailValues.TemplateName = EmailConstant.EmailTemplate.VerficationCodeTemplate;
+                    await _emailService.EmailSend(emailValues);
 
                     return Ok(response);
                 }
@@ -209,16 +219,5 @@ namespace InvoiceApi.Controllers
         }
 
         #endregion
-
-        //#region
-        //public async Task<User> SendEmailUserDetails(string userId)
-        //{
-        //    var verificationRequest = new User();
-        //    //Get Resend Email detail
-        //    verificationRequest = await _userService.ResendEmail(userId);
-        //    return verificationRequest;
-        //}
-        //#endregion
-
     }
 }

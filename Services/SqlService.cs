@@ -86,7 +86,7 @@ namespace InvoiceApi.Services
         /// <typeparam name="T"></typeparam>
         /// <param name="query"></param>
         /// <returns></returns>
-        public  IEnumerable<T> GetData_Query<T>(string query)
+        public IEnumerable<T> GetData_Query<T>(string query)
         {
             using (var dbConn = dbConnection)
             {
@@ -167,36 +167,52 @@ namespace InvoiceApi.Services
         {
             return dbConnection.ExecuteScalar<object>(storedProcedure, commandType: CommandType.StoredProcedure);
         }
-       
-
-        public async Task<T>  GetSingleExecuteQueryasync<T>(string query, object param = null, CommandType commandType = CommandType.Text)
-        {
-            using (var dbConn=dbConnection)
-            {
-               return await dbConn.QueryFirstOrDefaultAsync<T>(query, param, commandType: commandType);
-            }
-           
-        }
-
-       
-
-        public async Task<List<T>> GetListExecuteQueryasync<T>(string query, object param = null, CommandType commandType = CommandType.Text)
-        {
-            using (var dbConn = dbConnection)
-            {
-                var result = await dbConn.QueryAsync<T>(query,param, commandType: CommandType.Text);
-                
-                return result.ToList();
-            }
-        }
-
-
 
         SqlMapper.GridReader ISqlService.GetMultipleResultSet(string storedProcedure, object InputParameter)
         {
             throw new NotImplementedException();
         }
 
+        #endregion
+
+        #region Async Dapper Method
+        public async Task<T> GetSingleExecuteQueryasync<T>(string query, object param = null, CommandType commandType = CommandType.Text)
+        {
+            using (var dbConn = dbConnection)
+            {
+                return await dbConn.QueryFirstOrDefaultAsync<T>(query, param, commandType: commandType);
+            }
+
+        }
+
+        public async Task<List<T>> GetListExecuteQueryasync<T>(string query, object param = null, CommandType commandType = CommandType.Text)
+        {
+            using (var dbConn = dbConnection)
+            {
+                var result = await dbConn.QueryAsync<T>(query, param, commandType: CommandType.Text);
+
+                return result.ToList();
+            }
+        }
+
+        public async Task<T> ExecuteSP<T>(string storedProcedure, object parameters, CommandType commandType = CommandType.StoredProcedure)
+        {
+            using (var dbConn = dbConnection)
+            {
+                return await dbConn.QueryFirstOrDefaultAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<List<T>> SPGetListExecuteQueryasync<T>(string storedProcedure, object param = null, CommandType commandType = CommandType.StoredProcedure)
+        {
+
+            using (var dbConn = dbConnection)
+            {
+                var result = await dbConn.QueryAsync<T>(storedProcedure, param, commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
 
         #endregion
 

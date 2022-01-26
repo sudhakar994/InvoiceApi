@@ -26,45 +26,33 @@ namespace InvoiceApi.Services
         }
         #endregion       
 
+
         #region  Send Email Verification Code 
         /// <summary>
         /// Send Email Verification Code 
         /// </summary>
-        /// <param name="userModel"></param>
+        /// <param name="emailValues"></param>
         /// <returns></returns>
-        public async Task SendVerificationCode(User user)
+        public async Task EmailSend(EmailValues emailValues)
         {
-            Email userEmail = new Email();
-            userEmail = PlaceHolderEmailContent(user);
-            userEmail.ToEmail = user.Email;
-            userEmail.Subject = "Welcome to EFormsBuddy";
-            userEmail.Body = UpdatePlaceHolders(GetEmailBody("\\SendVerificationCode.html"), userEmail.PlaceHolders);
+            EmailAttributes userEmail = new EmailAttributes();
+            userEmail = PlaceHolderEmailContent(emailValues);
+            userEmail.ToEmail = emailValues.Email;
+            userEmail.Subject = emailValues.Subject;
+            userEmail.Body = UpdatePlaceHolders(GetEmailBody(emailValues.TemplateName), userEmail.PlaceHolders);
 
-            await SendEmail(userEmail);
+            await SenEmailProcess(userEmail);
             //return msg; 
         }
-        #endregion
+        #endregion      
 
-        #region After user account verify  to send  welcome email 
-        public async Task WelcomeEmail(User user)
-        {
-            Email userEmail = new Email();
-            userEmail = PlaceHolderEmailContent(user);
-            userEmail.ToEmail = user.Email;
-            userEmail.Subject = "Account Verified";
-            userEmail.Body = UpdatePlaceHolders(GetEmailBody("\\WelcomeEmail.html"), userEmail.PlaceHolders);
-
-            await SendEmail(userEmail);
-        }
-        #endregion
-
-        #region Send Verfication Code Email
+        #region Send Verfication Code to Email
         /// <summary>
         ///  SendEmail to Verification
         /// </summary>
-        /// <param name="userEmailOptions"></param>
+        /// <param name="objEmail"></param>
         /// <returns></returns>
-        private async Task SendEmail(Email objEmail)
+        private async Task SenEmailProcess(EmailAttributes objEmail)
         {
 
             MailMessage mail = new MailMessage()
@@ -120,23 +108,22 @@ namespace InvoiceApi.Services
         /// <returns></returns>
         private string GetEmailBody(string templateName)
         {
-            //var body = File.ReadAllText("EmailTemplate\\EmailConfirm.html");
             var body = File.ReadAllText(string.Format(templatePath, templateName));
             return body;
         }
         /// <summary>
         /// PlaceHolderEmailContent
         /// </summary>
-        /// <param name="userModel"></param>
+        /// <param name="emailValues"></param>
         /// <returns></returns>
-        private Email PlaceHolderEmailContent(User user)
+        private EmailAttributes PlaceHolderEmailContent(EmailValues emailValues)
         {
-            Email options = new Email
+            EmailAttributes options = new EmailAttributes
             {
                 PlaceHolders = new List<KeyValuePair<string, string>>()
                 {
-                    new KeyValuePair<string, string>("{{UserName}}", user.UserName),
-                    new KeyValuePair<string, string>("{{VerificationCode}}",user.VerificationCode),
+                    new KeyValuePair<string, string>("{{UserName}}", emailValues.UserName),
+                    new KeyValuePair<string, string>("{{VerificationCode}}",emailValues.VerificationCode),
                 }
             };
             return options;
