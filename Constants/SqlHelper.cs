@@ -8,7 +8,5 @@ namespace InvoiceApi.Constants
     public class SqlHelper
     {
         public static string ConnectionString { get; set; }
-
-       
     }
 }

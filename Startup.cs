@@ -77,7 +77,7 @@ namespace InvoiceApi
 
             // Encrypted Conncetion String
 
-            SqlHelper.ConnectionString = Configuration.GetConnectionString("InvoiceApiDB");
+            //SqlHelper.ConnectionString = Configuration.GetConnectionString("InvoiceApiDB");
             services.Configure<SMTPConfig>(Configuration.GetSection("SMTPConfig"));
             //Resolve Dependancy Injection
 

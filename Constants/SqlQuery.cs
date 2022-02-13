@@ -20,7 +20,7 @@ namespace InvoiceApi.Constants
         public const string CheckPasswordResetEmail = "Select COUNT(Email) From tbl_UserDetails Where Email=@Email And   Status='Verified' And  Is_Deleted=0";
         public const string UpdatePasswordResetStatus = @"UPDATE tbl_UserDetails SET Password_Reset_Status='InProgress' Where User_Id=@UserId and Is_Deleted = 0";
         public const string GetPasswordResetAttemptCount = @"Select Reset_Code_Attempt From tbl_User_Settings 
-                   Where User_Id= @UserId  And  Is_Deleted=0";
+                                                             Where User_Id= @UserId  And  Is_Deleted=0";
         public const string UpdatePasswordResetCount = @"Update tbl_User_Settings set Reset_Code_Attempt=(Reset_Code_Attempt + 1)  Where User_Id= @UserId  And  Is_Deleted=0";
         public const string SaveUserSettings = @"Insert into tbl_User_Settings (User_Id,Resent_Code_Attempt,Reset_Code_Attempt) values (@UserId,0,0)";
         public const string SaveUser = @"Insert Into tbl_UserDetails(UserName,Email,Password,Password_Salt,Verification_Code,Status,Role_Id) OUTPUT INSERTED.User_Id values (@UserName,@Email,@Password,@PasswordSalt,@VerificationCode,@Status,@RoleId)";

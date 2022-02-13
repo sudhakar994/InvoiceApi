@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.Constants
 {
-    
-        public enum Status
-        {
-            InProgress,
-            Verified,
-        }
+
+    public enum Status
+    {
+        InProgress,
+        Verified,
+    }
 
     public enum UserRole
     {
-        admin=1,
-        user=2
+        admin = 1,
+        user = 2
     }
 
     public enum RegistrationStatus
@@ -30,5 +30,5 @@ namespace InvoiceApi.Constants
         Success,
         Failure
     }
-    
+
 }

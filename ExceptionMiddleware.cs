@@ -25,7 +25,7 @@ namespace InvoiceApi
             }
             catch (Exception ex)
             {
-                
+
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
@@ -40,7 +40,7 @@ namespace InvoiceApi
                 Message = exception.Message
             }.ToString());
 
-            
+
         }
     }
 }

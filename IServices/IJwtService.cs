@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.IServices
 {
-   public interface IJwtService
+    public interface IJwtService
     {
         Guid GetUserIdFromJwt();
+        //string GetUserEmailFromJwt();
     }
 }

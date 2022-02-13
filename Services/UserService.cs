@@ -56,14 +56,18 @@ namespace InvoiceApi.Services
             return await _userReposiotry.ValidateUser(loginRequest);
         }
 
-        public async Task<string> ValidateVerficationCode(VerificationRequest verificationRequest)
+        public async Task<string> ValidateVerficationCode(VerificationCodeResponse VerificationCodeResponse)
         {
-            return await _userReposiotry.ValidateVerficationCode(verificationRequest);
+            return await _userReposiotry.ValidateVerficationCode(VerificationCodeResponse);
         }
 
-        public async Task<string> ResendCode(VerificationRequest verificationRequest)
+        public async Task<VerificationCodeResponse> ResendCode(VerificationCodeResponse VerificationCodeResponse)
         {
-            return await _userReposiotry.ResendCode(verificationRequest);
+            return await _userReposiotry.ResendCode(VerificationCodeResponse);
+        }
+        public async Task<VerificationCodeResponse> GetDetailsForResendCode(VerificationCodeResponse verificationCodeResponse)
+        {
+            return await _userReposiotry.GetDetailsForResendCode(verificationCodeResponse);
         }
 
         public async Task<PasswordResetResponse> ResetPassword(ResetPasswordRequest resetPasswordRequest)
@@ -74,7 +78,7 @@ namespace InvoiceApi.Services
             {
                 var url = Utility.GetAppSettings("WebAppUrl") + "resetpassword?id=" + Utility.EnryptString(response.UserId + "," + DateTime.Now.AddMinutes(10));
 
-                //Send Reset Password link to mail
+                //Send Reset Password link to Email
                 var emailValues = new EmailValues();
                 emailValues.Email = resetPasswordRequest.Email;
                 emailValues.Url = url;
@@ -121,11 +125,6 @@ namespace InvoiceApi.Services
         public async Task<Base> UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
         {
             return await _userReposiotry.UpdatePassword(updatePasswordRequest);
-        }
-
-        public Task<ResendEmail> ResendEmail(string userId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

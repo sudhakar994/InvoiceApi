@@ -37,7 +37,6 @@ namespace InvoiceApi.Controllers
             _emailService = emailService;
 
         }
-
         #region Login
         /// <summary>
         /// Authenticate
@@ -151,25 +150,24 @@ namespace InvoiceApi.Controllers
 
         #endregion
 
-        #region Validation Verification Code to Email
-
+        #region Validation Verification Code
         [HttpPost]
         [Route("validateverficationcode")]
-        public async Task<IActionResult> ValidateVerficationCode(VerificationRequest verificationRequest)
+        public async Task<IActionResult> ValidateVerficationCode(VerificationCodeResponse VerificationCodeResponse)
         {
             if (ModelState.IsValid)
             {
-                verificationRequest.UserId = _jwtService.GetUserIdFromJwt().ToString();
+                VerificationCodeResponse.UserId = _jwtService.GetUserIdFromJwt().ToString();
 
-                if (!string.IsNullOrEmpty(verificationRequest.UserId) && !string.IsNullOrWhiteSpace(verificationRequest.VerificationCode))
+                if (!string.IsNullOrEmpty(VerificationCodeResponse.UserId) && !string.IsNullOrWhiteSpace(VerificationCodeResponse.VerificationCode))
                 {
-                    var response = await _userService.ValidateVerficationCode(verificationRequest);
+                    var response = await _userService.ValidateVerficationCode(VerificationCodeResponse);
 
                     if (response == Messages.Success)
                     {
                         //Send Welcome Email
                         var emailValues = new EmailValues();
-                        var sendresponse = await _userService.ResendEmail(verificationRequest.UserId);
+                        var sendresponse = await _userService.GetDetailsForResendCode(VerificationCodeResponse);
 
                         emailValues.Email = sendresponse.Email;
                         emailValues.UserName = sendresponse.UserName;
@@ -192,18 +190,18 @@ namespace InvoiceApi.Controllers
         #region Resend Verification Code to Email
         [HttpPost]
         [Route("resendcode")]
-        public async Task<IActionResult> ResendVerificationCode(VerificationRequest verificationRequest)
+        public async Task<IActionResult> ResendVerificationCode(VerificationCodeResponse VerificationCodeResponse)
         {
             var emailValues = new EmailValues();
             if (ModelState.IsValid)
             {
-                verificationRequest.UserId = _jwtService.GetUserIdFromJwt().ToString();
-                if (verificationRequest.UserId != null)
+                VerificationCodeResponse.UserId = _jwtService.GetUserIdFromJwt().ToString();
+                if (VerificationCodeResponse.UserId != null)
                 {
-                    var response = await _userService.ResendCode(verificationRequest);
+                    var response = await _userService.ResendCode(VerificationCodeResponse);
 
                     //Fetch Resend Email detail
-                    var resendresponse = await _userService.ResendEmail(verificationRequest.UserId);
+                    var resendresponse = await _userService.GetDetailsForResendCode(VerificationCodeResponse);
 
                     //Email Service
                     emailValues.UserName = resendresponse.UserName;
@@ -219,7 +217,6 @@ namespace InvoiceApi.Controllers
             return BadRequest();
 
         }
-
         #endregion
 
         #region  Reset Password

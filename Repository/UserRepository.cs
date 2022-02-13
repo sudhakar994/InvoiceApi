@@ -55,7 +55,7 @@ namespace InvoiceApi.Repository
                 Guid userId = await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.SaveUser, user);
                 if (userId != Guid.Empty)
                 {
-                    await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.SaveUserSettings,new { UserId=userId });
+                    await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.SaveUserSettings, new { UserId = userId });
                     response.UserId = userId.ToString();
                     response.VerificationCode = user.VerificationCode;
                     response.Status = "Success";
@@ -65,38 +65,57 @@ namespace InvoiceApi.Repository
             return response;
         }
 
+        #region Method of Verification Code Process 
+
         #region User Verification Status Update
         /// <summary>
         /// Update verified User Status
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="verificationCode"></param>
+        /// <param name="verificationCodeResponse"></param>
         /// <returns></returns>
-        public async Task<string> ValidateVerficationCode(VerificationRequest verificationRequest)
+        public async Task<string>ValidateVerficationCode(VerificationCodeResponse verificationCodeResponse)
         {
-
-            int affectedRow = _sqlService.Execute_Query(SqlQuery.UpdateVerifiedStatus, verificationRequest);
+            
+            var affectedRow = await _sqlService.ExecuteSP(StoredProcedure.UserSetting, new { Operation = "UpdateVerifiedStatus", UserId = verificationCodeResponse.UserId, Email = string.Empty, VerificationCode = verificationCodeResponse.VerificationCode });
             var response = affectedRow > 0 ? Messages.Success : Messages.Failed;
 
             return response;
         }
         #endregion
-        public async Task<string> ResendCode(VerificationRequest verificationRequest)
-        {
-            verificationRequest.VerificationCode = Utility.GenerateVerificationCode();
-            int affectedRow = _sqlService.Execute_Query(SqlQuery.ResendVerificationCode, verificationRequest);
-            var response = affectedRow > 0 ? Messages.Success : Messages.Failed;
 
+        #region Resend Verfication Code to Email with check limit
+        public async Task<VerificationCodeResponse> ResendCode(VerificationCodeResponse verificationCodeResponse)
+        {
+            var response = new VerificationCodeResponse { Status = StatusType.Failure.ToString() };
+            var resendAttempt = await _sqlService.GetSingleExecuteSPasync<int>(StoredProcedure.UserSetting, new { Operation = "Get_ResendCode_Attempt", UserId = verificationCodeResponse.UserId, Email = string.Empty, VerificationCode = string.Empty });
+            if (resendAttempt < 5 && !string.IsNullOrEmpty(verificationCodeResponse.UserId))
+            {
+                verificationCodeResponse.VerificationCode = Utility.GenerateVerificationCode();
+                await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.ResendVerificationCode, verificationCodeResponse);
+                await _sqlService.ExecuteSP(StoredProcedure.UserSetting, new { Operation = "UpdateResendCodeAttempt", UserId = verificationCodeResponse.UserId, Email = string.Empty, VerificationCode = string.Empty });
+
+                response.Status = StatusType.Success.ToString();
+                response.UserId = verificationCodeResponse.UserId;
+                response.VerificationCode = verificationCodeResponse.VerificationCode;
+            }
+            else
+            {
+                response.Status = "Multiple Attempt";
+                response.Messages = "You tried multiple times please contact support";
+            }
             return response;
         }
+        #endregion
 
-        # region Resend Email
-        public async Task<ResendEmail> ResendEmail(string userId)
+        #region Resend Email
+        public async Task<VerificationCodeResponse> GetDetailsForResendCode(VerificationCodeResponse VerificationCodeResponse)
         {
-            var resendResponse = new ResendEmail();
-            resendResponse = await _sqlService.GetSingleExecuteQueryasync<ResendEmail>(SqlQuery.GetResendEmail, new { UserId = userId });
+            var resendResponse = new VerificationCodeResponse();
+            resendResponse = await _sqlService.GetSingleExecuteQueryasync<VerificationCodeResponse>(SqlQuery.GetResendEmail, new { VerificationCodeResponse.UserId });
             return resendResponse;
         }
+
+        #endregion
 
         #endregion
 
@@ -125,16 +144,16 @@ namespace InvoiceApi.Repository
             var response = new PasswordResetResponse { Status = StatusType.Failure.ToString() };
 
             var emailCount = await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.CheckPasswordResetEmail, resetPasswordRequest);
-            
-            if(emailCount > 0)
+
+            if (emailCount > 0)
             {
 
 
-              Guid userId= await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.GetUserId, resetPasswordRequest);
-                var paaswordAttempCount = await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.GetPasswordResetAttemptCount, new { UserId= userId });
+                Guid userId = await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.GetUserId, resetPasswordRequest);
+                var paaswordAttempCount = await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.GetPasswordResetAttemptCount, new { UserId = userId });
                 if (userId != Guid.Empty && paaswordAttempCount < 5)
                 {
-                      await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.UpdatePasswordResetCount, new { UserId= userId });
+                    await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.UpdatePasswordResetCount, new { UserId = userId });
                     await _sqlService.GetSingleExecuteQueryasync<int>(SqlQuery.UpdatePasswordResetStatus, new { UserId = userId });
                     response.UserId = userId.ToString();
                     response.Status = StatusType.Success.ToString();
@@ -146,11 +165,11 @@ namespace InvoiceApi.Repository
                 }
             }
             return response;
-            
+
         }
 
-        
-        public async  Task<ValidateResetPasswordLinkResponse> ValidateResetPasswordLink(ValidateResetPasswordLinkRequest validateResetPasswordLinkRequest)
+
+        public async Task<ValidateResetPasswordLinkResponse> ValidateResetPasswordLink(ValidateResetPasswordLinkRequest validateResetPasswordLinkRequest)
         {
             var response = new ValidateResetPasswordLinkResponse { Status = StatusType.Failure.ToString() };
             if (!string.IsNullOrEmpty(validateResetPasswordLinkRequest.UserId))
@@ -170,11 +189,11 @@ namespace InvoiceApi.Repository
         {
             var response = new Base { Status = StatusType.Failure.ToString() };
             var decryptedUrl = Utility.DecryptString(updatePasswordRequest.Url);
-            updatePasswordRequest.UserId= decryptedUrl?.Split(new Char[] { ',' })[0];
+            updatePasswordRequest.UserId = decryptedUrl?.Split(new Char[] { ',' })[0];
             updatePasswordRequest.PasswordSalt = Utility.CreateSalt(8);
             updatePasswordRequest.Password = Utility.EncryptPassword(updatePasswordRequest.Password, updatePasswordRequest.PasswordSalt);
             Guid affectedRowId = await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.UpdatePassword, updatePasswordRequest);
-            if(affectedRowId != Guid.Empty)
+            if (affectedRowId != Guid.Empty)
             {
                 await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.UpdateResetAttempCount, updatePasswordRequest);
                 response.Status = StatusType.Success.ToString();
@@ -182,7 +201,5 @@ namespace InvoiceApi.Repository
             return response;
         }
 
-       
-        
     }
 }
