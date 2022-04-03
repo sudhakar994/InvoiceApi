@@ -286,5 +286,24 @@ namespace InvoiceApi.Controllers
         }
         #endregion
 
+        #region Regenerate Token
+        /// <summary>
+        /// Refresh token
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("refreshtoken")]
+        public  User RefreshToken(User user)
+        {
+            var response = new User();
+            response.UserId = _jwtService.GetUserIdFromJwt().ToString();
+            response.UserName = user.UserName;
+            response.Email = user.Email;
+            response.JwtToken = _userService.GenerateJwtToken(response);
+            return response;
+        }
+        #endregion
+
     }
 }
