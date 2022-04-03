@@ -13,5 +13,7 @@ namespace InvoiceApi.Models
         public string Subject { get; set; }
         public string TemplateName { get; set; }
         public string Url { get; set; }
+
+        public string SupportEmail { get; set; }
     }
 }

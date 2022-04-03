@@ -1,190 +1,312 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <style type="text/css">
-        /* FONTS */
-        @media screen {
-            @font-face {
-                font-family: 'Lato';
-                font-style: normal;
-                font-weight: 400;
-                src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
-            }
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0;">
+    <meta name="format-detection" content="telephone=no" />
 
-            @font-face {
-                font-family: 'Lato';
-                font-style: normal;
-                font-weight: 700;
-                src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
-            }
-
-            @font-face {
-                font-family: 'Lato';
-                font-style: italic;
-                font-weight: 400;
-                src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
-            }
-
-            @font-face {
-                font-family: 'Lato';
-                font-style: italic;
-                font-weight: 700;
-                src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
-            }
+    <style>
+        /* Reset styles */
+        body {
+            margin: 0;
+            padding: 0;
+            min-width: 100%;
+            width: 100% !important;
+            height: 100% !important;
         }
 
-        /* CLIENT-SPECIFIC STYLES */
-        body, table, td, a {
-            -webkit-text-size-adjust: 100%;
+        body, table, td, div, p, a {
+            -webkit-font-smoothing: antialiased;
+            text-size-adjust: 100%;
             -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+            line-height: 100%;
         }
 
         table, td {
             mso-table-lspace: 0pt;
             mso-table-rspace: 0pt;
+            border-collapse: collapse !important;
+            border-spacing: 0;
         }
 
-        img {
-            -ms-interpolation-mode: bicubic;
-        }
-
-        /* RESET STYLES */
         img {
             border: 0;
-            height: auto;
             line-height: 100%;
             outline: none;
             text-decoration: none;
+            -ms-interpolation-mode: bicubic;
         }
 
-        table {
-            border-collapse: collapse !important;
+        #outlook a {
+            padding: 0;
         }
 
-        body {
-            height: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100% !important;
+        .ReadMsgBody {
+            width: 100%;
         }
 
-        /* iOS BLUE LINKS */
-        a[x-apple-data-detectors] {
-            color: inherit !important;
-            text-decoration: none !important;
-            font-size: inherit !important;
-            font-family: inherit !important;
-            font-weight: inherit !important;
-            line-height: inherit !important;
+        .ExternalClass {
+            width: 100%;
         }
 
-        /* MOBILE STYLES */
-        @media screen and (max-width:600px) {
-            h1 {
-                font-size: 32px !important;
-                line-height: 32px !important;
+            .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+                line-height: 100%;
+            }
+
+        /* Rounded corners for advanced mail clients only */
+        @media all and (min-width: 560px) {
+            .container {
+                border-radius: 8px;
+                -webkit-border-radius: 8px;
+                -moz-border-radius: 8px;
+                -khtml-border-radius: 8px;
             }
         }
 
-        /* ANDROID CENTER FIX */
-        div[style*="margin: 16px 0;"] {
-            margin: 0 !important;
+        /* Set color for auto links (addresses, dates, etc.) */
+        a, a:hover {
+            color: #127DB3;
+        }
+
+        .footer a, .footer a:hover {
+            color: #999999;
         }
     </style>
+
+    <!-- MESSAGE SUBJECT -->
+    <title>EFormsBuddy</title>
+
 </head>
-<body style="background-color: #f3f5f7; margin: 0 !important; padding: 0 !important;">
 
-    <!-- HIDDEN PREHEADER TEXT -->
-    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
-        We're thrilled to have you here! Get ready to dive into your new account.
-    </div>
+<!-- BODY -->
+<!-- Set message background color (twice) and text color (twice) -->
+<body topmargin="0" rightmargin="0" bottommargin="0" leftmargin="0" marginwidth="0" marginheight="0" width="100%" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; width: 100%; height: 100%; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; line-height: 100%;
+	background-color: #F0F0F0;
+	color: #000000;"
+      bgcolor="#F0F0F0"
+      text="#000000">
 
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <!-- LOGO -->
-        <tbody>
-            <tr>
-                <td bgcolor="#33cabb" align="center">
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                        <tbody>
-                            <tr>
-                                <td align="center" valign="top" style="padding: 80px 10px 80px 10px;">
-                                    <a href="http://thetheme.io" target="_blank">
-                                        <img alt="Logo" src="../assets/img/logo-light-lg.png" style="display: block; font-family: 'Lato', Helvetica, Arial, sans-serif; color: #ffffff; font-size: 18px;" border="0">
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-            <!-- HERO -->
-            <tr>
-                <td bgcolor="#33cabb" align="center" style="padding: 0px 10px 0px 10px;">
+    <!-- SECTION / BACKGROUND -->
+    <!-- Set message background color one again -->
+    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; width: 100%;" class="background">
+        <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;"
+                bgcolor="#F0F0F0">
 
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                        <tbody>
-                            <tr>
-                                <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                                    <h1 style="font-size: 42px; font-weight: 400; margin: 0;">Welcome!</h1>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-            <!-- COPY BLOCK -->
-            <tr>
-                <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                        <!-- COPY -->
-                        <tbody>
-                            <tr>
-                                <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;">
-                                    <p style="margin: 0;">Thank you for signing up with TheAdmin! We hope you enjoy your time with us. Check your account and update your profile.</p>
-                                </td>
-                            </tr>
-                            <!-- BULLETPROOF BUTTON -->
-                            <tr>
-                                <td bgcolor="#ffffff" align="left">
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                        <tbody>
+                <!-- WRAPPER -->
+                <!-- Set wrapper width (twice) -->
+                <table border="0" cellpadding="0" cellspacing="0" align="center"
+                       width="560" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
+	max-width: 560px;" class="wrapper">
+
+                    <tr>
+                        <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 20px;
+			padding-bottom: 20px;">
+                        </td>
+                    </tr>
+
+                    <!-- End of WRAPPER -->
+                </table>
+
+                <!-- WRAPPER / CONTEINER -->
+                <!-- Set conteiner background color -->
+                <table border="0" cellpadding="0" cellspacing="0" align="center"
+                       bgcolor="#FFFFFF"
+                       width="560" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
+	max-width: 560px;" class="container">
+
+                    <!-- HEADER -->
+                    <!-- Set text color and font family ("sans-serif" or "Georgia, serif") -->
+                    <tr>
+                        <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 24px; font-weight: bold; line-height: 130%;
+			padding-top: 25px;
+			color: #000000;
+			font-family: sans-serif;" class="header">
+                            EFormsBuddy
+                        </td>
+                    </tr>
+
+                    <!-- SUBHEADER -->
+                    <!-- Set text color and font family ("sans-serif" or "Georgia, serif") -->
+                    <tr>
+                        <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-bottom: 3px; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 18px; font-weight: 300; line-height: 150%;
+			padding-top: 5px;
+			color: #000000;
+			font-family: sans-serif;" class="subheader">
+                            Simplify your business !
+                        </td>
+                    </tr>
+
+                    <!-- HERO IMAGE -->
+                    <!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2 (wrapper x2). Do not set height for flexible images (including "auto"). URL format: http://domain.com/?utm_source={{Campaign-Source}}&utm_medium=email&utm_content={{Ìmage-Name}}&utm_campaign={{Campaign-Name}} -->
+                    <tr>
+                        <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
+			padding-top: 20px;" class="hero">
+                            <a target="_blank" style="text-decoration: none;"
+                               href="https://www.linkpicture.com/q/banner1_6.png">
+                                <img border="0" vspace="0" hspace="0"
+                                     src="https://www.linkpicture.com/q/banner1_6.png"
+                                     alt="" title="Hero Image"
+                                     width="560" style="
+			width: 100%;
+			max-width: 560px;
+			color: #000000; font-size: 13px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;" />
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- PARAGRAPH -->
+                    <!-- Set text color and font family ("sans-serif" or "Georgia, serif"). Duplicate all text styles in links, including line-height -->
+                    <tr>
+                        <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 17px; font-weight: 400; line-height: 160%;
+			padding-top: 25px;
+			color: #000000;
+			font-family: sans-serif;" class="paragraph">
+                            Hi <b>{{UserName}},</b> <br />
+
+                            Thanks for creating an account with EFormsBuddy! We're so happy to have you on board. <br /><br />
+
+
+                            Thank you,<br />
+
+                            <b>EFormsBuddy Team!</b>
+                        </td>
+                    </tr>
+
+                    <!-- BUTTON -->
+                    <!-- Set button background color at TD, link/text color at A and TD, font family ("sans-serif" or "Georgia, serif") at TD. For verification codes add "letter-spacing: 5px;". Link format: http://domain.com/?utm_source={{Campaign-Source}}&utm_medium=email&utm_content={{Button-Name}}&utm_campaign={{Campaign-Name}} -->
+                    <tr>
+                        <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 25px;
+			padding-bottom: 5px;" class="button">
+                            <table border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;">
+                            </table>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%;" class="list-item">
+                            <table align="center" border="0" cellspacing="0" cellpadding="0" style="width: inherit; margin: 0; padding: 0; border-collapse: collapse; border-spacing: 0;">
+
+                                <!-- LIST ITEM -->
+
+
+                            </table>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 25px;" class="line">
+                            <hr color="#E0E0E0" align="center" width="100%" size="1" noshade style="margin: 0; padding: 0;" />
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 17px; font-weight: 400; line-height: 160%;
+			padding-top: 20px;
+			padding-bottom: 25px;
+			color: #000000;
+			font-family: sans-serif;" class="paragraph">
+                            Have a&nbsp;question? <a href="mailto:support@ourteam.com" target="_blank" style="color: #127DB3; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 160%;">{{SupportEmail}}</a>
+                        </td>
+                    </tr>
+
+
+                </table>
+
+
+                <!--<table border="0" cellpadding="0" cellspacing="0" align="center"
+                                   width="560" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
+                max-width: 560px;" class="wrapper">
+
+
+
+                                <tr>
+                                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+                        padding-top: 25px;" class="social-icons">
+                                        <table width="256" border="0" cellpadding="0" cellspacing="0" align="center" style="border-collapse: collapse; border-spacing: 0; padding: 0;">
                                             <tr>
-                                                <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
-                                                    <table border="0" cellspacing="0" cellpadding="0">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td align="center" style="border-radius: 3px;" bgcolor="#33cabb"><a href="#" target="_blank" style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 12px 50px; border-radius: 2px; border: 1px solid #33cabb; display: inline-block;">My Account</a></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <!-- COPY -->
-                            <tr>
-                                <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;">
-                                    <p style="margin: 0;">If you have any questions, just reply to this email—we're always happy to help out.</p>
-                                </td>
-                            </tr>
-                            <!-- COPY -->
-                            <tr>
-                                <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 25px;">
-                                    <p style="margin: 0;">EFormsBuddy,<br>The EFormsBuddy Team</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
 
-                </td>
-            </tr>
-        </tbody>
+
+                                                <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;">
+                                                    <a target="_blank"
+                                                       href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                                       style="text-decoration: none;">
+                                                        <img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
+                                color: #000000;"
+                                                             alt="F" title="Facebook"
+                                                             width="44" height="44"
+                                                             src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/facebook.png">
+                                                    </a>
+                                                </td>
+
+
+                                                <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;">
+                                                    <a target="_blank"
+                                                       href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                                       style="text-decoration: none;">
+                                                        <img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
+                                color: #000000;"
+                                                             alt="T" title="Twitter"
+                                                             width="44" height="44"
+                                                             src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/twitter.png">
+                                                    </a>
+                                                </td>
+
+
+                                                <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;">
+                                                    <a target="_blank"
+                                                       href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                                       style="text-decoration: none;">
+                                                        <img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
+                                color: #000000;"
+                                                             alt="G" title="Google Plus"
+                                                             width="44" height="44"
+                                                             src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/googleplus.png">
+                                                    </a>
+                                                </td>
+
+
+                                                <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;">
+                                                    <a target="_blank"
+                                                       href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                                       style="text-decoration: none;">
+                                                        <img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
+                                color: #000000;"
+                                                             alt="I" title="Instagram"
+                                                             width="44" height="44"
+                                                             src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/instagram.png">
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 13px; font-weight: 400; line-height: 150%;
+                        padding-top: 20px;
+                        padding-bottom: 20px;
+                        color: #999999;
+                        font-family: sans-serif;" class="footer">
+
+                                        This email template was sent to&nbsp;you becouse we&nbsp;want to&nbsp;make the&nbsp;world a&nbsp;better place. You&nbsp;could change your <a href="https://github.com/konsav/email-templates/" target="_blank" style="text-decoration: underline; color: #999999; font-family: sans-serif; font-size: 13px; font-weight: 400; line-height: 150%;">subscription settings</a> anytime.
+                                    </td>
+                                </tr>
+
+
+                            </table>-->
+
+
+            </td>
+        </tr>
     </table>
+
 </body>
 </html>

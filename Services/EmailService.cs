@@ -125,6 +125,7 @@ namespace InvoiceApi.Services
                     new KeyValuePair<string, string>("{{UserName}}", emailValues.UserName),
                     new KeyValuePair<string, string>("{{VerificationCode}}",emailValues.VerificationCode),
                     new KeyValuePair<string, string>("{{PasswordResetUrl}}", emailValues.Url),
+                     new KeyValuePair<string, string>("{{SupportEmail}}", emailValues.SupportEmail)
                 }
             };
             return options;

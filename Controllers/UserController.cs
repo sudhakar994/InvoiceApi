@@ -126,6 +126,7 @@ namespace InvoiceApi.Controllers
                         emailValues.VerificationCode = user.VerificationCode;
                         emailValues.Subject = EmailConstant.EmailSubject.SendVerificationcodeSubject;
                         emailValues.TemplateName = EmailConstant.EmailTemplate.VerficationCodeTemplate;
+                        emailValues.SupportEmail = Utility.GetAppSettings("SupportEmail");
                         await _emailService.EmailSend(emailValues);
                         response.VerificationCode = string.Empty;
                     }
@@ -173,6 +174,7 @@ namespace InvoiceApi.Controllers
                         emailValues.UserName = sendresponse.UserName;
                         emailValues.Subject = EmailConstant.EmailSubject.WelcomeSubject;
                         emailValues.TemplateName = EmailConstant.EmailTemplate.WelcomeEmailTemplate;
+                        emailValues.SupportEmail = Utility.GetAppSettings("SupportEmail");
                         await _emailService.EmailSend(emailValues);
                     }
                     return Ok(response);
@@ -209,6 +211,7 @@ namespace InvoiceApi.Controllers
                     emailValues.VerificationCode = resendresponse.VerificationCode;
                     emailValues.Subject = EmailConstant.EmailSubject.SendVerificationcodeSubject;
                     emailValues.TemplateName = EmailConstant.EmailTemplate.VerficationCodeTemplate;
+                    emailValues.SupportEmail = Utility.GetAppSettings("SupportEmail");
                     await _emailService.EmailSend(emailValues);
 
                     return Ok(response);
