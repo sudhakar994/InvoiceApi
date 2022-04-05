@@ -47,11 +47,9 @@ namespace InvoiceApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate(LoginRequest loginRequest)
         {
-
             var response = new LoginResponse();
             if (ModelState.IsValid)
             {
-
                 response = await _userService.ValidateUser(loginRequest);
                 if (response.Status == StatusType.Success.ToString())
                 {
@@ -60,23 +58,17 @@ namespace InvoiceApi.Controllers
                     response.JwtToken = _userService.GenerateJwtToken(new User { UserId = response.UserId, Email = loginRequest.Email, UserName = response.UserName });
                     return Ok(response);
                 }
-
                 else
                 {
                     response.Message = "Invalid credentials";
                     return Ok(response);
                 }
-
-
             }
-
             else
             {
                 return BadRequest(response);
             }
-
         }
-
         #endregion
 
         #region Download Pdf
@@ -257,10 +249,8 @@ namespace InvoiceApi.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _userService.ValidateResetPasswordLink(validateResetPasswordLinkRequest);
-
                 return Ok(response);
             }
-
             return BadRequest();
         }
         #endregion
@@ -278,10 +268,8 @@ namespace InvoiceApi.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _userService.UpdatePassword(updatePasswordRequest);
-
                 return Ok(response);
             }
-
             return BadRequest();
         }
         #endregion
@@ -294,7 +282,7 @@ namespace InvoiceApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("refreshtoken")]
-        public  User RefreshToken(User user)
+        public User RefreshToken(User user)
         {
             var response = new User();
             response.UserId = _jwtService.GetUserIdFromJwt().ToString();
@@ -304,6 +292,5 @@ namespace InvoiceApi.Controllers
             return response;
         }
         #endregion
-
     }
 }
