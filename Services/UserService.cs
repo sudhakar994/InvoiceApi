@@ -27,7 +27,7 @@ namespace InvoiceApi.Services
 
         public string GenerateJwtToken(User user)
         {
-            // generate token that is valid for 10 minutes only
+            // generate token that is valid for 30 minutes only
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Utility.GetAppSettings(UserConstants.SecretKey));
             var tokenDescriptor = new SecurityTokenDescriptor
