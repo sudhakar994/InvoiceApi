@@ -22,7 +22,8 @@ namespace InvoiceApi
             services.AddTransient<IEmailService, EmailService>();
             services.AddHttpContextAccessor();
             services.AddSingleton<ISqlService, SqlService>();
-           
+            services.AddTransient<IMasterValueRepository, MasterValueRepository>();
+
 
         }
     }
