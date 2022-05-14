@@ -23,6 +23,8 @@ namespace InvoiceApi
             services.AddHttpContextAccessor();
             services.AddSingleton<ISqlService, SqlService>();
             services.AddTransient<IMasterValueRepository, MasterValueRepository>();
+            services.AddTransient<IDashboardService, DashboardService>();
+            services.AddTransient<IDashboardRepository, DashboardRepository>();
 
 
         }
