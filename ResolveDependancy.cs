@@ -25,8 +25,8 @@ namespace InvoiceApi
             services.AddTransient<IMasterValueRepository, MasterValueRepository>();
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<IDashboardRepository, DashboardRepository>();
-
-
+            services.AddTransient<IInvoiceService, InvoiceService>();
+            services.AddTransient<IInvoiceRepository, InvoiceRepository>();
         }
     }
 }
