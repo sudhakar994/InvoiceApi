@@ -9,5 +9,7 @@ namespace InvoiceApi.IRepository
     public interface IDashboardRepository
     {
         Task<List<Business>> GetBusinessDetails(Guid userId);
+
+        Task<List<Clients>> GetClientDetails(Guid userId);
     }
 }

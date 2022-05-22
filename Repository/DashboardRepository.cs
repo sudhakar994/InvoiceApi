@@ -34,5 +34,22 @@ namespace InvoiceApi.Repository
         }
 
         #endregion
+
+        #region Get Client Details
+        /// <summary>
+        /// GetClientDetails
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<List<Clients>> GetClientDetails(Guid userId)
+        {
+            var response = new List<Clients>();
+
+            response = await _sqlService.GetListExecuteQueryasync<Clients>(SqlQuery.GetClientDetails, new { UserId = userId });
+
+            return response;
+        }
+
+        #endregion
     }
 }

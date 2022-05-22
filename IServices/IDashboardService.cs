@@ -9,5 +9,6 @@ namespace InvoiceApi.IServices
    public interface IDashboardService
     {
         Task<List<Business>> GetBusinessDetails(Guid userId);
+        Task<List<Clients>> GetClientDetails(Guid userId);
     }
 }

@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 namespace InvoiceApi.Models
 {
     [DataContract]
-    public class Business
+    public class Clients
     {
         [DataMember]
-        public Guid BusinessId { get; set; }
+        public Guid ClientId { get; set; }
         [DataMember]
         public Guid UserId { get; set; }
         [DataMember]
-        public string BusinessName { get; set; }
+        public string ClientName { get; set; }
         [DataMember]
-        public string  BusinessEmail { get; set; }
+        public string ClientEmail { get; set; }
         [DataMember]
-        public string BusinessPhone { get; set; }
+        public string ClientPhone { get; set; }
         [DataMember]
         public string PhoneCode { get; set; }
         [DataMember]

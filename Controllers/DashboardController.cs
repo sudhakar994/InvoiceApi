@@ -3,7 +3,6 @@ using InvoiceApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace InvoiceApi.Controllers
@@ -52,7 +51,7 @@ namespace InvoiceApi.Controllers
 
             if(userId != Guid.Empty)
             {
-                response = await _dashboardService.GetBusinessDetails(userId);
+                response =  await _dashboardService.GetBusinessDetails(userId);
                 return Ok(response);
             }
 
@@ -63,6 +62,33 @@ namespace InvoiceApi.Controllers
                 
         }
 
+        #endregion
+
+        #region Get Client Details
+        /// <summary>
+        /// GetClientDetails
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("getclientdetails")]
+        public async Task<IActionResult> GetClientDetails()
+        {
+
+            var response = new List<Clients>();
+            Guid userId = _jwtService.GetUserIdFromJwt();
+
+            if (userId != Guid.Empty)
+            {
+                response = await _dashboardService.GetClientDetails(userId);
+                return Ok(response);
+            }
+
+            else
+            {
+                return BadRequest("Error occured");
+            }
+
+        }
         #endregion
 
     }
