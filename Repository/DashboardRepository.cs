@@ -51,5 +51,21 @@ namespace InvoiceApi.Repository
         }
 
         #endregion
+
+        #region SaveInvoiceDetails
+        /// <summary>
+        /// SaveInvoiceDetails
+        /// </summary>
+        /// <param name="invoiceDetails"></param>
+        /// <returns></returns>
+        public async Task<InvoiceDetails> SaveInvoiceDetails(InvoiceDetails invoiceDetails)
+        {
+            var response = new InvoiceDetails();
+
+            response = await _sqlService.GetSingleExecuteQueryasync<InvoiceDetails>(SqlQuery.GetClientDetails, invoiceDetails );
+
+            return response;
+        }
+        #endregion
     }
 }
