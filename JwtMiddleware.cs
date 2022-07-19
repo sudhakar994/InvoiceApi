@@ -29,29 +29,22 @@ namespace InvoiceApi
             //not validate register and log in method
             if (path.Contains("authenticate") || path.Contains("refreshtoken") || path.Contains("swagger") || path.Contains("register") || path.Contains("resetpassword") || path.Contains("updatepassword"))
             {
-
                 await _next(context);
             }
-
-
-
             else
             {
                 if (!string.IsNullOrWhiteSpace(token))
                 {
-
                     isValidTaken = ValidateCurrentToken(token);
                     if (isValidTaken)
                     {
                         await _next(context);
                     }
-
                     else
                     {
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     }
                 }
-
                 else
                 {
                     //handle preflighted request
@@ -67,7 +60,6 @@ namespace InvoiceApi
             }
             //if token present in header validate token
         }
-
 
 
         public bool ValidateCurrentToken(string token)

@@ -25,21 +25,18 @@ namespace InvoiceApi
     {
         #region  Variable Declaration
 
-        private  readonly string CipherKey = "xafmg2H0bLk2kZc0PvklMQ==";
-        private  readonly string CipherIV = "VcCvRGkh9Z3NyN/09/Cspg==";
+        private readonly string CipherKey = "xafmg2H0bLk2kZc0PvklMQ==";
+        private readonly string CipherIV = "VcCvRGkh9Z3NyN/09/Cspg==";
         #endregion
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-
             var secret = Configuration.GetSection("AppSettings").GetSection("SecretKey").Value;
             var key = Encoding.ASCII.GetBytes(secret);
             services.AddAuthentication(x =>
@@ -69,10 +66,7 @@ namespace InvoiceApi
                                       .AllowAnyMethod()
                                       .AllowAnyHeader());
             });
-
-
             services.AddControllers();
-
             services.AddSingleton<IConfiguration>(Configuration);
 
             // Encrypted Conncetion String
