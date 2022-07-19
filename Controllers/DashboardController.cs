@@ -1,4 +1,5 @@
-﻿using InvoiceApi.IServices;
+﻿using InvoiceApi.Constants;
+using InvoiceApi.IServices;
 using InvoiceApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,13 +26,13 @@ namespace InvoiceApi.Controllers
         }
         [HttpGet]
         [Route("getprofile")]
-        public async Task<IActionResult> GetProfileData(string userId, string token)
+        public  IActionResult GetProfileData(string userId, string token)
         {
             return Ok();
         }
         [HttpPut]
         [Route("updatepassword")]
-        public async Task<IActionResult> UpdateUserPassword()
+        public  IActionResult UpdateUserPassword()
         {
             return Ok();
         }
@@ -91,5 +92,29 @@ namespace InvoiceApi.Controllers
         }
         #endregion
 
+        #region SaveInvoiceDetails
+        /// <summary>
+        /// SaveInvoiceDetails
+        /// </summary>
+        /// <returns></returns>
+         [HttpPost]
+        [Route("saveinvoicedetails")]
+        public async Task<IActionResult> SaveInvoiceDetails(InvoiceDetails invoiceDetails)
+        {
+            var response = new InvoiceDetails { Status = StatusType.Failure.ToString() };
+            Guid userId = _jwtService.GetUserIdFromJwt();
+
+            if (userId != Guid.Empty)
+            {
+                response = await _dashboardService.SaveInvoiceDetails(invoiceDetails);
+                return Ok(response);
+            }
+
+            else
+            {
+                return BadRequest("Error occured");
+            }
+        }
+        #endregion
     }
 }

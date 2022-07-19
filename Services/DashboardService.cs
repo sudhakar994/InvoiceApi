@@ -25,5 +25,10 @@ namespace InvoiceApi.Services
         {
             return await _dashboardRepository.GetClientDetails(userId);
         }
+
+        public async Task<InvoiceDetails> SaveInvoiceDetails(InvoiceDetails invoiceDetails)
+        {
+            return await _dashboardRepository.SaveInvoiceDetails(invoiceDetails);
+        }
     }
 }

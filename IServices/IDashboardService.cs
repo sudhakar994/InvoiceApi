@@ -10,5 +10,6 @@ namespace InvoiceApi.IServices
     {
         Task<List<Business>> GetBusinessDetails(Guid userId);
         Task<List<Clients>> GetClientDetails(Guid userId);
+        Task<InvoiceDetails> SaveInvoiceDetails(InvoiceDetails invoiceDetails);
     }
 }
