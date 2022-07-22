@@ -31,6 +31,16 @@ namespace InvoiceApi
         }
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
+            string ErrorMessgage = exception.Message;
+
+            System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(exception, true);
+
+            string pagename = trace.GetFrame((trace.FrameCount - 1)).GetFileName();
+
+            string method = trace.GetFrame((trace.FrameCount - 1)).GetMethod().ToString();
+
+            Int32 lineNumber = trace.GetFrame((trace.FrameCount - 1)).GetFileLineNumber();
+
             var path = context.Request.Path.Value;
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
