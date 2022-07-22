@@ -7,10 +7,8 @@ namespace InvoiceApi.Models
 {
     public class TransactionDetails
     {
-        public long TransactionId { get; set; }
         public Guid InvoiceId { get; set; }
-
-        public string Description { get; set; }
+        public string ItemDescription { get; set; }
         public decimal Quantity { get; set; }
 
         public decimal Rate { get; set; }

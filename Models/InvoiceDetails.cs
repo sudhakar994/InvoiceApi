@@ -7,9 +7,11 @@ namespace InvoiceApi.Models
 {
     public class InvoiceDetails:Base
     {
+        public Guid UserId { get; set; }
         public string InvoiceNumber { get; set; }
-        public string InvoiceDate { get; set; }
-        public string DueDate { get; set; }
+        public DateTime InvoiceDate { get; set; }
+        public DateTime InvoiceDueDate { get; set; }
+
         public Guid BusinessId { get; set; }
         public Guid ClientId { get; set; }
         public string Notes { get; set; }
@@ -17,10 +19,13 @@ namespace InvoiceApi.Models
         public decimal Tax { get; set; }
         public decimal Discount { get; set; }
         public decimal Total { get; set; }
+        public decimal SubTotal { get; set; }
+        public string Taxtype { get; set; }
+        public  string DiscountType { get; set; }
         public string TemplateName { get; set; }
-        public List<TransactionDetails> TransactionDetails { get; set; }
-        public Clients Clients { get; set; }
-        public Business Business { get; set; }
+        public List<TransactionDetails> Itemdetails { get; set; }
+        public Clients ClientsDetails { get; set; }
+        public Business BusinessDetails { get; set; }
     }
 
     

@@ -52,6 +52,7 @@ namespace InvoiceApi.Controllers
 
             if(userId != Guid.Empty)
             {
+
                 response =  await _dashboardService.GetBusinessDetails(userId);
                 return Ok(response);
             }
@@ -98,16 +99,28 @@ namespace InvoiceApi.Controllers
         /// </summary>
         /// <returns></returns>
          [HttpPost]
-        [Route("saveinvoicedetails")]
+        [Route("saveinvoicedetail")]
         public async Task<IActionResult> SaveInvoiceDetails(InvoiceDetails invoiceDetails)
         {
-            var response = new InvoiceDetails { Status = StatusType.Failure.ToString() };
+           
             Guid userId = _jwtService.GetUserIdFromJwt();
 
             if (userId != Guid.Empty)
             {
-                response = await _dashboardService.SaveInvoiceDetails(invoiceDetails);
-                return Ok(response);
+                if(invoiceDetails != null && invoiceDetails.BusinessDetails != null && invoiceDetails.ClientsDetails !=null && invoiceDetails.Itemdetails.Count > 0)
+                {
+                    invoiceDetails.UserId = userId;
+                    invoiceDetails.BusinessDetails.UserId = userId;
+                    invoiceDetails.ClientsDetails.UserId = userId;
+                    var   response = await _dashboardService.SaveInvoiceDetails(invoiceDetails);
+                    return Ok(response);
+                }
+
+                else
+                {
+                    return BadRequest("Error occured");
+                }
+                
             }
 
             else
