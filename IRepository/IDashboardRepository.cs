@@ -1,4 +1,5 @@
 ﻿using InvoiceApi.Models;
+using InvoiceApi.Models.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace InvoiceApi.IRepository
 
         Task<List<Clients>> GetClientDetails(Guid userId);
         Task<InvoiceDetails> SaveInvoiceDetails(InvoiceDetails invoiceDetails);
+        Task<List<UserInvoiceDetails>> GetInvoiceDetails(Guid userId);
+        Task<InvoiceDetails> GetInvoiceDetailByInvoiceId(Guid userId,Guid invoiceId);
     }
 }

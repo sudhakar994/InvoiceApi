@@ -1,6 +1,7 @@
 ﻿using InvoiceApi.Constants;
 using InvoiceApi.IServices;
 using InvoiceApi.Models;
+using InvoiceApi.Models.Dashboard;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -126,6 +127,57 @@ namespace InvoiceApi.Controllers
             else
             {
                 return BadRequest("Error occured");
+            }
+        }
+        #endregion
+
+        #region GetInvoiceDetails
+        /// <summary>
+        /// GetInvoiceDetails
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("getuserinvoicedetail")]
+        public async Task<IActionResult> GetInvoiceDetails()
+        {
+            var response = new List<UserInvoiceDetails>();
+            Guid userId = _jwtService.GetUserIdFromJwt();
+            if (userId != Guid.Empty)
+            {
+                     response = await _dashboardService.GetInvoiceDetails(userId);
+                    return Ok(response);
+            }
+
+            else
+            {
+                return BadRequest("Error occured");
+            }
+
+        }
+        #endregion
+
+        #region Get Invoice DetailBy InvoiceId
+        /// <summary>
+        /// GetInvoiceDetailByInvoiceId
+        /// </summary>
+        /// <param name="invoiceId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("getinvoicedetail")]
+        public async Task<IActionResult> GetInvoiceDetailByInvoiceId(Guid invoiceId)
+       {
+            var response = new InvoiceDetails();
+
+            Guid userId = _jwtService.GetUserIdFromJwt();
+            if (userId != Guid.Empty && invoiceId != Guid.Empty)
+            {
+                response = await _dashboardService.GetInvoiceDetailByInvoiceId(userId,invoiceId);
+                return Ok(response);
+            }
+
+            else
+            {
+                return Ok(response);
             }
         }
         #endregion
