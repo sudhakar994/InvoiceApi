@@ -15,5 +15,6 @@ namespace InvoiceApi.IRepository
         Task<InvoiceDetails> SaveInvoiceDetails(InvoiceDetails invoiceDetails);
         Task<List<UserInvoiceDetails>> GetInvoiceDetails(Guid userId);
         Task<InvoiceDetails> GetInvoiceDetailByInvoiceId(Guid userId,Guid invoiceId);
+        Task<Base> DeleteInvoice(Guid userId, Guid invoiceId);
     }
 }

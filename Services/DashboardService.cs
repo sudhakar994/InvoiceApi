@@ -40,5 +40,10 @@ namespace InvoiceApi.Services
         {
             return await _dashboardRepository.GetInvoiceDetailByInvoiceId(userId, invoiceId);
         }
+
+        public async Task<Base> DeleteInvoice(Guid userId, Guid invoiceId)
+        {
+            return await _dashboardRepository.DeleteInvoice(userId, invoiceId);
+        }
     }
 }

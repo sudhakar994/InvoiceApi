@@ -41,5 +41,6 @@ namespace InvoiceApi.Constants
         public const string GetTransactionDetails = @"Select Transaction_Id as TransactionId,Invoice_Id as InvoiceId,Description as ItemDescription,Quantity,Rate,Amount from tbl_transaction_details where Invoice_Id=@InvoiceId";
         public const string DeleteTransactionDetails = @"Delete from tbl_transaction_details where Invoice_Id=@InvoiceId";
         public const string UpdateInvoiceDetails = @"Update tbl_Invoice_Details set Invoice_No=@InvoiceNumber,Invoice_Date=@InvoiceDate,Due_Date=@InvoiceDueDate,Business_Id=@BusinessId,Client_Id=@ClientId,Notes=@Notes,Tax=@Tax,Discount=@Discount,Total=@Total,Template_Name=@TemplateName,Terms=@Terms,SubTotal=@SubTotal,Taxtype=@Taxtype,DiscountType=@DiscountType,TaxPercentage=@TaxPercentage,DiscountPercentage=@DiscountPercentage  OUTPUT INSERTED.Invoice_Id where Invoice_Id=@InvoiceId and User_Id=@UserId";
+        public const string DeleteInvoiceDetails = @"DELETE FROM tbl_Invoice_Details where user_Id=@UserId and Invoice_Id=@InvoiceId";
     }
 }

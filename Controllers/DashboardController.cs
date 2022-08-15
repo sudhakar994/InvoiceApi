@@ -181,5 +181,32 @@ namespace InvoiceApi.Controllers
             }
         }
         #endregion
-    }
+
+        #region Delete Invoice
+        /// <summary>
+        /// DeleteInvoice
+        /// </summary>
+        /// <param name="invoiceId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("deleteinvoice")]
+        public async Task<IActionResult> DeleteInvoice(DeleteInvoiceRequest deleteInvoiceRequest)
+        {
+            var response = new Base { Status = StatusType.Failure.ToString() };
+
+            deleteInvoiceRequest.UserId = _jwtService.GetUserIdFromJwt();
+            if (deleteInvoiceRequest.UserId != Guid.Empty && deleteInvoiceRequest.InvoiceId != Guid.Empty)
+            {
+                response = await _dashboardService.DeleteInvoice(deleteInvoiceRequest.UserId, deleteInvoiceRequest.InvoiceId);
+                return Ok(response);
+            }
+
+            else
+            {
+                return Ok(response);
+            }
+
+        }
+            #endregion
+      }
 }

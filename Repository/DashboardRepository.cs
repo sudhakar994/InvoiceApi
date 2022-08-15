@@ -74,6 +74,11 @@ namespace InvoiceApi.Repository
                 {
                     invoiceDetails.BusinessId = businessId;
                     invoiceDetails.ClientId = clientId;
+                    invoiceDetails.InvoiceDate = invoiceDetails.InvoiceDate.AddDays(1);
+                    if(invoiceDetails.InvoiceDueDate != null)
+                    {
+                        invoiceDetails.InvoiceDueDate = invoiceDetails.InvoiceDueDate?.AddDays(1);
+                    }
                     //save invoice details
                     Guid invoiceId = await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.SaveInvoiceDetails, invoiceDetails);
                     if (invoiceId != Guid.Empty)
@@ -113,6 +118,11 @@ namespace InvoiceApi.Repository
                 var businessId = await SaveBusiness(invoiceDetails.BusinessDetails);
                 //Save clients
                 var clientId = await SaveClients(invoiceDetails.ClientsDetails);
+                invoiceDetails.InvoiceDate = invoiceDetails.InvoiceDate.AddDays(1);
+                if (invoiceDetails.InvoiceDueDate != null)
+                {
+                    invoiceDetails.InvoiceDueDate = invoiceDetails.InvoiceDueDate?.AddDays(1);
+                }
                 if (businessId != Guid.Empty && clientId != Guid.Empty)
                 {
                     invoiceDetails.BusinessId = businessId;
@@ -251,6 +261,26 @@ namespace InvoiceApi.Repository
                     response.FormattedInvoiceDueDate = response.InvoiceDueDate?.ToString("MM-dd-yyyy");
                 }
                 response.Itemdetails = await _sqlService.GetListExecuteQueryasync<TransactionDetails>(SqlQuery.GetTransactionDetails, new { InvoiceId = invoiceId });
+            }
+            return response;
+        }
+        #endregion
+
+        #region DeleteInvoice
+        /// <summary>
+        /// DeleteInvoice
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="invoiceId"></param>
+        /// <returns></returns>
+        public async Task<Base> DeleteInvoice(Guid userId, Guid invoiceId)
+        {
+            var response = new Base { Status = StatusType.Failure.ToString() };
+            if(userId != Guid.Empty && invoiceId != Guid.Empty)
+            {
+                await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteTransactionDetails, new { InvoiceId = invoiceId });
+                await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteInvoiceDetails, new { InvoiceId = invoiceId ,UserId= userId });
+                response.Status = StatusType.Success.ToString();
             }
             return response;
         }
