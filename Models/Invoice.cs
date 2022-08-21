@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.Models
 {
-    public class Invoice
+    public class Invoice:InvoiceDetails
     {
         public string InvoiceNo { get; set; }
              

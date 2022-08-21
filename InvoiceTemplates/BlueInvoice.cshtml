@@ -1,4 +1,4 @@
-﻿@model InvoiceApi.Models.Invoice
+﻿@model InvoiceApi.Models.InvoiceDetails
 @{
 
 }
@@ -25,10 +25,12 @@
 					<div class="row">
 						<div class="col-6">
 
-
+                      
 							<div class="">
 								<div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
-									<img style="width:150px" src="https://media.istockphoto.com/id/1286680331/vector/adoption-and-community-care.webp?s=612x612&w=is&k=20&c=gZK-vVVN1PtIRE_m8DGxiI4RQl0nHQ0U-YXXAX7woGs=" />
+									@if(!string.IsNullOrWhiteSpace(Model.ImageBase64String)){
+									<img style="width:150px" src="@Model.ImageBase64String" />
+									}
 								</div>
 
 

@@ -40,7 +40,12 @@ namespace InvoiceApi.Constants
         public const string GetInvoiceDetailByInvoiceId = @"SELECT Invoice_Id as InvoiceId,Invoice_No as InvoiceNumber,Invoice_Date as  InvoiceDate,Due_Date as InvoiceDueDate,Business_Id as BusinessId,Client_Id as ClientId,Notes,Tax,Discount,Total,Template_Name as TemplateName,Terms,SubTotal,Taxtype,DiscountType,TaxPercentage,DiscountPercentage from tbl_invoice_details WHERE Invoice_Id=@InvoiceId and User_Id=@UserId and IsDeleted=0";
         public const string GetTransactionDetails = @"Select Transaction_Id as TransactionId,Invoice_Id as InvoiceId,Description as ItemDescription,Quantity,Rate,Amount from tbl_transaction_details where Invoice_Id=@InvoiceId";
         public const string DeleteTransactionDetails = @"Delete from tbl_transaction_details where Invoice_Id=@InvoiceId";
+        public const string DeleteLogoDetails = @"Delete From tbl_logo_details where User_Id=@UserId and Invoice_Id=@InvoiceId";
         public const string UpdateInvoiceDetails = @"Update tbl_Invoice_Details set Invoice_No=@InvoiceNumber,Invoice_Date=@InvoiceDate,Due_Date=@InvoiceDueDate,Business_Id=@BusinessId,Client_Id=@ClientId,Notes=@Notes,Tax=@Tax,Discount=@Discount,Total=@Total,Template_Name=@TemplateName,Terms=@Terms,SubTotal=@SubTotal,Taxtype=@Taxtype,DiscountType=@DiscountType,TaxPercentage=@TaxPercentage,DiscountPercentage=@DiscountPercentage  OUTPUT INSERTED.Invoice_Id where Invoice_Id=@InvoiceId and User_Id=@UserId";
         public const string DeleteInvoiceDetails = @"DELETE FROM tbl_Invoice_Details where user_Id=@UserId and Invoice_Id=@InvoiceId";
+        public const string SaveLogoDetails = @"Insert into tbl_logo_details (invoice_id,User_Id,Logo_Name,Image) values (@InvoiceId,@UserId,@LogoName,@ImageBase64String)";
+        public const string GetImageSrcByInvoiceId = @"Select Image FROM tbl_logo_details  WHERE Invoice_Id=@InvoiceId and User_Id=@UserId";
+        public const string UpdateLogoDetails = @"Update tbl_logo_details set Image=@ImageBase64String,Logo_Name=@LogoName  where User_id=@UserId and Invoice_Id=@InvoiceId and Logo_Id=@LogoId";
+        public const string SelectLogoId = @"Select Logo_Id LogoId From tbl_logo_details  WHERE Invoice_Id=@InvoiceId and User_Id=@UserId";
     }
 }

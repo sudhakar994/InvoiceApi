@@ -91,6 +91,33 @@ namespace InvoiceApi.Repository
                                 item.InvoiceId = invoiceId;
                                 await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveTransactionDetails, item);
                             }
+
+                            //Save Logo
+                          
+                            long logoId = await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SelectLogoId, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId });
+                            if (logoId > 0)
+                            {
+                                if (string.IsNullOrWhiteSpace(invoiceDetails.ImageBase64String))
+                                {
+                                    invoiceDetails.LogoName = string.Empty;
+                                    invoiceDetails.ImageBase64String = string.Empty;
+                                }
+                                await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.UpdateLogoDetails, new
+                                {
+                                    InvoiceId = invoiceId,
+                                    LogoName = invoiceDetails.LogoName,
+                                    UserId = invoiceDetails.UserId,
+                                    LogoId = logoId,
+                                    ImageBase64String = invoiceDetails.ImageBase64String
+                                });
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrWhiteSpace(invoiceDetails.ImageBase64String))
+                                {
+                                    await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveLogoDetails, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId, LogoName = invoiceDetails.LogoName, ImageBase64String = invoiceDetails.ImageBase64String });
+                                }
+                            }
                             response.Status = StatusType.Success.ToString();
                         }
                         catch (Exception ex)
@@ -142,6 +169,31 @@ namespace InvoiceApi.Repository
                                 item.InvoiceId = invoiceId;
                                 await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveTransactionDetails, item);
                             }
+                            long logoId= await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SelectLogoId, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId });
+                            if(logoId > 0)
+                            {
+                                if (string.IsNullOrWhiteSpace(invoiceDetails.ImageBase64String))
+                                {
+                                    invoiceDetails.LogoName = string.Empty;
+                                    invoiceDetails.ImageBase64String = string.Empty;
+                                }
+                                await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.UpdateLogoDetails, new
+                                {
+                                    InvoiceId = invoiceId,
+                                    LogoName = invoiceDetails.LogoName,
+                                    UserId = invoiceDetails.UserId,
+                                    LogoId = logoId,
+                                    ImageBase64String = invoiceDetails.ImageBase64String
+                                });
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrWhiteSpace(invoiceDetails.ImageBase64String))
+                                {
+                                    await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveLogoDetails, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId,LogoName= invoiceDetails.LogoName, ImageBase64String = invoiceDetails.ImageBase64String });
+                                }
+                            }
+                            
                             response.Status = StatusType.Success.ToString();
                         }
                         catch (Exception ex)
@@ -261,6 +313,7 @@ namespace InvoiceApi.Repository
                     response.FormattedInvoiceDueDate = response.InvoiceDueDate?.ToString("MM-dd-yyyy");
                 }
                 response.Itemdetails = await _sqlService.GetListExecuteQueryasync<TransactionDetails>(SqlQuery.GetTransactionDetails, new { InvoiceId = invoiceId });
+                response.ImageBase64String = await _sqlService.GetSingleExecuteQueryasync<string>(SqlQuery.GetImageSrcByInvoiceId, new { InvoiceId = invoiceId,UserId= userId });
             }
             return response;
         }
@@ -278,12 +331,21 @@ namespace InvoiceApi.Repository
             var response = new Base { Status = StatusType.Failure.ToString() };
             if(userId != Guid.Empty && invoiceId != Guid.Empty)
             {
+                await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteLogoDetails, new { InvoiceId = invoiceId, UserId = userId });
+
                 await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteTransactionDetails, new { InvoiceId = invoiceId });
                 await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteInvoiceDetails, new { InvoiceId = invoiceId ,UserId= userId });
                 response.Status = StatusType.Success.ToString();
             }
             return response;
         }
+        #endregion
+
+        #region
+
+      
+
+
         #endregion
     }
 }

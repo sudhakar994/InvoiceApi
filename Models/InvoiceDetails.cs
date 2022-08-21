@@ -30,6 +30,9 @@ namespace InvoiceApi.Models
         public Business BusinessDetails { get; set; }
         public decimal TaxPercentage { get; set; }
         public decimal DiscountPercentage { get; set; }
+        public string ImageBase64String { get; set; }
+        public string LogoName { get; set; }
+        public long LogoId { get; set; }
     }
 
     

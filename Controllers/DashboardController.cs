@@ -2,6 +2,7 @@
 using InvoiceApi.IServices;
 using InvoiceApi.Models;
 using InvoiceApi.Models.Dashboard;
+using InvoiceApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,12 +19,14 @@ namespace InvoiceApi.Controllers
         #region Variable Declaration
         private readonly IDashboardService _dashboardService;
         private readonly IJwtService _jwtService;
+        private readonly IHtmlReaderService _htmlReaderService;
         #endregion
 
-        public DashboardController(IDashboardService dashboardService, IJwtService jwtService)
+        public DashboardController(IDashboardService dashboardService, IJwtService jwtService, IHtmlReaderService htmlReaderService)
         {
             _dashboardService = dashboardService;
             _jwtService = jwtService;
+            _htmlReaderService = htmlReaderService;
         }
         [HttpGet]
         [Route("getprofile")]
@@ -207,6 +210,22 @@ namespace InvoiceApi.Controllers
             }
 
         }
-            #endregion
-      }
+        #endregion
+
+        #region Download Invoice
+        [HttpGet]
+        [Route("downloadinvoice")]
+        public async Task<IActionResult> DownloadPdf(Guid invoiceId)
+        {
+            string fileName = "testFile.pdf";
+            var invoice = await _dashboardService.GetInvoiceDetailByInvoiceId(_jwtService.GetUserIdFromJwt(), invoiceId);
+            var html = await _htmlReaderService.ReadHtmlFileAndConvert("InvoiceTemplates/BlueInvoice.cshtml", invoice);
+            var pdfBytes = PdfService.GeneratePdf(html);
+            if (pdfBytes != null)
+                return File(pdfBytes, "application/pdf", fileName);
+            else
+                return BadRequest("Error occured");
+        }
+        #endregion
+    }
 }
