@@ -46,6 +46,8 @@ namespace InvoiceApi.Constants
         public const string SaveLogoDetails = @"Insert into tbl_logo_details (invoice_id,User_Id,Logo_Name,Image) values (@InvoiceId,@UserId,@LogoName,@ImageBase64String)";
         public const string GetImageSrcByInvoiceId = @"Select Image FROM tbl_logo_details  WHERE Invoice_Id=@InvoiceId and User_Id=@UserId";
         public const string UpdateLogoDetails = @"Update tbl_logo_details set Image=@ImageBase64String,Logo_Name=@LogoName  where User_id=@UserId and Invoice_Id=@InvoiceId and Logo_Id=@LogoId";
+        public const string GetBusinessDetailsByBusinessId = @"SELECT Business_Name as BusinessName,Business_Email as BusinessEmail,Business_Phone as BusinessPhone,Phone_Code as PhoneCode,Address ,City,Zipcode,State,Country_Id as CountryId FROM tbl_Business_Details WHERE Business_Id=@BusinessId and User_Id=@UserId";
+        public const string GetClientDetailsByClientId = @"SELECT Client_Name as ClientName,Client_Email as ClientEmail,Client_Phone as ClientPhone,Phone_Code as PhoneCode,Address ,City,Zipcode,State,Country_Id as CountryId FROM tbl_Client_Details WHERE Client_Id=@ClientId and User_Id=@UserId";
         public const string SelectLogoId = @"Select Logo_Id LogoId From tbl_logo_details  WHERE Invoice_Id=@InvoiceId and User_Id=@UserId";
     }
 }

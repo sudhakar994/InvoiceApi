@@ -99,8 +99,12 @@ namespace InvoiceApi.Repository
                             {
                                 if (string.IsNullOrWhiteSpace(invoiceDetails.ImageBase64String))
                                 {
-                                    invoiceDetails.LogoName = string.Empty;
+                                   
                                     invoiceDetails.ImageBase64String = string.Empty;
+                                }
+                                if (string.IsNullOrWhiteSpace(invoiceDetails.LogoName))
+                                {
+                                    invoiceDetails.LogoName = string.Empty;
                                 }
                                 await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.UpdateLogoDetails, new
                                 {
@@ -174,8 +178,12 @@ namespace InvoiceApi.Repository
                             {
                                 if (string.IsNullOrWhiteSpace(invoiceDetails.ImageBase64String))
                                 {
-                                    invoiceDetails.LogoName = string.Empty;
+                                    
                                     invoiceDetails.ImageBase64String = string.Empty;
+                                }
+                                if (string.IsNullOrWhiteSpace(invoiceDetails.LogoName))
+                                {
+                                    invoiceDetails.LogoName = string.Empty;
                                 }
                                 await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.UpdateLogoDetails, new
                                 {
@@ -314,6 +322,16 @@ namespace InvoiceApi.Repository
                 }
                 response.Itemdetails = await _sqlService.GetListExecuteQueryasync<TransactionDetails>(SqlQuery.GetTransactionDetails, new { InvoiceId = invoiceId });
                 response.ImageBase64String = await _sqlService.GetSingleExecuteQueryasync<string>(SqlQuery.GetImageSrcByInvoiceId, new { InvoiceId = invoiceId,UserId= userId });
+                if(response.BusinessId != Guid.Empty)
+                {
+                    response.BusinessDetails = new Business();
+                    response.BusinessDetails = await _sqlService.GetSingleExecuteQueryasync<Business>(SqlQuery.GetBusinessDetailsByBusinessId, new { BusinessId = response.BusinessId, UserId = userId });
+                }
+                if (response.ClientId != Guid.Empty)
+                {
+                    response.ClientsDetails = new Clients();
+                    response.ClientsDetails = await _sqlService.GetSingleExecuteQueryasync<Clients>(SqlQuery.GetClientDetailsByClientId, new { ClientId = response.ClientId, UserId = userId });
+                }
             }
             return response;
         }
