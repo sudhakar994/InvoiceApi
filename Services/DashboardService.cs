@@ -1,6 +1,7 @@
 ﻿using InvoiceApi.IRepository;
 using InvoiceApi.IServices;
 using InvoiceApi.Models;
+using InvoiceApi.Models.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,20 @@ namespace InvoiceApi.Services
         public async Task<InvoiceDetails> SaveInvoiceDetails(InvoiceDetails invoiceDetails)
         {
             return await _dashboardRepository.SaveInvoiceDetails(invoiceDetails);
+        }
+
+        public async Task<List<UserInvoiceDetails>> GetInvoiceDetails(Guid userId)
+        {
+            return await _dashboardRepository.GetInvoiceDetails(userId);
+        }
+        public async Task<InvoiceDetails> GetInvoiceDetailByInvoiceId(Guid userId,Guid invoiceId)
+        {
+            return await _dashboardRepository.GetInvoiceDetailByInvoiceId(userId, invoiceId);
+        }
+
+        public async Task<Base> DeleteInvoice(Guid userId, Guid invoiceId)
+        {
+            return await _dashboardRepository.DeleteInvoice(userId, invoiceId);
         }
 
         public async Task<User> GetProfileDetail(Guid userId, string email)

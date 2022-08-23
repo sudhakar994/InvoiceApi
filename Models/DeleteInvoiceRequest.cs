@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.Models
 {
-    public class Invoice:InvoiceDetails
+    public class DeleteInvoiceRequest
     {
-        public string InvoiceNo { get; set; }
-             
+        public Guid InvoiceId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

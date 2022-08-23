@@ -25,8 +25,7 @@ namespace InvoiceApi
     {
         #region  Variable Declaration
 
-        private readonly string CipherKey = "xafmg2H0bLk2kZc0PvklMQ==";
-        private readonly string CipherIV = "VcCvRGkh9Z3NyN/09/Cspg==";
+       
         #endregion
         public Startup(IConfiguration configuration)
         {

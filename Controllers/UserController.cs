@@ -28,14 +28,15 @@ namespace InvoiceApi.Controllers
         private readonly IJwtService _jwtService;
         private readonly IHtmlReaderService _htmlReaderService;
         private readonly IEmailService _emailService;
+        private readonly IDashboardService _dashboardService;
         #endregion
-        public UserController(IUserService userService, IJwtService jwtService, IHtmlReaderService htmlReaderService, IEmailService emailService)
+        public UserController(IUserService userService, IJwtService jwtService, IHtmlReaderService htmlReaderService, IEmailService emailService, IDashboardService dashboardService)
         {
             _userService = userService;
             _jwtService = jwtService;
             _htmlReaderService = htmlReaderService;
             _emailService = emailService;
-
+            _dashboardService = dashboardService;
         }
         #region Login
         /// <summary>
@@ -71,22 +72,7 @@ namespace InvoiceApi.Controllers
         }
         #endregion
 
-        #region Download Pdf
-        [HttpGet]
-        [Route("DownloadPdf")]
-        public async Task<IActionResult> DownloadPdf()
-        {
-            string fileName = "testFile.pdf";
-            var invoice = new Invoice { InvoiceNo = "009898" };
-            var html = await _htmlReaderService.ReadHtmlFileAndConvert("InvoiceTemplates/BlueInvoice.cshtml", invoice);
-            var pdfBytes = PdfService.GeneratePdf(html);
-            if (pdfBytes != null)
-                return File(pdfBytes, "application/pdf", fileName);
-            else
-                return BadRequest("Error occured");
-        }
-
-        #endregion
+       
 
         #region User Register
         /// <summary>

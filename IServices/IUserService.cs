@@ -18,6 +18,7 @@ namespace InvoiceApi.IServices
         Task<string> ValidateVerficationCode(VerificationCodeResponse user);
         Task<VerificationCodeResponse> ResendCode(VerificationCodeResponse VerificationCodeResponse);
         Task<VerificationCodeResponse> GetDetailsForResendCode(VerificationCodeResponse VerificationCodeResponse);
+        
     }
 }
 
