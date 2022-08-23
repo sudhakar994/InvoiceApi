@@ -36,5 +36,7 @@ namespace InvoiceApi.Constants
         public const string UpdateClientsByClientId = @"Update tbl_Client_Details set Country_Id=@CountryId,Client_Name=@ClientName,Client_Email=@ClientEmail,Client_Phone=@ClientPhone,Phone_Code=@PhoneCode,Address=@Address,City=@City,Zipcode=@Zipcode,State=@State where Client_Id=@ClientId AND User_Id=@UserId";
         public const string SaveInvoiceDetails = @"INSERT INTO tbl_Invoice_Details (User_Id, Invoice_No,Invoice_Date,Due_Date,Business_Id,Client_Id,Notes,Terms,Tax,Discount,Total,SubTotal,Taxtype,DiscountType,Template_Name) OUTPUT INSERTED.Invoice_Id  VALUES(@UserId,@InvoiceNumber,@InvoiceDate,@InvoiceDueDate,@BusinessId,@ClientId,@Notes,@Terms,@Tax,@Discount,@Total,@SubTotal,@Taxtype,@DiscountType,@TemplateName)";
         public const string SaveTransactionDetails = @"INSERT INTO tbl_Transaction_Details (Invoice_Id,Description,Quantity,Rate,Amount) OUTPUT INSERTED.Transaction_Id  VALUES(@InvoiceId,@ItemDescription,@Quantity,@Rate,@Amount)";
+
+        public const string ProfileDetails = @"Select [User_Id] AS UserId,UserName,Email FROM tbl_UserDetails WHERE User_Id=@UserId AND Email=@Email AND [Status]='Verified' AND Is_Deleted=0";
     }
 }
