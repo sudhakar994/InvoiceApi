@@ -30,13 +30,23 @@ namespace InvoiceApi.Controllers
         }
         [HttpGet]
         [Route("getprofile")]
-        public  IActionResult GetProfileData(string userId, string token)
+        public async Task<IActionResult> GetProfileData(string userId, string email)
         {
-            return Ok();
+            var profileDetails = new User();
+
+            if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(email))
+            {
+                profileDetails = await _dashboardService.GetProfileDetail(Guid.Parse(userId), email);
+                return Ok(profileDetails);
+            }
+            else
+            {
+                return BadRequest("Error occured");
+            }
         }
         [HttpPut]
         [Route("updatepassword")]
-        public  IActionResult UpdateUserPassword()
+        public IActionResult UpdateUserPassword()
         {
             return Ok();
         }
@@ -54,10 +64,10 @@ namespace InvoiceApi.Controllers
             var response = new List<Business>();
             Guid userId = _jwtService.GetUserIdFromJwt();
 
-            if(userId != Guid.Empty)
+            if (userId != Guid.Empty)
             {
 
-                response =  await _dashboardService.GetBusinessDetails(userId);
+                response = await _dashboardService.GetBusinessDetails(userId);
                 return Ok(response);
             }
 
@@ -65,7 +75,7 @@ namespace InvoiceApi.Controllers
             {
                 return BadRequest("Error occured");
             }
-                
+
         }
 
         #endregion
@@ -102,21 +112,21 @@ namespace InvoiceApi.Controllers
         /// SaveInvoiceDetails
         /// </summary>
         /// <returns></returns>
-         [HttpPost]
+        [HttpPost]
         [Route("saveinvoicedetail")]
         public async Task<IActionResult> SaveInvoiceDetails(InvoiceDetails invoiceDetails)
         {
-           
+
             Guid userId = _jwtService.GetUserIdFromJwt();
 
             if (userId != Guid.Empty)
             {
-                if(invoiceDetails != null && invoiceDetails.BusinessDetails != null && invoiceDetails.ClientsDetails !=null && invoiceDetails.Itemdetails.Count > 0)
+                if (invoiceDetails != null && invoiceDetails.BusinessDetails != null && invoiceDetails.ClientsDetails != null && invoiceDetails.Itemdetails.Count > 0)
                 {
                     invoiceDetails.UserId = userId;
                     invoiceDetails.BusinessDetails.UserId = userId;
                     invoiceDetails.ClientsDetails.UserId = userId;
-                    var   response = await _dashboardService.SaveInvoiceDetails(invoiceDetails);
+                    var response = await _dashboardService.SaveInvoiceDetails(invoiceDetails);
                     return Ok(response);
                 }
 
@@ -124,7 +134,7 @@ namespace InvoiceApi.Controllers
                 {
                     return BadRequest("Error occured");
                 }
-                
+
             }
 
             else

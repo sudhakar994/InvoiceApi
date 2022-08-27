@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.Repository
 {
-    public class DashboardRepository:IDashboardRepository
+    public class DashboardRepository : IDashboardRepository
     {
-       private readonly ISqlService _sqlService;
+        private readonly ISqlService _sqlService;
 
         public DashboardRepository(ISqlService sqlService)
         {
@@ -28,9 +28,9 @@ namespace InvoiceApi.Repository
         /// <returns></returns>
         public async Task<List<Business>> GetBusinessDetails(Guid userId)
         {
-            var response = new List <Business>();
+            var response = new List<Business>();
 
-            response = await _sqlService.GetListExecuteQueryasync<Business>(SqlQuery.GetBusinessDetails, new {UserId= userId });
+            response = await _sqlService.GetListExecuteQueryasync<Business>(SqlQuery.GetBusinessDetails, new { UserId = userId });
 
             return response;
         }
@@ -234,9 +234,9 @@ namespace InvoiceApi.Repository
         /// <returns></returns>
         public async Task<Guid> SaveBusiness(Business business)
         {
-            Guid businessId =Guid.Empty;
+            Guid businessId = Guid.Empty;
             //update business
-            if(business.BusinessId != Guid.Empty)
+            if (business.BusinessId != Guid.Empty)
             {
                 businessId = business.BusinessId;
                 await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.UpdateBusinessByBusinessId, business);
@@ -277,6 +277,18 @@ namespace InvoiceApi.Repository
             }
             return clientId;
 
+        }
+
+        public async Task<User> GetProfileDetail(Guid userId, string email)
+        {
+            var profileDetails = new User();
+
+            if (userId != null && email != null)
+            {
+                profileDetails = await _sqlService.GetSingleExecuteQueryasync<User>(SqlQuery.ProfileDetails, new { UserId = userId, Email = email });
+            }
+
+            return profileDetails;
         }
 
         #endregion

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace InvoiceApi.Services
 {
-    public class DashboardService:IDashboardService
+    public class DashboardService : IDashboardService
     {
         private readonly IDashboardRepository _dashboardRepository;
         public DashboardService(IDashboardRepository dashboardRepository)
         {
             _dashboardRepository = dashboardRepository;
-        } 
+        }
 
         public async Task<List<Business>> GetBusinessDetails(Guid userId)
         {
@@ -45,5 +45,11 @@ namespace InvoiceApi.Services
         {
             return await _dashboardRepository.DeleteInvoice(userId, invoiceId);
         }
+
+        public async Task<User> GetProfileDetail(Guid userId, string email)
+        {
+            return await _dashboardRepository.GetProfileDetail(userId, email);
+        }
+
     }
 }
