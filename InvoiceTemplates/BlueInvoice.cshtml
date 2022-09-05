@@ -63,10 +63,10 @@
 									From:
 								</div>
 
-								<div class="my-2"> <span class="text-600 text-90">@Model.BusinessDetails.BusinessName</span> </div>
+								<div class="my-2"> <span class="text-600 text-90"><b>@Model.BusinessDetails.BusinessName</b></span> </div>
 								@if (!string.IsNullOrWhiteSpace(Model.BusinessDetails.BusinessEmail))
 								{
-									<div class="my-2"> <span class="text-600 text-90">@Model.BusinessDetails.BusinessEmail</span></div>
+									<div class="my-2"><b>Email:</b> <span class="text-600 text-90">@Model.BusinessDetails.BusinessEmail</span></div>
 								}
 
 								@if (!string.IsNullOrWhiteSpace(Model.BusinessDetails.Address))
@@ -100,10 +100,10 @@
 									To:
 								</div>
 
-								<div class="my-2"> <span class="text-600 text-90">@Model.ClientsDetails.ClientName</span> </div>
+								<div class="my-2"> <span class="text-600 text-90"><b>@Model.ClientsDetails.ClientName</b></span> </div>
 								@if (!string.IsNullOrWhiteSpace(Model.ClientsDetails.ClientEmail))
 								{
-									<div class="my-2"> <span class="text-600 text-90">@Model.ClientsDetails.ClientEmail</span></div>
+									<div class="my-2"><b>Email:</b> <span class="text-600 text-90">@Model.ClientsDetails.ClientEmail</span></div>
 								}
 
 								@if (!string.IsNullOrWhiteSpace(Model.ClientsDetails.Address))
@@ -164,15 +164,19 @@
 						<hr />
 
 						<div class="row mt-3">
+							<div class="col-sm-7">
+							<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
+								@if (!string.IsNullOrWhiteSpace(Model.Notes)) {
+									<div><b>Terms And Conditions</b></div>
+                                }
+								@(!string.IsNullOrWhiteSpace(Model.Notes) ? Model.Notes : string.Empty)
+							</div>
 							
-								<div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
-									@(!string.IsNullOrWhiteSpace(Model.Notes) ? Model.Notes:string.Empty)
-								</div>
 							
-							
-						<div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
+						<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
 							@(!string.IsNullOrWhiteSpace(Model.Terms) ? Model.Terms : string.Empty)
 						</div>
+								</div>
 							
 
 							
