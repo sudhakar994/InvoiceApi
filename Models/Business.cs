@@ -31,5 +31,7 @@ namespace InvoiceApi.Models
         public string State { get; set; }
         [DataMember]
         public string CountryId { get; set; }
+        [DataMember]
+        public string FormattedAddress { get; set; }
     }
 }

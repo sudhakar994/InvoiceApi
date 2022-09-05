@@ -338,11 +338,43 @@ namespace InvoiceApi.Repository
                 {
                     response.BusinessDetails = new Business();
                     response.BusinessDetails = await _sqlService.GetSingleExecuteQueryasync<Business>(SqlQuery.GetBusinessDetailsByBusinessId, new { BusinessId = response.BusinessId, UserId = userId });
+                    if(response.BusinessDetails != null)
+                    {
+                       
+                        if (!string.IsNullOrWhiteSpace(response.BusinessDetails.City))
+                        {
+                            response.BusinessDetails.FormattedAddress = response.BusinessDetails.City;
+                        }
+                        if (!string.IsNullOrWhiteSpace(response.BusinessDetails.State))
+                        {
+                            response.BusinessDetails.FormattedAddress += "," + response.BusinessDetails.State;
+                        }
+                        if (!string.IsNullOrWhiteSpace(response.BusinessDetails.CountryId))
+                        {
+                            response.BusinessDetails.FormattedAddress += "," + response.BusinessDetails.CountryId;
+                        }
+                    }
                 }
                 if (response.ClientId != Guid.Empty)
                 {
                     response.ClientsDetails = new Clients();
                     response.ClientsDetails = await _sqlService.GetSingleExecuteQueryasync<Clients>(SqlQuery.GetClientDetailsByClientId, new { ClientId = response.ClientId, UserId = userId });
+                    if (response.BusinessDetails != null)
+                    {
+                        var formattedAddress = string.Empty;
+                        if (!string.IsNullOrWhiteSpace(response.ClientsDetails.City))
+                        {
+                            response.ClientsDetails.FormattedAddress = response.ClientsDetails.City;
+                        }
+                        if (!string.IsNullOrWhiteSpace(response.ClientsDetails.State))
+                        {
+                            response.ClientsDetails.FormattedAddress += "," + response.ClientsDetails.State;
+                        }
+                        if (!string.IsNullOrWhiteSpace(response.ClientsDetails.CountryId))
+                        {
+                            response.ClientsDetails.FormattedAddress += "," + response.ClientsDetails.CountryId;
+                        }
+                    }
                 }
             }
             return response;

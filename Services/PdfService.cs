@@ -16,7 +16,7 @@ namespace InvoiceApi.Services
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             using (MemoryStream ms = new MemoryStream())
             {
-                SelectPdf.HtmlToPdf converter = new SelectPdf.HtmlToPdf(800,1032);
+                SelectPdf.HtmlToPdf converter = new SelectPdf.HtmlToPdf();
                 SelectPdf.PdfDocument doc = converter.ConvertHtmlString(html, "https://media.istockphoto.com/id/1286680331/vector/adoption-and-community-care.webp?s=612x612&w=is&k=20&c=gZK-vVVN1PtIRE_m8DGxiI4RQl0nHQ0U-YXXAX7woGs=");
                 doc.Save(ms);
                 res = ms.ToArray();

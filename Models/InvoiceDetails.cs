@@ -33,6 +33,7 @@ namespace InvoiceApi.Models
         public string ImageBase64String { get; set; }
         public string LogoName { get; set; }
         public long LogoId { get; set; }
+        
     }
 
     
