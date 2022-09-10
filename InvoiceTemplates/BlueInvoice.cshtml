@@ -149,8 +149,8 @@
 									<div class="d-none d-sm-block col-1">@(index++)</div>
 									<div class="col-9 col-sm-5">@(!string.IsNullOrWhiteSpace(item.ItemDescription) ? item.ItemDescription : "-")</div>
 									<div class="d-none d-sm-block col-2 col-sm-1">@(item.Quantity)</div>
-									<div class="d-none d-sm-block col-2 text-95">$@(item.Rate)</div>
-									<div class="col-2 text-secondary-d2">&nbsp;&nbsp;&nbsp;$@(decimal.Round(item.Quantity * item.Rate, 2, MidpointRounding.AwayFromZero))</div>
+									<div class="d-none d-sm-block col-2 text-95">@Model.CurrencyCode@(item.Rate)</div>
+									<div class="col-2 text-secondary-d2">&nbsp;&nbsp;&nbsp;@Model.CurrencyCode@(decimal.Round(item.Quantity * item.Rate, 2, MidpointRounding.AwayFromZero))</div>
 								</div>
                             }
 							
@@ -186,24 +186,24 @@
 										SubTotal:
 									</div>
 									<div class="col-5">
-										<span class="text-120 text-secondary-d1">$@Model.SubTotal</span>
+										<span class="text-120 text-secondary-d1">@Model.CurrencyCode@Model.SubTotal</span>
 									</div>
 								</div>
 
 								<div class="row my-2">
 									<div class="col-7 text-right">
-										VAT(@Model.TaxPercentage@(Model.Taxtype=="percentage" ? "%":string.Empty)):
+										@(Model.TaxLabel)(@Model.TaxPercentage@(Model.Taxtype=="percentage" ? "%":string.Empty)):
 									</div>
 									<div class="col-5">
-										<span class="text-110 text-secondary-d1">$@Model.Tax</span>
+										<span class="text-110 text-secondary-d1">@Model.CurrencyCode@Model.Tax</span>
 									</div>
 								</div>
 								<div class="row my-2">
 									<div class="col-7 text-right">
-										Discount(@Model.DiscountPercentage@(Model.DiscountType == "percentage" ? "%" : string.Empty)):
+										@(Model.DiscountLabel)(@Model.DiscountPercentage@(Model.DiscountType == "percentage" ? "%" : string.Empty)):
 									</div>
 									<div class="col-5">
-										<span class="text-110 text-secondary-d1">$@Model.Discount</span>
+										<span class="text-110 text-secondary-d1">@Model.CurrencyCode@Model.Discount</span>
 									</div>
 								</div>
 
@@ -212,7 +212,7 @@
 										Total Amount:
 									</div>
 									<div class="col-5">
-										<span class="text-150 text-success-d3 opacity-2">$@Model.Total</span>
+										<span class="text-150 text-success-d3 opacity-2">@Model.CurrencyCode@Model.Total</span>
 									</div>
 								</div>
 							</div>
