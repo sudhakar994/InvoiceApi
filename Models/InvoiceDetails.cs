@@ -10,10 +10,14 @@ namespace InvoiceApi.Models
         public Guid InvoiceId { get; set; }
         public Guid UserId { get; set; }
         public string InvoiceNumber { get; set; }
-        public DateTime InvoiceDate { get; set; }
+        public DateTime? InvoiceDate { get; set; }
         public DateTime? InvoiceDueDate { get; set; }
         public  string FormattedInvoiceDate { get; set; }
         public string FormattedInvoiceDueDate { get; set; }
+        public bool IsCustomDate { get; set; }
+        public bool IsCustomDueDate { get; set; }
+        public string CustomDate { get; set; }
+        public string CustomDueDate { get; set; }
         public Guid BusinessId { get; set; }
         public Guid ClientId { get; set; }
         public string Notes { get; set; }

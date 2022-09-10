@@ -74,11 +74,19 @@ namespace InvoiceApi.Repository
                 {
                     invoiceDetails.BusinessId = businessId;
                     invoiceDetails.ClientId = clientId;
-                    invoiceDetails.InvoiceDate = invoiceDetails.InvoiceDate.AddDays(1);
-                    if(invoiceDetails.InvoiceDueDate != null)
+                    if (invoiceDetails.IsCustomDate)
                     {
-                        invoiceDetails.InvoiceDueDate = invoiceDetails.InvoiceDueDate?.AddDays(1);
+                        invoiceDetails.InvoiceDate = null;
                     }
+                    else
+                    {
+                        invoiceDetails.InvoiceDate = invoiceDetails.InvoiceDate?.AddDays(1);
+                        if (invoiceDetails.InvoiceDueDate != null)
+                        {
+                            invoiceDetails.InvoiceDueDate = invoiceDetails.InvoiceDueDate?.AddDays(1);
+                        }
+                    }
+                    
                     //save invoice details
                     Guid invoiceId = await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.SaveInvoiceDetails, invoiceDetails);
                     if (invoiceId != Guid.Empty)
@@ -149,11 +157,26 @@ namespace InvoiceApi.Repository
                 var businessId = await SaveBusiness(invoiceDetails.BusinessDetails);
                 //Save clients
                 var clientId = await SaveClients(invoiceDetails.ClientsDetails);
-                invoiceDetails.InvoiceDate = invoiceDetails.InvoiceDate.AddDays(1);
-                if (invoiceDetails.InvoiceDueDate != null)
+                if (invoiceDetails.IsCustomDate)
                 {
-                    invoiceDetails.InvoiceDueDate = invoiceDetails.InvoiceDueDate?.AddDays(1);
+                    invoiceDetails.InvoiceDate = null;
                 }
+                else
+                {
+                    invoiceDetails.InvoiceDate = invoiceDetails.InvoiceDate?.AddDays(1);
+                }
+                if (invoiceDetails.IsCustomDueDate)
+                {
+                    invoiceDetails.InvoiceDueDate = null;
+                }
+                else
+                {
+                    if (invoiceDetails.InvoiceDueDate != null)
+                    {
+                        invoiceDetails.InvoiceDueDate = invoiceDetails.InvoiceDueDate?.AddDays(1);
+                    }
+                }
+               
                 if (businessId != Guid.Empty && clientId != Guid.Empty)
                 {
                     invoiceDetails.BusinessId = businessId;
@@ -324,16 +347,30 @@ namespace InvoiceApi.Repository
             var response = new InvoiceDetails { Itemdetails =new List<TransactionDetails>()};
             response = await _sqlService.GetSingleExecuteQueryasync<InvoiceDetails>(SqlQuery.GetInvoiceDetailByInvoiceId, new { UserId = userId,InvoiceId=invoiceId });
             if(response != null && !string.IsNullOrWhiteSpace(response.InvoiceNumber)){
+
                 if(response.InvoiceDate != null)
                 {
-                 response.FormattedInvoiceDate=   response.InvoiceDate.ToString("MM-dd-yyyy");
+                 response.FormattedInvoiceDate=   response.InvoiceDate?.ToString("MM-dd-yyyy");
                 }
                 if(response.InvoiceDueDate != null)
                 {
                     response.FormattedInvoiceDueDate = response.InvoiceDueDate?.ToString("MM-dd-yyyy");
                 }
+
+                if (response.IsCustomDate)
+                {
+                    response.FormattedInvoiceDate = response.CustomDate;
+                }
+                if (response.IsCustomDueDate)
+                {
+                    response.FormattedInvoiceDueDate = !string.IsNullOrWhiteSpace(response.CustomDueDate) ? response.CustomDueDate :null;
+                }
                 response.Itemdetails = await _sqlService.GetListExecuteQueryasync<TransactionDetails>(SqlQuery.GetTransactionDetails, new { InvoiceId = invoiceId });
                 response.ImageBase64String = await _sqlService.GetSingleExecuteQueryasync<string>(SqlQuery.GetImageSrcByInvoiceId, new { InvoiceId = invoiceId,UserId= userId });
+                if (string.IsNullOrWhiteSpace(response.ImageBase64String))
+                {
+                    response.ImageBase64String = null;
+                }
                 if(response.BusinessId != Guid.Empty)
                 {
                     response.BusinessDetails = new Business();

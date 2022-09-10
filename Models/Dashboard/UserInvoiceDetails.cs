@@ -14,5 +14,7 @@ namespace InvoiceApi.Models.Dashboard
         public DateTime InvoiceDate { get; set; }
         public DateTime InvoiceDueDate { get; set; }
         public decimal InvoiceAmount { get; set; }
+        public bool IsCustomDate { get; set; }
+        public string CustomDate { get; set; }
     }
 }

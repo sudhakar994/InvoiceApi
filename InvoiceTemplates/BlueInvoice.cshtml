@@ -42,7 +42,7 @@
 
 								<div class="my-2"> <span class="text-600 text-90">Invoice No: </span>@(!string.IsNullOrWhiteSpace(Model.InvoiceNumber) ? Model.InvoiceNumber:"-")</div>
 
-								<div class="my-2"> <span class="text-600 text-90">Invoice Date Date: @(!string.IsNullOrWhiteSpace(Model.FormattedInvoiceDate) ? Model.FormattedInvoiceDate : "-")</span></div>
+								<div class="my-2"> <span class="text-600 text-90">Invoice  Date: @(!string.IsNullOrWhiteSpace(Model.FormattedInvoiceDate) ? Model.FormattedInvoiceDate : "-")</span></div>
 								@if (!string.IsNullOrWhiteSpace(Model.FormattedInvoiceDueDate))
                                 {
 							<div class="my-2"> <span class="text-600 text-90">Due Date: @Model.FormattedInvoiceDueDate</span></div>
