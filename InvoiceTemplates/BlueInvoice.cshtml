@@ -191,20 +191,28 @@
 								</div>
 
 								<div class="row my-2">
-									<div class="col-7 text-right">
-										@(Model.TaxLabel)(@Model.TaxPercentage@(Model.Taxtype=="percentage" ? "%":string.Empty)):
-									</div>
-									<div class="col-5">
-										<span class="text-110 text-secondary-d1">@Model.CurrencyCode@Model.Tax</span>
-									</div>
+									@if(Model.Tax > 0)
+									{
+										<div class="col-7 text-right">
+											@(Model.TaxLabel)(@Model.TaxPercentage@(Model.Taxtype == "percentage" ? "%" : string.Empty)):
+										</div>
+										<div class="col-5">
+											<span class="text-110 text-secondary-d1">@Model.CurrencyCode@Model.Tax</span>
+										</div>
+									}
+
 								</div>
 								<div class="row my-2">
-									<div class="col-7 text-right">
-										@(Model.DiscountLabel)(@Model.DiscountPercentage@(Model.DiscountType == "percentage" ? "%" : string.Empty)):
-									</div>
-									<div class="col-5">
-										<span class="text-110 text-secondary-d1">@Model.CurrencyCode@Model.Discount</span>
-									</div>
+									@if (Model.Discount > 0)
+									{
+										<div class="col-7 text-right">
+											@(Model.DiscountLabel)(@Model.DiscountPercentage@(Model.DiscountType == "percentage" ? "%" : string.Empty)):
+										</div>
+										<div class="col-5">
+											<span class="text-110 text-secondary-d1">@Model.CurrencyCode@Model.Discount</span>
+										</div>
+									}
+
 								</div>
 
 								<div class="row my-2 align-items-center bgc-primary-l3 p-2">
