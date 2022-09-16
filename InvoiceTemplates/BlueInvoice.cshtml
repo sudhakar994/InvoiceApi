@@ -166,16 +166,16 @@
 						<div class="row mt-3">
 							<div class="col-sm-7">
 							<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
-								@if (!string.IsNullOrWhiteSpace(Model.Notes)) {
+								@if (!string.IsNullOrWhiteSpace(Model.Terms)) {
 									<div><b>Terms And Conditions</b></div>
                                 }
-								@(!string.IsNullOrWhiteSpace(Model.Notes) ? Model.Notes : string.Empty)
+								@(!string.IsNullOrWhiteSpace(Model.Terms) ? Model.Terms : string.Empty)
 							</div>
 							
 							
-						<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
+						@*<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
 							@(!string.IsNullOrWhiteSpace(Model.Terms) ? Model.Terms : string.Empty)
-						</div>
+						</div>*@
 								</div>
 							
 
