@@ -230,7 +230,7 @@ namespace InvoiceApi.Controllers
             string fileName = "testFile.pdf";
             var invoice = await _dashboardService.GetInvoiceDetailByInvoiceId(_jwtService.GetUserIdFromJwt(), invoiceId);
             var html = await _htmlReaderService.ReadHtmlFileAndConvert("InvoiceTemplates/BlueInvoice.cshtml", invoice);
-            var pdfBytes = PdfService.GeneratePdf(html);
+            var pdfBytes =  PdfService.GeneratePdf(html);
             if (pdfBytes != null)
                 return File(pdfBytes, "application/pdf", fileName);
             else

@@ -41,6 +41,8 @@ namespace InvoiceApi.Models
 
         public string TaxLabel { get; set; }
         public string DiscountLabel { get; set; }
+        public string TotalLabel { get; set; }
+        public string SubTotalLabel { get; set; }
     }
 
     
