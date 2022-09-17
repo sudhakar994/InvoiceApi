@@ -10,7 +10,7 @@ namespace InvoiceApi.Services
 {
     public static class PdfService
     {
-        public  static Byte[] GeneratePdf(string html)
+        public  static  Byte[] GeneratePdf(string html)
         {
             Byte[] res = null;
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
