@@ -46,7 +46,7 @@ namespace InvoiceApi.Services
             return await _dashboardRepository.DeleteInvoice(userId, invoiceId);
         }
 
-        public async Task<User> GetProfileDetail(Guid userId, string email)
+        public async Task<UserProfile> GetProfileDetail(Guid userId, string email)
         {
             return await _dashboardRepository.GetProfileDetail(userId, email);
         }
