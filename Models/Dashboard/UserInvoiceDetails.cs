@@ -12,7 +12,7 @@ namespace InvoiceApi.Models.Dashboard
         public string BusinessName { get; set; }
         public string ClientName { get; set; }
         public DateTime InvoiceDate { get; set; }
-        public DateTime InvoiceDueDate { get; set; }
+        public DateTime? InvoiceDueDate { get; set; }
         public decimal InvoiceAmount { get; set; }
         public bool IsCustomDate { get; set; }
         public string CustomDate { get; set; }
