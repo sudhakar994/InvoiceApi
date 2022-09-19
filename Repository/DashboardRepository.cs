@@ -302,13 +302,13 @@ namespace InvoiceApi.Repository
 
         }
 
-        public async Task<User> GetProfileDetail(Guid userId, string email)
+        public async Task<UserProfile> GetProfileDetail(Guid userId, string email)
         {
-            var profileDetails = new User();
+            var profileDetails = new UserProfile();
 
             if (userId != null && email != null)
             {
-                profileDetails = await _sqlService.GetSingleExecuteQueryasync<User>(SqlQuery.ProfileDetails, new { UserId = userId, Email = email });
+                profileDetails = await _sqlService.GetSingleExecuteQueryasync<UserProfile>(SqlQuery.ProfileDetails, new { UserId = userId, Email = email });
             }
 
             return profileDetails;

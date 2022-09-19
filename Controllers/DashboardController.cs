@@ -32,7 +32,7 @@ namespace InvoiceApi.Controllers
         [Route("getprofile")]
         public async Task<IActionResult> GetProfileData(string userId, string email)
         {
-            var profileDetails = new User();
+            var profileDetails = new UserProfile();
 
             if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(email))
             {
