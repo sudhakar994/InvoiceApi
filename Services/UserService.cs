@@ -38,7 +38,7 @@ namespace InvoiceApi.Services
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim("UserId", user.UserId.ToString()),
                 }),
-                Expires = DateTime.Now.AddMinutes(120),
+                Expires = System.DateTime.UtcNow.AddMinutes(120),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
