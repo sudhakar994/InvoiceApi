@@ -86,7 +86,7 @@ namespace InvoiceApi.Services
                 emailValues.TemplateName = EmailConstant.EmailTemplate.ResetPasswordTemplate;
                 emailValues.SupportEmail = Utility.GetAppSettings("SupportEmail");
                 await _emailService.EmailSend(emailValues);
-
+                response.UserId = null;
                 response.Messages = "We've sent a password reset link to email";
             }
             return response;
