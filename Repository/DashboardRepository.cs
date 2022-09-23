@@ -371,11 +371,26 @@ namespace InvoiceApi.Repository
                         }
                         if (!string.IsNullOrWhiteSpace(response.BusinessDetails.State))
                         {
-                            response.BusinessDetails.FormattedAddress += "," + response.BusinessDetails.State;
+                            if (!string.IsNullOrWhiteSpace(response.BusinessDetails.FormattedAddress)){
+                                response.BusinessDetails.FormattedAddress += "," + response.BusinessDetails.State;
+                            }
+                            else
+                            {
+                                response.BusinessDetails.FormattedAddress += response.BusinessDetails.State;
+                            }
+                           
                         }
                         if (!string.IsNullOrWhiteSpace(response.BusinessDetails.CountryId))
                         {
-                            response.BusinessDetails.FormattedAddress += "," + response.BusinessDetails.CountryId;
+                            if(!string.IsNullOrWhiteSpace(response.BusinessDetails.FormattedAddress))
+                            {
+                                response.BusinessDetails.FormattedAddress += "," + response.BusinessDetails.CountryId;
+                            }
+                            else
+                            {
+                                response.BusinessDetails.FormattedAddress +=   response.BusinessDetails.CountryId;
+                            }
+                           
                         }
                     }
                 }
@@ -392,11 +407,27 @@ namespace InvoiceApi.Repository
                         }
                         if (!string.IsNullOrWhiteSpace(response.ClientsDetails.State))
                         {
-                            response.ClientsDetails.FormattedAddress += "," + response.ClientsDetails.State;
+                            if (!string.IsNullOrWhiteSpace(response.ClientsDetails.FormattedAddress))
+                            {
+                                response.ClientsDetails.FormattedAddress += "," + response.ClientsDetails.State;
+                            }
+                            else
+                            {
+                                response.ClientsDetails.FormattedAddress +=  response.ClientsDetails.State;
+                            }
+                            
                         }
                         if (!string.IsNullOrWhiteSpace(response.ClientsDetails.CountryId))
                         {
-                            response.ClientsDetails.FormattedAddress += "," + response.ClientsDetails.CountryId;
+                            if (!string.IsNullOrWhiteSpace(response.ClientsDetails.FormattedAddress))
+                            {
+                                response.ClientsDetails.FormattedAddress += "," + response.ClientsDetails.CountryId;
+                            }
+                            else
+                            {
+                                response.ClientsDetails.FormattedAddress +=  response.ClientsDetails.CountryId;
+                            }
+                           
                         }
                     }
                 }
