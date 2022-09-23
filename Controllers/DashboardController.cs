@@ -28,29 +28,7 @@ namespace InvoiceApi.Controllers
             _jwtService = jwtService;
             _htmlReaderService = htmlReaderService;
         }
-        [HttpGet]
-        [Route("getprofile")]
-        public async Task<IActionResult> GetProfileData(string userId, string email)
-        {
-            var profileDetails = new UserProfile();
-
-            if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(email))
-            {
-                profileDetails = await _dashboardService.GetProfileDetail(Guid.Parse(userId), email);
-                return Ok(profileDetails);
-            }
-            else
-            {
-                return BadRequest("Error occured");
-            }
-        }
-        [HttpPut]
-        [Route("updatepassword")]
-        public IActionResult UpdateUserPassword()
-        {
-            return Ok();
-        }
-
+       
         #region GetBusinessDetails
         /// <summary>
         /// GetBusinessDetails
@@ -157,8 +135,8 @@ namespace InvoiceApi.Controllers
             Guid userId = _jwtService.GetUserIdFromJwt();
             if (userId != Guid.Empty)
             {
-                     response = await _dashboardService.GetInvoiceDetails(userId);
-                    return Ok(response);
+                response = await _dashboardService.GetInvoiceDetails(userId);
+                return Ok(response);
             }
 
             else
@@ -178,13 +156,13 @@ namespace InvoiceApi.Controllers
         [HttpGet]
         [Route("getinvoicedetail")]
         public async Task<IActionResult> GetInvoiceDetailByInvoiceId(Guid invoiceId)
-       {
+        {
             var response = new InvoiceDetails();
 
             Guid userId = _jwtService.GetUserIdFromJwt();
             if (userId != Guid.Empty && invoiceId != Guid.Empty)
             {
-                response = await _dashboardService.GetInvoiceDetailByInvoiceId(userId,invoiceId);
+                response = await _dashboardService.GetInvoiceDetailByInvoiceId(userId, invoiceId);
                 return Ok(response);
             }
 
@@ -230,7 +208,7 @@ namespace InvoiceApi.Controllers
             string fileName = "testFile.pdf";
             var invoice = await _dashboardService.GetInvoiceDetailByInvoiceId(_jwtService.GetUserIdFromJwt(), invoiceId);
             var html = await _htmlReaderService.ReadHtmlFileAndConvert("InvoiceTemplates/BlueInvoice.cshtml", invoice);
-            var pdfBytes =  PdfService.GeneratePdf(html);
+            var pdfBytes = PdfService.GeneratePdf(html);
             if (pdfBytes != null)
                 return File(pdfBytes, "application/pdf", fileName);
             else

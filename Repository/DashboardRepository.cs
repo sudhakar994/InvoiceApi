@@ -301,19 +301,6 @@ namespace InvoiceApi.Repository
             return clientId;
 
         }
-
-        public async Task<UserProfile> GetProfileDetail(Guid userId, string email)
-        {
-            var profileDetails = new UserProfile();
-
-            if (userId != null && email != null)
-            {
-                profileDetails = await _sqlService.GetSingleExecuteQueryasync<UserProfile>(SqlQuery.ProfileDetails, new { UserId = userId, Email = email });
-            }
-
-            return profileDetails;
-        }
-
         #endregion
 
         #region GetInvoiceDetails

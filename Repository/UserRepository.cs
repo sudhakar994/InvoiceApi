@@ -73,9 +73,9 @@ namespace InvoiceApi.Repository
         /// </summary>
         /// <param name="verificationCodeResponse"></param>
         /// <returns></returns>
-        public async Task<string>ValidateVerficationCode(VerificationCodeResponse verificationCodeResponse)
+        public async Task<string> ValidateVerficationCode(VerificationCodeResponse verificationCodeResponse)
         {
-            
+
             var affectedRow = await _sqlService.ExecuteSP(StoredProcedure.UserSetting, new { Operation = "UpdateVerifiedStatus", UserId = verificationCodeResponse.UserId, Email = string.Empty, VerificationCode = verificationCodeResponse.VerificationCode });
             var response = affectedRow > 0 ? Messages.Success : Messages.Failed;
 

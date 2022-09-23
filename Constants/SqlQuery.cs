@@ -28,6 +28,8 @@ namespace InvoiceApi.Constants
         public const string GetResendEmail = "Select [User_Id],UserName,Email,Verification_Code AS VerificationCode From tbl_UserDetails WHERE [User_Id]=@UserId And Is_Deleted=0";
         public const string UpdateResetAttempCount = @"Update tbl_User_Settings set Reset_Code_Attempt=0 OUTPUT INSERTED.User_Id WHERE User_Id=@UserId  and Is_Deleted=0";
         public const string UpdatePassword = @"Update tbl_UserDetails set Password_Reset_Status='Verified', Password=@Password,Password_Salt=@PasswordSalt OUTPUT INSERTED.User_Id WHERE User_Id=@UserId and Password_Reset_Status='InProgress' and Is_Deleted=0";
+
+        //Invoice Related Query
         public const string GetBusinessDetails = @"SELECT Business_Id as BusinessId,User_Id as UserId,Country_Id as CountryId,Business_Name as BusinessName,Business_Email as BusinessEmail,Business_Phone as BusinessPhone,Phone_Code as PhoneCode,Address, City,Zipcode,State FROM tbl_Business_Details WHERE User_Id=@UserId and IsDeleted=0";
         public const string GetClientDetails = @"SELECT Client_Id as ClientId,User_Id as UserId,Country_Id as CountryId,Client_Name as ClientName,Client_Email as ClientEmail,Client_Phone as ClientPhone,Phone_Code as PhoneCode,Address, City,Zipcode,State FROM tbl_Client_Details WHERE User_Id=@UserId and IsDeleted=0";
         public const string SaveBusiness = @"INSERT INTO tbl_Business_Details (User_Id,Country_Id,Business_Name,Business_Email,Business_Phone,Phone_Code,Address,City,Zipcode,State)  OUTPUT INSERTED.Business_Id VALUES(@UserId,@CountryId,@BusinessName,@BusinessEmail,@BusinessPhone,@PhoneCode,@Address,@City,@Zipcode,@State)";
@@ -50,6 +52,9 @@ namespace InvoiceApi.Constants
         public const string GetClientDetailsByClientId = @"SELECT Client_Name as ClientName,Client_Email as ClientEmail,Client_Phone as ClientPhone,Phone_Code as PhoneCode,Address ,City,Zipcode,State,Country_Id as CountryId FROM tbl_Client_Details WHERE Client_Id=@ClientId and User_Id=@UserId";
         public const string SelectLogoId = @"Select Logo_Id LogoId From tbl_logo_details  WHERE Invoice_Id=@InvoiceId and User_Id=@UserId";
 
-        public const string ProfileDetails = @"Select [User_Id] AS UserId,UserName,Email FROM tbl_UserDetails WHERE User_Id=@UserId AND Email=@Email AND [Status]='Verified' AND Is_Deleted=0";
+        //UserProfile Related Query
+        public const string ProfileDetails = @"Select [User_Id] AS UserId,UserName,Email FROM tbl_UserDetails WHERE User_Id=@UserId  AND [Status]='Verified' AND Is_Deleted=0";
+        public const string UserProfileDetails = @"Select [User_Id] AS UserId,UserName,Email,Password,Password_Salt as PasswordSalt FROM tbl_UserDetails WHERE User_Id=@UserId AND [Status]='Verified' AND Is_Deleted=0";
+        public const string UpdateUserProfilePassword = @"UPDATE tbl_UserDetails SET [Password]=@NewPassword,Password_Salt=@PasswordSalt OUTPUT INSERTED.[User_Id] WHERE User_Id=@UserId AND [Status]='Verified' AND Is_Deleted=0";
     }
 }
