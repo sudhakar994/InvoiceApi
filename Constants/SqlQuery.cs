@@ -51,6 +51,11 @@ namespace InvoiceApi.Constants
         public const string GetBusinessDetailsByBusinessId = @"SELECT Business_Name as BusinessName,Business_Email as BusinessEmail,Business_Phone as BusinessPhone,Phone_Code as PhoneCode,Address ,City,Zipcode,State,Country_Id as CountryId FROM tbl_Business_Details WHERE Business_Id=@BusinessId and User_Id=@UserId";
         public const string GetClientDetailsByClientId = @"SELECT Client_Name as ClientName,Client_Email as ClientEmail,Client_Phone as ClientPhone,Phone_Code as PhoneCode,Address ,City,Zipcode,State,Country_Id as CountryId FROM tbl_Client_Details WHERE Client_Id=@ClientId and User_Id=@UserId";
         public const string SelectLogoId = @"Select Logo_Id LogoId From tbl_logo_details  WHERE Invoice_Id=@InvoiceId and User_Id=@UserId";
+        public const string SelectSignatureId = @"Select Signature_Id SignatureId From tbl_signature_details  WHERE Invoice_Id=@InvoiceId and User_Id=@UserId";
+        public const string UpdateSignatureDetails = @"Update tbl_signature_details set Image=@SignatureBase64String  where User_id=@UserId and Invoice_Id=@InvoiceId and Signature_Id=@SignatureId";
+        public const string SaveSignatureDetails = @"Insert into tbl_signature_details (invoice_id,User_Id,Image) values (@InvoiceId,@UserId,@SignatureBase64String)";
+        public const string GetSignatureImageSrcByInvoiceId = @"Select Image FROM tbl_signature_details  WHERE Invoice_Id=@InvoiceId and User_Id=@UserId";
+        public const string DeleteSignatureDetails = @"Delete From tbl_signature_details where User_Id=@UserId and Invoice_Id=@InvoiceId";
 
         //UserProfile Related Query
         public const string ProfileDetails = @"Select [User_Id] AS UserId,UserName,Email FROM tbl_UserDetails WHERE User_Id=@UserId  AND [Status]='Verified' AND Is_Deleted=0";

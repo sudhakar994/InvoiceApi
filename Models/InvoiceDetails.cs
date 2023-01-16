@@ -38,7 +38,8 @@ namespace InvoiceApi.Models
         public string LogoName { get; set; }
         public long LogoId { get; set; }
         public string CurrencyCode { get; set; }
-
+        public string SignatureId { get; set; }
+        public string SignatureBase64String { get; set; }
         public string TaxLabel { get; set; }
         public string DiscountLabel { get; set; }
         public string TotalLabel { get; set; }

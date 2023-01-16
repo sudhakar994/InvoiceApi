@@ -25,11 +25,12 @@
 					<div class="row">
 						<div class="col-6">
 
-                      
+
 							<div class="">
 								<div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
-									@if(!string.IsNullOrWhiteSpace(Model.ImageBase64String)){
-									<img style="width:150px" src="@Model.ImageBase64String" />
+									@if (!string.IsNullOrWhiteSpace(Model.ImageBase64String))
+									{
+										<img style="width:150px" src="@Model.ImageBase64String" />
 									}
 								</div>
 
@@ -40,14 +41,14 @@
 
 							<div class="text-grey-m2" style="text-align: end;">
 
-								<div class="my-2"> <span class="text-600 text-90">Invoice No: </span>@(!string.IsNullOrWhiteSpace(Model.InvoiceNumber) ? Model.InvoiceNumber:"-")</div>
+								<div class="my-2"> <span class="text-600 text-90">Invoice No: </span>@(!string.IsNullOrWhiteSpace(Model.InvoiceNumber) ? Model.InvoiceNumber : "-")</div>
 
 								<div class="my-2"> <span class="text-600 text-90">Invoice  Date: @(!string.IsNullOrWhiteSpace(Model.FormattedInvoiceDate) ? Model.FormattedInvoiceDate : "-")</span></div>
 								@if (!string.IsNullOrWhiteSpace(Model.FormattedInvoiceDueDate))
-                                {
-							<div class="my-2"> <span class="text-600 text-90">Due Date: @Model.FormattedInvoiceDueDate</span></div>
-                                }
-								
+								{
+									<div class="my-2"> <span class="text-600 text-90">Due Date: @Model.FormattedInvoiceDueDate</span></div>
+								}
+
 							</div>
 						</div>
 					</div>
@@ -57,7 +58,7 @@
 
 					<div class="row">
 						<div class="text-95 col-sm-6 align-self-start  justify-content-end">
-                            <hr class="d-sm-none" />
+							<hr class="d-sm-none" />
 							<div class="text-grey-m2">
 								<div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
 									From:
@@ -127,7 +128,7 @@
 								}
 							</div>
 						</div>
-						
+
 						<!-- /.col -->
 					</div>
 
@@ -139,101 +140,118 @@
 							<div class="d-none d-sm-block col-sm-2">Rate</div>
 							<div class="col-2">Amount</div>
 						</div>
-						</div>
+					</div>
 
-						<div class="text-95 text-secondary-d3">
-							@foreach (var item in Model.Itemdetails)
-							{
+					<div class="text-95 text-secondary-d3">
+						@foreach (var item in Model.Itemdetails)
+						{
 
-								<div class="row mb-2 mb-sm-0 py-25">
-									<div class="d-none d-sm-block col-1">@(index++)</div>
-									<div class="col-9 col-sm-5">@(!string.IsNullOrWhiteSpace(item.ItemDescription) ? item.ItemDescription : "-")</div>
-									<div class="d-none d-sm-block col-2 col-sm-1">@(item.Quantity)</div>
-									<div class="d-none d-sm-block col-2 text-95">@Model.CurrencyCode@(item.Rate)</div>
-									<div class="col-2 text-secondary-d2">&nbsp;&nbsp;&nbsp;@Model.CurrencyCode@(decimal.Round(item.Quantity * item.Rate, 2, MidpointRounding.AwayFromZero))</div>
-								</div>
-                            }
-							
-
-
-
-						</div>
-
-						<div class="row border-b-2 brc-default-l2"></div>
-
-						<hr />
-
-						<div class="row mt-3">
-							<div class="col-sm-7">
-							<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
-								@if (!string.IsNullOrWhiteSpace(Model.Terms)) {
-									<div><b>@(!string.IsNullOrWhiteSpace(Model.TermsLabel) ? Model.TermsLabel:"Terms and Conditions" )</b></div>
-                                }
-								@(!string.IsNullOrWhiteSpace(Model.Terms) ? Model.Terms : string.Empty)
+							<div class="row mb-2 mb-sm-0 py-25">
+								<div class="d-none d-sm-block col-1">@(index++)</div>
+								<div class="col-9 col-sm-5">@(!string.IsNullOrWhiteSpace(item.ItemDescription) ? item.ItemDescription : "-")</div>
+								<div class="d-none d-sm-block col-2 col-sm-1">@(item.Quantity)</div>
+								<div class="d-none d-sm-block col-2 text-95">@Model.CurrencyCode@(item.Rate)</div>
+								<div class="col-2 text-secondary-d2">&nbsp;&nbsp;&nbsp;@Model.CurrencyCode@(decimal.Round(item.Quantity * item.Rate, 2, MidpointRounding.AwayFromZero))</div>
 							</div>
-							
-							
-						@*<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
-							@(!string.IsNullOrWhiteSpace(Model.Terms) ? Model.Terms : string.Empty)
-						</div>*@
-								</div>
-							
-
-							
-							<div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
-								<div class="row my-2">
-									<div class="col-7 text-right">
-										@(!string.IsNullOrWhiteSpace(Model.SubTotalLabel) ? Model.SubTotalLabel : "SubTotal")::
-									</div>
-									<div class="col-5">
-										<span class="text-120 text-secondary-d1">@Model.CurrencyCode@Model.SubTotal</span>
-									</div>
-								</div>
-
-								<div class="row my-2">
-									@if(Model.Tax > 0)
-									{
-										<div class="col-7 text-right">
-											@(Model.TaxLabel)(@Model.TaxPercentage@(Model.Taxtype == "percentage" ? "%" : string.Empty)):
-										</div>
-										<div class="col-5">
-											<span class="text-110 text-secondary-d1">@Model.CurrencyCode@Model.Tax</span>
-										</div>
-									}
-
-								</div>
-								<div class="row my-2">
-									@if (Model.Discount > 0)
-									{
-										<div class="col-7 text-right">
-											@(Model.DiscountLabel)(@Model.DiscountPercentage@(Model.DiscountType == "percentage" ? "%" : string.Empty)):
-										</div>
-										<div class="col-5">
-											<span class="text-110 text-secondary-d1">@Model.CurrencyCode@Model.Discount</span>
-										</div>
-									}
-
-								</div>
-
-								<div class="row my-2 align-items-center bgc-primary-l3 p-2">
-									<div class="col-7 text-right">
-										@(!string.IsNullOrWhiteSpace(Model.TotalLabel) ? Model.TotalLabel:"Total"):
-									</div>
-									<div class="col-5">
-										<span class="text-150 text-success-d3 opacity-2">@Model.CurrencyCode@Model.Total</span>
-									</div>
-								</div>
-							</div>
-						</div>
+						}
 
 
 
 
 					</div>
+
+					<div class="row border-b-2 brc-default-l2"></div>
+
+					<hr />
+
+					<div class="row mt-3">
+						<div class="col-sm-7">
+							<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
+								@if (!string.IsNullOrWhiteSpace(Model.Terms))
+								{
+									<div><b>@(!string.IsNullOrWhiteSpace(Model.TermsLabel) ? Model.TermsLabel : "Terms and Conditions")</b></div>
+								}
+								@(!string.IsNullOrWhiteSpace(Model.Terms) ? Model.Terms : string.Empty)
+							</div>
+
+
+							@*<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
+					@(!string.IsNullOrWhiteSpace(Model.Terms) ? Model.Terms : string.Empty)
+				</div>*@
+						</div>
+
+
+
+						<div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
+							<div class="row my-2">
+								<div class="col-7 text-right">
+									@(!string.IsNullOrWhiteSpace(Model.SubTotalLabel) ? Model.SubTotalLabel : "SubTotal")::
+								</div>
+								<div class="col-5">
+									<span class="text-120 text-secondary-d1">@Model.CurrencyCode@Model.SubTotal</span>
+								</div>
+							</div>
+
+							<div class="row my-2">
+								@if (Model.Tax > 0)
+								{
+									<div class="col-7 text-right">
+										@(Model.TaxLabel)(@Model.TaxPercentage@(Model.Taxtype == "percentage" ? "%" : string.Empty)):
+									</div>
+									<div class="col-5">
+										<span class="text-110 text-secondary-d1">@Model.CurrencyCode@Model.Tax</span>
+									</div>
+								}
+
+							</div>
+							<div class="row my-2">
+								@if (Model.Discount > 0)
+								{
+									<div class="col-7 text-right">
+										@(Model.DiscountLabel)(@Model.DiscountPercentage@(Model.DiscountType == "percentage" ? "%" : string.Empty)):
+									</div>
+									<div class="col-5">
+										<span class="text-110 text-secondary-d1">@Model.CurrencyCode@Model.Discount</span>
+									</div>
+								}
+
+							</div>
+
+							<div class="row my-2 align-items-center bgc-primary-l3 p-2">
+								<div class="col-7 text-right">
+									@(!string.IsNullOrWhiteSpace(Model.TotalLabel) ? Model.TotalLabel : "Total"):
+								</div>
+								<div class="col-5">
+									<span class="text-150 text-success-d3 opacity-2">@Model.CurrencyCode@Model.Total</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					@if (!string.IsNullOrWhiteSpace(Model.SignatureBase64String))
+					{
+						<div class="row mt-3">
+							<div class="col-sm-7">
+								<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
+									<img style="width:150px" src="@Model.SignatureBase64String" />
+								</div>
+							</div>
+						</div>
+						<div class="row mt-3">
+							<div class="col-sm-7">
+								<div class="col-12  text-grey-d2 text-95 mt-2 mt-lg-0">
+									@(!string.IsNullOrWhiteSpace(Model.SignatureLabel) ? Model.SignatureLabel : "Authorized Signatory")
+								</div>
+							</div>
+						</div>
+					}
+
+
+				</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	
 
 
 	<style type="text/css">
