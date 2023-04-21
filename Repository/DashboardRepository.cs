@@ -62,8 +62,8 @@ namespace InvoiceApi.Repository
         /// <returns></returns>
         public async Task<InvoiceDetails> SaveInvoiceDetails(InvoiceDetails invoiceDetails)
         {
-            var response = new InvoiceDetails {Status = StatusType.Failure.ToString() };
-            if(invoiceDetails.InvoiceId == Guid.Empty)
+            var response = new InvoiceDetails { Status = StatusType.Failure.ToString() };
+            if (invoiceDetails.InvoiceId == Guid.Empty)
             {
                 #region Save Invoice
                 //Save business
@@ -86,7 +86,7 @@ namespace InvoiceApi.Repository
                             invoiceDetails.InvoiceDueDate = invoiceDetails.InvoiceDueDate?.AddDays(1);
                         }
                     }
-                    
+
                     //save invoice details
                     Guid invoiceId = await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.SaveInvoiceDetails, invoiceDetails);
                     if (invoiceId != Guid.Empty)
@@ -101,13 +101,13 @@ namespace InvoiceApi.Repository
                             }
 
                             //Save Logo
-                          
+
                             long logoId = await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SelectLogoId, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId });
                             if (logoId > 0)
                             {
                                 if (string.IsNullOrWhiteSpace(invoiceDetails.ImageBase64String))
                                 {
-                                   
+
                                     invoiceDetails.ImageBase64String = string.Empty;
                                 }
                                 if (string.IsNullOrWhiteSpace(invoiceDetails.LogoName))
@@ -206,32 +206,32 @@ namespace InvoiceApi.Repository
                         invoiceDetails.InvoiceDueDate = invoiceDetails.InvoiceDueDate?.AddDays(1);
                     }
                 }
-               
+
                 if (businessId != Guid.Empty && clientId != Guid.Empty)
                 {
                     invoiceDetails.BusinessId = businessId;
                     invoiceDetails.ClientId = clientId;
                     //save invoice details
-                   
+
                     Guid invoiceId = await _sqlService.GetSingleExecuteQueryasync<Guid>(SqlQuery.UpdateInvoiceDetails, invoiceDetails);
                     if (invoiceId != Guid.Empty)
                     {
                         try
                         {
                             //delete transaction details and save new one
-                            await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteTransactionDetails, new {InvoiceId= invoiceId });
+                            await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteTransactionDetails, new { InvoiceId = invoiceId });
                             //save item details against invoice id
                             foreach (var item in invoiceDetails.Itemdetails)
                             {
                                 item.InvoiceId = invoiceId;
                                 await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveTransactionDetails, item);
                             }
-                            long logoId= await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SelectLogoId, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId });
-                            if(logoId > 0)
+                            long logoId = await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SelectLogoId, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId });
+                            if (logoId > 0)
                             {
                                 if (string.IsNullOrWhiteSpace(invoiceDetails.ImageBase64String))
                                 {
-                                    
+
                                     invoiceDetails.ImageBase64String = string.Empty;
                                 }
                                 if (string.IsNullOrWhiteSpace(invoiceDetails.LogoName))
@@ -251,7 +251,7 @@ namespace InvoiceApi.Repository
                             {
                                 if (!string.IsNullOrWhiteSpace(invoiceDetails.ImageBase64String))
                                 {
-                                    await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveLogoDetails, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId,LogoName= invoiceDetails.LogoName, ImageBase64String = invoiceDetails.ImageBase64String });
+                                    await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveLogoDetails, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId, LogoName = invoiceDetails.LogoName, ImageBase64String = invoiceDetails.ImageBase64String });
                                 }
                             }
                             #region //Save Signature 
@@ -276,7 +276,7 @@ namespace InvoiceApi.Repository
                             {
                                 if (!string.IsNullOrWhiteSpace(invoiceDetails.SignatureBase64String))
                                 {
-                                    await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveSignatureDetails, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId,  SignatureBase64String = invoiceDetails.SignatureBase64String });
+                                    await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveSignatureDetails, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId, SignatureBase64String = invoiceDetails.SignatureBase64String });
                                 }
                             }
                             #endregion
@@ -384,17 +384,18 @@ namespace InvoiceApi.Repository
         /// <param name="userId"></param>
         /// <param name="invoiceId"></param>
         /// <returns></returns>
-        public async Task<InvoiceDetails> GetInvoiceDetailByInvoiceId(Guid userId ,Guid invoiceId)
-         {
-            var response = new InvoiceDetails { Itemdetails =new List<TransactionDetails>()};
-            response = await _sqlService.GetSingleExecuteQueryasync<InvoiceDetails>(SqlQuery.GetInvoiceDetailByInvoiceId, new { UserId = userId,InvoiceId=invoiceId });
-            if(response != null && !string.IsNullOrWhiteSpace(response.InvoiceNumber)){
+        public async Task<InvoiceDetails> GetInvoiceDetailByInvoiceId(Guid userId, Guid invoiceId)
+        {
+            var response = new InvoiceDetails { Itemdetails = new List<TransactionDetails>() };
+            response = await _sqlService.GetSingleExecuteQueryasync<InvoiceDetails>(SqlQuery.GetInvoiceDetailByInvoiceId, new { UserId = userId, InvoiceId = invoiceId });
+            if (response != null && !string.IsNullOrWhiteSpace(response.InvoiceNumber))
+            {
 
-                if(response.InvoiceDate != null)
+                if (response.InvoiceDate != null)
                 {
-                 response.FormattedInvoiceDate=   response.InvoiceDate?.ToString("MM-dd-yyyy");
+                    response.FormattedInvoiceDate = response.InvoiceDate?.ToString("MM-dd-yyyy");
                 }
-                if(response.InvoiceDueDate != null)
+                if (response.InvoiceDueDate != null)
                 {
                     response.FormattedInvoiceDueDate = response.InvoiceDueDate?.ToString("MM-dd-yyyy");
                 }
@@ -405,10 +406,10 @@ namespace InvoiceApi.Repository
                 }
                 if (response.IsCustomDueDate)
                 {
-                    response.FormattedInvoiceDueDate = !string.IsNullOrWhiteSpace(response.CustomDueDate) ? response.CustomDueDate :null;
+                    response.FormattedInvoiceDueDate = !string.IsNullOrWhiteSpace(response.CustomDueDate) ? response.CustomDueDate : null;
                 }
                 response.Itemdetails = await _sqlService.GetListExecuteQueryasync<TransactionDetails>(SqlQuery.GetTransactionDetails, new { InvoiceId = invoiceId });
-                response.ImageBase64String = await _sqlService.GetSingleExecuteQueryasync<string>(SqlQuery.GetImageSrcByInvoiceId, new { InvoiceId = invoiceId,UserId= userId });
+                response.ImageBase64String = await _sqlService.GetSingleExecuteQueryasync<string>(SqlQuery.GetImageSrcByInvoiceId, new { InvoiceId = invoiceId, UserId = userId });
                 if (string.IsNullOrWhiteSpace(response.ImageBase64String))
                 {
                     response.ImageBase64String = null;
@@ -422,35 +423,36 @@ namespace InvoiceApi.Repository
                 {
                     response.BusinessDetails = new Business();
                     response.BusinessDetails = await _sqlService.GetSingleExecuteQueryasync<Business>(SqlQuery.GetBusinessDetailsByBusinessId, new { BusinessId = response.BusinessId, UserId = userId });
-                    if(response.BusinessDetails != null)
+                    if (response.BusinessDetails != null)
                     {
-                       
+
                         if (!string.IsNullOrWhiteSpace(response.BusinessDetails.City))
                         {
                             response.BusinessDetails.FormattedAddress = response.BusinessDetails.City;
                         }
                         if (!string.IsNullOrWhiteSpace(response.BusinessDetails.State))
                         {
-                            if (!string.IsNullOrWhiteSpace(response.BusinessDetails.FormattedAddress)){
+                            if (!string.IsNullOrWhiteSpace(response.BusinessDetails.FormattedAddress))
+                            {
                                 response.BusinessDetails.FormattedAddress += "," + response.BusinessDetails.State;
                             }
                             else
                             {
                                 response.BusinessDetails.FormattedAddress += response.BusinessDetails.State;
                             }
-                           
+
                         }
                         if (!string.IsNullOrWhiteSpace(response.BusinessDetails.CountryId))
                         {
-                            if(!string.IsNullOrWhiteSpace(response.BusinessDetails.FormattedAddress))
+                            if (!string.IsNullOrWhiteSpace(response.BusinessDetails.FormattedAddress))
                             {
                                 response.BusinessDetails.FormattedAddress += "," + response.BusinessDetails.CountryId;
                             }
                             else
                             {
-                                response.BusinessDetails.FormattedAddress +=   response.BusinessDetails.CountryId;
+                                response.BusinessDetails.FormattedAddress += response.BusinessDetails.CountryId;
                             }
-                           
+
                         }
                     }
                 }
@@ -473,9 +475,9 @@ namespace InvoiceApi.Repository
                             }
                             else
                             {
-                                response.ClientsDetails.FormattedAddress +=  response.ClientsDetails.State;
+                                response.ClientsDetails.FormattedAddress += response.ClientsDetails.State;
                             }
-                            
+
                         }
                         if (!string.IsNullOrWhiteSpace(response.ClientsDetails.CountryId))
                         {
@@ -485,9 +487,9 @@ namespace InvoiceApi.Repository
                             }
                             else
                             {
-                                response.ClientsDetails.FormattedAddress +=  response.ClientsDetails.CountryId;
+                                response.ClientsDetails.FormattedAddress += response.ClientsDetails.CountryId;
                             }
-                           
+
                         }
                     }
                 }
@@ -506,22 +508,28 @@ namespace InvoiceApi.Repository
         public async Task<Base> DeleteInvoice(Guid userId, Guid invoiceId)
         {
             var response = new Base { Status = StatusType.Failure.ToString() };
-            if(userId != Guid.Empty && invoiceId != Guid.Empty)
+            if (userId != Guid.Empty && invoiceId != Guid.Empty)
             {
                 await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteLogoDetails, new { InvoiceId = invoiceId, UserId = userId });
                 await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteSignatureDetails, new { InvoiceId = invoiceId, UserId = userId });
 
                 await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteTransactionDetails, new { InvoiceId = invoiceId });
-                await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteInvoiceDetails, new { InvoiceId = invoiceId ,UserId= userId });
+                await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.DeleteInvoiceDetails, new { InvoiceId = invoiceId, UserId = userId });
                 response.Status = StatusType.Success.ToString();
             }
             return response;
         }
+
         #endregion
 
         #region
 
-      
+        public async Task<Infocard> GetDashBoardDetails(Guid userId)
+        {
+            var response = new Infocard();
+            response = await _sqlService.GetSingleExecuteSPasync<Infocard>(StoredProcedure.Dashboard, new { Operation = "Infocard", UserId = userId });
+            return response;
+        }
 
 
         #endregion

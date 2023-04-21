@@ -15,5 +15,7 @@ namespace InvoiceApi.IServices
         Task<List<UserInvoiceDetails>> GetInvoiceDetails(Guid userId);
         Task<InvoiceDetails> GetInvoiceDetailByInvoiceId(Guid userId,Guid invoiceId);
         Task<Base> DeleteInvoice(Guid userId, Guid invoiceId);
+        Task<Infocard> GetDashBoardDetails(Guid userId);
+
     }
 }

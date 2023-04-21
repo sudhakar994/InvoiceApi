@@ -36,7 +36,7 @@ namespace InvoiceApi.Services
         {
             return await _dashboardRepository.GetInvoiceDetails(userId);
         }
-        public async Task<InvoiceDetails> GetInvoiceDetailByInvoiceId(Guid userId,Guid invoiceId)
+        public async Task<InvoiceDetails> GetInvoiceDetailByInvoiceId(Guid userId, Guid invoiceId)
         {
             return await _dashboardRepository.GetInvoiceDetailByInvoiceId(userId, invoiceId);
         }
@@ -44,6 +44,11 @@ namespace InvoiceApi.Services
         public async Task<Base> DeleteInvoice(Guid userId, Guid invoiceId)
         {
             return await _dashboardRepository.DeleteInvoice(userId, invoiceId);
+        }
+
+        public async Task<Infocard> GetDashBoardDetails(Guid userId)
+        {
+            return await _dashboardRepository.GetDashBoardDetails(userId);
         }
     }
 }

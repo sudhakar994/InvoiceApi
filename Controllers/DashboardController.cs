@@ -28,7 +28,32 @@ namespace InvoiceApi.Controllers
             _jwtService = jwtService;
             _htmlReaderService = htmlReaderService;
         }
-       
+
+        #region Get Dashboard by UserId
+        /// <summary>
+        /// GetInvoiceDetailByInvoiceId
+        /// </summary>
+        /// <param name="invoiceId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("getDashboardDetails")]
+        public async Task<IActionResult> getDashboardDetailsByUserID()
+        {
+            var response = new Infocard();
+
+            Guid userId = _jwtService.GetUserIdFromJwt();
+            if (userId != Guid.Empty)
+            {
+                response = await _dashboardService.GetDashBoardDetails(userId);
+                return Ok(response);
+            }
+
+            else
+            {
+                return Ok(response);
+            }
+        }
+        #endregion
         #region GetBusinessDetails
         /// <summary>
         /// GetBusinessDetails
