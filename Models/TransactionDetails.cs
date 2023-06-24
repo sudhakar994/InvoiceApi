@@ -15,5 +15,7 @@ namespace InvoiceApi.Models
         public decimal Rate { get; set; }
 
         public decimal Amount { get; set; }
+
+        public bool IsConsiderForTax { get; set; }
     }
 }
