@@ -148,14 +148,14 @@ namespace InvoiceApi.Repository
                                     InvoiceId = invoiceId,
                                     UserId = invoiceDetails.UserId,
                                     SignatureId = signatureId,
-                                    ImageBase64String = invoiceDetails.SignatureBase64String
+                                    SignatureBase64String = invoiceDetails.SignatureBase64String
                                 });
                             }
                             else
                             {
                                 if (!string.IsNullOrWhiteSpace(invoiceDetails.SignatureBase64String))
                                 {
-                                    await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveSignatureDetails, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId, LogoName = invoiceDetails.LogoName, SignatureBase64String = invoiceDetails.ImageBase64String });
+                                    await _sqlService.GetSingleExecuteQueryasync<long>(SqlQuery.SaveSignatureDetails, new { InvoiceId = invoiceId, UserId = invoiceDetails.UserId, LogoName = invoiceDetails.LogoName, SignatureBase64String = invoiceDetails.SignatureBase64String });
                                 }
                             }
 
